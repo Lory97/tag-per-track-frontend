@@ -1,0 +1,88 @@
+<div
+  class="bg-dark-gray/80 border border-gray-700/50 shadow-[0_8px_30px_rgba(0,0,0,0.5)] rounded-2xl overflow-hidden backdrop-blur-xl">
+
+  <div
+    class="bg-gradient-to-r from-obsidian to-dark-gray p-6 border-b border-gray-700/50 flex justify-between items-center">
+    <h3 class="text-2xl font-bold text-light-gray flex items-center gap-3">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        class="lucide lucide-sparkles text-electric-cyan">
+        <path
+          d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
+      </svg>
+      Audio Intelligence
+    </h3>
+    <div class="px-3 py-1 bg-green-500/10 text-green-400 border border-green-500/20 rounded-full text-sm font-medium">
+      Verified on-chain ✅
+    </div>
+  </div>
+
+  <div class="p-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+
+    <div class="space-y-8">
+
+      <div class="grid grid-cols-2 gap-4">
+        <div class="bg-obsidian/60 p-5 rounded-xl border border-gray-700">
+          <p class="text-gray-400 text-sm mb-1 uppercase tracking-wider font-semibold">Tempo (BPM)</p>
+          <div class="text-4xl font-bold text-white flex items-baseline gap-2">
+            {{ bpm | number:'1.0-1' }}
+            <span class="text-electric-cyan text-sm">bpm</span>
+          </div>
+        </div>
+        <div class="bg-obsidian/60 p-5 rounded-xl border border-gray-700">
+          <p class="text-gray-400 text-sm mb-1 uppercase tracking-wider font-semibold">Musical Key</p>
+          <div class="text-3xl font-bold text-white capitalize">
+            {{ key }}
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="genres.length > 0">
+        <p class="text-gray-400 text-sm mb-3 uppercase tracking-wider font-semibold">Detected Genres</p>
+        <div class="flex flex-wrap gap-2">
+          <span *ngFor="let g of genres"
+            class="px-4 py-2 bg-teal-glow/10 border border-teal-glow/30 text-teal-glow rounded-lg font-medium flex items-center gap-2">
+            {{ formatLabel(g.label) }}
+            <span class="text-xs opacity-60">({{ g.confidence | percent:'1.0-0' }})</span>
+          </span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="space-y-8">
+
+      <div *ngIf="dominantMood" class="bg-obsidian/60 p-5 rounded-xl border border-gray-700 relative overflow-hidden">
+        <div class="absolute right-0 top-0 w-32 h-32 bg-electric-cyan/5 rounded-full blur-2xl -mt-10 -mr-10"></div>
+        <p class="text-gray-400 text-sm mb-1 uppercase tracking-wider font-semibold">Dominant Mood</p>
+        <div class="text-2xl font-bold text-white capitalize">
+          {{ formatLabel(dominantMood.label) }}
+        </div>
+
+        <div class="mt-4">
+          <div class="flex justify-between text-xs text-gray-500 mb-1">
+            <span>Low Confidence</span>
+            <span>High Confidence</span>
+          </div>
+          <div class="h-2 bg-gray-800 rounded-full overflow-hidden">
+            <div class="h-full bg-gradient-to-r from-teal-glow to-electric-cyan"
+              [style.width]="(dominantMood.confidence * 100) + '%'"></div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="instruments.length > 0">
+        <p class="text-gray-400 text-sm mb-3 uppercase tracking-wider font-semibold">Instrumentation</p>
+        <div class="flex flex-wrap gap-2">
+          <span *ngFor="let inst of instruments"
+            class="px-3 py-1.5 bg-gray-800 border border-gray-600 text-gray-300 rounded-md text-sm">
+            {{ formatLabel(inst.label) }}
+            <span class="text-xs text-gray-500 ml-1">{{ inst.confidence | percent:'1.0-0' }}</span>
+          </span>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>

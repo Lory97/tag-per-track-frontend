@@ -10,6 +10,18 @@ export interface PaymentInvoice {
   destination_address: string;
 }
 
+export interface AnalysisResponse {
+  success: boolean;
+  data: any;
+  message: string;
+  settlement?: {
+    success: boolean;
+    transaction: string;
+    network: string;
+    payer: string;
+  };
+}
+
 export class PaymentRequiredError extends Error {
   constructor(public invoice: PaymentInvoice) {
     super('Payment Required');
@@ -23,9 +35,9 @@ export class PaymentRequiredError extends Error {
 export class ApiService {
   private http = inject(HttpClient);
   // Defaulting to typical NestJS local port for now
-  private apiUrl = 'http://localhost:3000/api/analyze'; 
+  private apiUrl = 'http://localhost:3000/api/analyze';
 
-  async analyzeAudio(fileOrUrl: File | string, paymentProof?: any): Promise<any> {
+  async analyzeAudio(fileOrUrl: File | string, paymentProof?: any): Promise<AnalysisResponse> {
     let headers = new HttpHeaders();
     if (paymentProof) {
       // Wrap in JSON structure to satisfy backend and CDP schema exactly.
@@ -47,14 +59,33 @@ export class ApiService {
 
     try {
       const response = await firstValueFrom(
-        this.http.post(this.apiUrl, formData, { headers })
+        this.http.post(this.apiUrl, formData, {
+          headers,
+          observe: 'response', // Get full response to read headers
+        })
       );
-      return response;
+
+      // Extract settlement info from X-Payment-Response header
+      const paymentResponse = response.headers.get('X-Payment-Response');
+      let settlement;
+      if (paymentResponse) {
+        try {
+          settlement = JSON.parse(paymentResponse);
+        } catch (e) {
+          console.warn('Could not parse X-Payment-Response header:', e);
+        }
+      }
+
+      const body = response.body as any;
+      return {
+        ...body,
+        settlement,
+      };
     } catch (error) {
       if (error instanceof HttpErrorResponse && error.status === 402) {
         const req = error.error?.paymentRequirements || error.error;
         const rawAmount = req.maxAmountRequired || req.amount;
-        
+
         const invoice: PaymentInvoice = {
           // Format from smallest unit (wei) to decimal (Assuming 6 decimals for USDC)
           amount: rawAmount ? formatUnits(BigInt(rawAmount), 6) : '0',

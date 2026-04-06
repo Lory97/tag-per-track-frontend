@@ -23,6 +23,9 @@ export class PlaygroundComponent {
   metadataResult = signal<any | null>(null);
   errorMessage = signal<string | null>(null);
 
+  /** On-chain settlement transaction hash (from CDP facilitator) */
+  settlementTx = signal<string | null>(null);
+
   isDragging = signal<boolean>(false);
 
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
@@ -67,6 +70,7 @@ export class PlaygroundComponent {
     this.invoiceDetails.set(null);
     this.metadataResult.set(null);
     this.errorMessage.set(null);
+    this.settlementTx.set(null);
   }
 
   async connectWallet() {
@@ -89,6 +93,11 @@ export class PlaygroundComponent {
       this.metadataResult.set(result?.data || result);
       this.paymentRequired.set(false);
       this.invoiceDetails.set(null);
+
+      // Capture the on-chain settlement tx hash if present
+      if (result?.settlement?.transaction) {
+        this.settlementTx.set(result.settlement.transaction);
+      }
     } catch (error) {
       if (error instanceof PaymentRequiredError) {
         this.paymentRequired.set(true);

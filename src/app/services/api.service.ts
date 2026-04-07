@@ -37,14 +37,14 @@ export class ApiService {
   // Defaulting to typical NestJS local port for now
   private apiUrl = 'http://localhost:3000/api/analyze';
 
-  async analyzeAudio(fileOrUrl: File | string, paymentProof?: any): Promise<AnalysisResponse> {
+  async analyzeAudio(fileOrUrl: File | string, paymentProof?: any, network: string = 'base'): Promise<AnalysisResponse> {
     let headers = new HttpHeaders();
     if (paymentProof) {
       // Wrap in JSON structure to satisfy backend and CDP schema exactly.
       const proofPayload = JSON.stringify({
         x402Version: 1,
         scheme: 'exact',
-        network: 'base',
+        network: network,
         payload: paymentProof
       });
       headers = headers.set('X-Payment-Proof', proofPayload);

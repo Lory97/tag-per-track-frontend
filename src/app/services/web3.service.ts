@@ -78,7 +78,7 @@ export class Web3Service {
     try {
       // Amount in smallest unit (wei) format string
       const amountWei = parseUnits(amountStr, 6).toString();
-      
+
       const nonceBytes = new Uint8Array(32);
       window.crypto.getRandomValues(nonceBytes);
       const nonce = bytesToHex(nonceBytes);
@@ -89,7 +89,7 @@ export class Web3Service {
 
       // USD Coin Typed Data structure for Base
       const domain = {
-        name: 'USD Coin',
+        name: currentChainId === 8453 ? 'USD Coin' : 'USDC',
         version: '2',
         chainId: currentChainId,
         verifyingContract: usdcAddress as `0x${string}`,

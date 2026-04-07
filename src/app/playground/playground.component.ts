@@ -107,8 +107,9 @@ export class PlaygroundComponent {
     this.errorMessage.set(null);
 
     try {
+      const network = this.invoiceDetails()?.network || 'base';
       // Use either the file or the URL string
-      const result = await this.apiService.analyzeAudio(file || url!, paymentProof);
+      const result = await this.apiService.analyzeAudio(file || url!, paymentProof, network);
       this.metadataResult.set(result?.data || result);
       this.paymentRequired.set(false);
       this.invoiceDetails.set(null);

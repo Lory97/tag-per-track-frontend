@@ -54,7 +54,7 @@ export class ApiService {
     if (fileOrUrl instanceof File) {
       formData.append('file', fileOrUrl);
     } else {
-      formData.append('url', fileOrUrl);
+      formData.append('fileUrl', fileOrUrl);
     }
 
     try {

@@ -17,6 +17,8 @@ export class PlaygroundComponent {
 
   fileUrl = signal<string | null>(null);
   selectedFile = signal<File | null>(null);
+  inputUrl = signal<string | null>(null); // New signal for remote URL
+  
   isAnalyzing = signal<boolean>(false);
   paymentRequired = signal<boolean>(false);
   invoiceDetails = signal<PaymentInvoice | null>(null);
@@ -58,10 +60,21 @@ export class PlaygroundComponent {
   handleFile(file: File) {
     if (file.type.startsWith('audio/')) {
       this.selectedFile.set(file);
+      this.inputUrl.set(null); // Clear URL if a file is selected
       this.fileUrl.set(URL.createObjectURL(file));
       this.resetState();
     } else {
       this.errorMessage.set('Please select a valid audio file (e.g. mp3, wav).');
+    }
+  }
+
+  onUrlInput(event: Event) {
+    const val = (event.target as HTMLInputElement).value;
+    if (val) {
+      this.inputUrl.set(val);
+      this.selectedFile.set(null); // Clear file if a URL is entered
+      this.fileUrl.set(null);
+      this.resetState();
     }
   }
 
@@ -83,13 +96,19 @@ export class PlaygroundComponent {
 
   async runAnalysis(paymentProof?: any) {
     const file = this.selectedFile();
-    if (!file) return;
+    const url = this.inputUrl();
+    
+    if (!file && !url) {
+      this.errorMessage.set('Please select a file or enter an audio URL.');
+      return;
+    }
 
     this.isAnalyzing.set(true);
     this.errorMessage.set(null);
 
     try {
-      const result = await this.apiService.analyzeAudio(file, paymentProof);
+      // Use either the file or the URL string
+      const result = await this.apiService.analyzeAudio(file || url!, paymentProof);
       this.metadataResult.set(result?.data || result);
       this.paymentRequired.set(false);
       this.invoiceDetails.set(null);
@@ -104,7 +123,7 @@ export class PlaygroundComponent {
         this.invoiceDetails.set(error.invoice);
         console.log(error.invoice);
       } else {
-        this.errorMessage.set('Analysis failed. Please try again.');
+        this.errorMessage.set('Analysis failed. Please verify the URL and try again.');
         console.error(error);
       }
     } finally {

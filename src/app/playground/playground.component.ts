@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, signal, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, signal, ViewChild, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Web3Service } from '../services/web3.service';
 import { ApiService, PaymentInvoice, PaymentRequiredError } from '../services/api.service';
@@ -17,11 +17,27 @@ export class PlaygroundComponent {
 
   fileUrl = signal<string | null>(null);
   selectedFile = signal<File | null>(null);
-  inputUrl = signal<string | null>(null); // New signal for remote URL
-  
+  inputUrl = signal<string | null>(null);
+
+  private readonly FORBIDDEN_DOMAINS = ['youtube.com', 'youtu.be', 'vimeo.com', 'dailymotion.com', 'soundcloud.com'];
+  private readonly ALLOWED_EXTS = ['.mp3', '.wav', '.ogg', '.flac', '.m4a', '.aac'];
+
   isAnalyzing = signal<boolean>(false);
+  loadingStep = signal<string | null>(null); // New signal for UX feedback
+
   paymentRequired = signal<boolean>(false);
   invoiceDetails = signal<PaymentInvoice | null>(null);
+
+  /** Dynamic button label based on state */
+  buttonLabel = computed(() => {
+    if (this.isAnalyzing()) {
+      return this.loadingStep() || 'Working...';
+    }
+    if (this.paymentRequired()) {
+      return 'Sign & Analyze';
+    }
+    return 'Analyze Track';
+  });
   metadataResult = signal<any | null>(null);
   errorMessage = signal<string | null>(null);
 
@@ -58,14 +74,49 @@ export class PlaygroundComponent {
   }
 
   handleFile(file: File) {
-    if (file.type.startsWith('audio/')) {
+    const ext = file.name.split('.').pop()?.toLowerCase();
+    const isAllowedExt = ext ? this.ALLOWED_EXTS.includes(`.${ext}`) : false;
+
+    if (file.type.startsWith('audio/') || isAllowedExt) {
       this.selectedFile.set(file);
       this.inputUrl.set(null); // Clear URL if a file is selected
       this.fileUrl.set(URL.createObjectURL(file));
       this.resetState();
     } else {
-      this.errorMessage.set('Please select a valid audio file (e.g. mp3, wav).');
+      this.errorMessage.set('Please select a valid audio file (mp3, wav, ogg, etc.).');
     }
+  }
+
+  private validateUrl(url: string): string | null {
+    try {
+      const urlObj = new URL(url);
+      
+      // 1. Check for forbidden video domains
+      if (this.FORBIDDEN_DOMAINS.some(domain => urlObj.hostname.includes(domain))) {
+        return `Direct analysis of ${urlObj.hostname} is not supported. Please provide a direct link to a raw audio file.`;
+      }
+
+      // 2. Extension check (heuristic)
+      const ext = urlObj.pathname.split('.').pop()?.toLowerCase();
+      if (ext && !this.ALLOWED_EXTS.includes(`.${ext}`) && !url.includes('blob:')) {
+        // We allow it as sometimes URLs don't have extensions, but we can warn or prefer direct hits
+        // For now, we block if it's a known non-audio extension like .html or .php
+        const forbiddenExts = ['html', 'php', 'aspx', 'js', 'css'];
+        if (forbiddenExts.includes(ext)) {
+          return 'The link seems to point to a webpage, not an audio file.';
+        }
+      }
+
+      return null;
+    } catch (e) {
+      return 'Please enter a valid URL (including http:// or https://).';
+    }
+  }
+
+  removeFile() {
+    this.selectedFile.set(null);
+    this.fileUrl.set(null);
+    this.resetState();
   }
 
   onUrlInput(event: Event) {
@@ -97,14 +148,28 @@ export class PlaygroundComponent {
   async runAnalysis(paymentProof?: any) {
     const file = this.selectedFile();
     const url = this.inputUrl();
-    
+
     if (!file && !url) {
       this.errorMessage.set('Please select a file or enter an audio URL.');
       return;
     }
 
+    if (url && !file) {
+      const urlValidationError = this.validateUrl(url);
+      if (urlValidationError) {
+        this.errorMessage.set(urlValidationError);
+        return;
+      }
+    }
+
     this.isAnalyzing.set(true);
     this.errorMessage.set(null);
+
+    if (paymentProof) {
+      this.loadingStep.set('🧠 Payment verified! Neural listening and analysis in progress...');
+    } else {
+      this.loadingStep.set('📡 Fetching audio track...');
+    }
 
     try {
       const network = this.invoiceDetails()?.network || 'base';
@@ -129,16 +194,17 @@ export class PlaygroundComponent {
       }
     } finally {
       this.isAnalyzing.set(false);
+      this.loadingStep.set(null);
     }
   }
 
   async payAndAnalyze() {
-    const invoice = this.invoiceDetails();
-    if (!invoice) return;
+    if (!this.invoiceDetails()) return;
+
+    this.loadingStep.set('✍️ Awaiting your Web3 signature (Gasless)...');
 
     try {
-      this.isAnalyzing.set(true);
-      const paymentProof = await this.web3Service.signX402Payment(invoice.amount, invoice.destination_address);
+      const paymentProof = await this.web3Service.signX402Payment(this.invoiceDetails()!.amount, this.invoiceDetails()!.destination_address);
       // Once signature generated, re-run analysis with payment proof
       await this.runAnalysis(paymentProof);
     } catch (err) {

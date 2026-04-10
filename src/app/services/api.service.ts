@@ -34,8 +34,7 @@ export class PaymentRequiredError extends Error {
 })
 export class ApiService {
   private http = inject(HttpClient);
-  // Defaulting to typical NestJS local port for now
-  private apiUrl = 'http://localhost:3000/api/analyze';
+  private apiUrl = 'https://api.tag-per-track.cloud/api/analyze';
 
   async analyzeAudio(fileOrUrl: File | string, paymentProof?: any, network: string = 'base'): Promise<AnalysisResponse> {
     let headers = new HttpHeaders();

@@ -191,6 +191,10 @@
             <span class="text-electric-cyan text-xl">{{ invoiceDetails()?.amount }} USDC</span>
           </div>
           <div class="flex justify-between items-center pt-4 border-t border-gray-800">
+            <span class="text-gray-500">Network</span>
+            <span class="text-electric-cyan text-xl">{{ invoiceDetails()?.network }}</span>
+          </div>
+          <div class="flex justify-between items-center pt-4 border-t border-gray-800">
             <span class="text-gray-500">Destination</span>
             <span class="text-xs font-mono text-gray-400 break-all pl-10 text-right">{{
               invoiceDetails()?.destination_address }}</span>

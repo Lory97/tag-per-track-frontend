@@ -235,8 +235,8 @@
             <p class="text-gray-500 text-xs font-mono">{{ settlementTx() | slice:0:32 }}...</p>
           </div>
         </div>
-        <a [href]="'https://basescan.org/tx/' + settlementTx()" target="_blank"
-          class="text-xs font-bold text-green-400 hover:underline">VIEW ON BASESCAN</a>
+        <a [href]="'https://sepolia.basescan.org/tx/' + settlementTx()" target="_blank"
+          class="text-xs font-bold text-green-400 hover:underline tracking-widest">VIEW ON BASESCAN (SEPOLIA)</a>
       </div>
 
       <app-metadata-result [data]="metadataResult()"></app-metadata-result>

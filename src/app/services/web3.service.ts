@@ -1,7 +1,14 @@
 import { Injectable, signal } from '@angular/core';
-import { createConfig, http, connect, writeContract, waitForTransactionReceipt, getAccount, injected, signTypedData } from '@wagmi/core';
+import { createConfig, http, connect, getAccount, injected, signTypedData } from '@wagmi/core';
 import { base, baseSepolia } from '@wagmi/core/chains';
-import { parseUnits, bytesToHex, erc20Abi } from 'viem';
+import { parseUnits, bytesToHex } from 'viem';
+import { Attribution } from 'ox/erc8021';
+
+const BUILDER_CODE = 'bc_3tdradhx';
+
+const DATA_SUFFIX = Attribution.toDataSuffix({
+  codes: [BUILDER_CODE],
+});
 
 export const wagmiConfig = createConfig({
   chains: [base, baseSepolia],
@@ -10,6 +17,7 @@ export const wagmiConfig = createConfig({
     [base.id]: http(),
     [baseSepolia.id]: http(),
   },
+  dataSuffix: DATA_SUFFIX,
 });
 
 export interface X402PaymentPayload {

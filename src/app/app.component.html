@@ -1,15 +1,19 @@
 <div class="min-h-screen bg-obsidian text-light-gray selection:bg-electric-cyan/30">
-  
+
   <!-- Navigation Header -->
   <header class="fixed top-0 w-full z-50 bg-obsidian/80 backdrop-blur-md border-b border-dark-gray">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-      <div class="flex items-center space-x-2 group cursor-pointer" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
-        <img src="favicon.png" alt="Tag-per-Track Logo" class="w-8 h-8 rounded-lg shadow-[0_0_15px_rgba(102,252,241,0.3)] group-hover:scale-110 transition-transform">
+      <div class="flex items-center space-x-2 group cursor-pointer"
+        onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+        <img src="favicon.png" alt="Tag-per-Track Logo"
+          class="w-8 h-8 rounded-lg shadow-[0_0_15px_rgba(102,252,241,0.3)] group-hover:scale-110 transition-transform">
         <span class="text-xl font-bold tracking-tight text-white">Tag-per-Track</span>
       </div>
       <nav class="hidden md:flex items-center space-x-8">
-        <a href="https://www.npmjs.com/package/tag-per-track-agentkit" target="_blank" class="text-sm font-medium hover:text-electric-cyan transition-colors">SDK / NPM</a>
-        <a href="https://api.tag-per-track.cloud/api/docs" target="_blank" class="text-sm font-medium hover:text-electric-cyan transition-colors">API Docs</a>
+        <a href="https://www.npmjs.com/package/tag-per-track-agentkit" target="_blank"
+          class="text-sm font-medium hover:text-electric-cyan transition-colors">SDK / NPM</a>
+        <a href="https://api.tag-per-track.cloud/api/docs" target="_blank"
+          class="text-sm font-medium hover:text-electric-cyan transition-colors">API Docs</a>
       </nav>
     </div>
   </header>
@@ -19,29 +23,35 @@
     <section class="relative overflow-hidden py-24 sm:py-32">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div class="text-center">
-          <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-dark-gray text-electric-cyan border border-electric-cyan/20 mb-8 animate-pulse">
-            Now live on Base Sepolia 🔵
+          <span
+            class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-dark-gray text-electric-cyan border border-electric-cyan/20 mb-8 animate-pulse">
+            Now live on Base 🔵
           </span>
           <h1 class="text-5xl sm:text-7xl font-extrabold text-white tracking-tight mb-6">
             Automated A&R for the <br class="hidden sm:block">
-            <span class="text-transparent bg-clip-text bg-gradient-to-r from-electric-cyan to-teal-glow">new music economy.</span>
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-electric-cyan to-teal-glow">new music
+              economy.</span>
           </h1>
           <p class="text-xl text-light-gray max-w-2xl mx-auto mb-10 leading-relaxed">
-            Neural networks that listen, analyze, and categorize tracks in 20 seconds. 
+            Neural networks that listen, analyze, and categorize tracks in 20 seconds.
             Pay-per-use via the <span class="text-white font-semibold">x402 protocol</span>.
           </p>
           <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a href="#playground" class="px-8 py-4 rounded-xl bg-electric-cyan text-obsidian font-bold hover:shadow-[0_0_20px_rgba(102,252,241,0.4)] transition-all transform hover:-translate-y-1">
+            <a href="#playground"
+              class="px-8 py-4 rounded-xl bg-electric-cyan text-obsidian font-bold hover:shadow-[0_0_20px_rgba(102,252,241,0.4)] transition-all transform hover:-translate-y-1">
               Test the Analyzer
             </a>
-            <a href="#developers" class="px-8 py-4 rounded-xl bg-dark-gray text-white border border-light-gray/20 font-bold hover:bg-dark-gray/80 transition-all">
+            <a href="#developers"
+              class="px-8 py-4 rounded-xl bg-dark-gray text-white border border-light-gray/20 font-bold hover:bg-dark-gray/80 transition-all">
               For Developers
             </a>
           </div>
         </div>
       </div>
       <!-- Background Glow -->
-      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-electric-cyan/5 blur-[120px] rounded-full -z-10"></div>
+      <div
+        class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-electric-cyan/5 blur-[120px] rounded-full -z-10">
+      </div>
     </section>
 
     <!-- Story Section -->
@@ -50,8 +60,10 @@
         <h2 class="text-3xl font-bold text-white mb-8 text-center italic">"The A&R process is broken. We fixed it."</h2>
         <div class="bg-obsidian/40 border-l-4 border-electric-cyan p-8 rounded-r-2xl">
           <p class="text-lg leading-relaxed text-light-gray">
-            As an artist, I sent countless demos into the void. As a label co-founder, I realized why: the listening bottleneck. 
-            Tag-per-Track isn't just a tool; it's a technical solution to a broken system, built by a musician to unblock the industry.
+            As an artist, I sent countless demos into the void. As a label co-founder, I realized why: the listening
+            bottleneck.
+            Tag-per-Track isn't just a tool; it's a technical solution to a broken system, built by a musician to
+            unblock the industry.
           </p>
         </div>
       </div>
@@ -63,12 +75,15 @@
         <div class="text-center mb-16">
           <h2 class="text-4xl font-bold text-white mb-4">Try it yourself</h2>
           <p class="text-light-gray max-w-xl mx-auto">
-            Drop an audio file below. Connect your MetaMask wallet on <span class="text-white font-semibold">Base Sepolia</span> to settle the x402 micro-payment (0.05 USDC). Every signature and analysis is executed in real-time on-chain.
+            Drop an audio file below. Connect your MetaMask wallet on <span class="text-white font-semibold">Base
+              Sepolia</span> to settle the x402 micro-payment (0.05 USDC). Every signature and analysis is executed in
+            real-time on-chain.
           </p>
         </div>
-        
+
         <!-- Angular Playground Integration -->
-        <div class="max-w-3xl mx-auto p-1 rounded-2xl bg-gradient-to-b from-dark-gray to-obsidian border border-light-gray/10 shadow-2xl">
+        <div
+          class="max-w-3xl mx-auto p-1 rounded-2xl bg-gradient-to-b from-dark-gray to-obsidian border border-light-gray/10 shadow-2xl">
           <div class="bg-obsidian rounded-[calc(1rem-1px)] p-6 min-h-[400px]">
             <app-playground></app-playground>
           </div>
@@ -83,8 +98,9 @@
           <div>
             <h2 class="text-4xl font-bold text-white mb-6">Give your AI Agent ears.</h2>
             <p class="text-lg text-light-gray mb-8 leading-relaxed">
-              The <code class="text-electric-cyan">tag-per-track-agentkit</code> SDK integrates natively with LangChain 
-              and handles the x402 payment flow automatically. Enable your agents to evaluate music on-chain with zero friction.
+              The <code class="text-electric-cyan">tag-per-track-agentkit</code> SDK integrates natively with LangChain
+              and handles the x402 payment flow automatically. Enable your agents to evaluate music on-chain with zero
+              friction.
             </p>
             <ul class="space-y-4">
               <li class="flex items-center space-x-3 text-sm">
@@ -101,7 +117,7 @@
               </li>
             </ul>
           </div>
-          
+
           <!-- Styled Terminal -->
           <div class="bg-black rounded-xl overflow-hidden shadow-2xl border border-white/10">
             <div class="bg-dark-gray px-4 py-2 flex items-center space-x-2 border-b border-white/5">
@@ -115,10 +131,12 @@
                 <span class="text-teal-glow">$</span> <span class="text-white">npm install tag-per-track-agentkit</span>
               </div>
               <div>
-                <span class="text-purple-400">import</span> {{ '{' }} createTagPerTrackTool {{ '}' }} <span class="text-purple-400">from</span> <span class="text-electric-cyan">"tag-per-track-agentkit"</span>;
+                <span class="text-purple-400">import</span> {{ '{' }} createTagPerTrackTool {{ '}' }} <span
+                  class="text-purple-400">from</span> <span class="text-electric-cyan">"tag-per-track-agentkit"</span>;
               </div>
               <div class="mt-2 text-light-gray/70">
-                <span class="text-purple-400">const</span> tool = <span class="text-yellow-400">createTagPerTrackTool</span>(wallet);
+                <span class="text-purple-400">const</span> tool = <span
+                  class="text-yellow-400">createTagPerTrackTool</span>(wallet);
               </div>
               <div class="mt-4 opacity-50 text-xs italic"># Payment logic handled internally via Coinbase CDP</div>
             </div>

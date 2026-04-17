@@ -89,9 +89,19 @@ export class PlaygroundComponent {
 
   private validateUrl(url: string): string | null {
     try {
+      // 1. IPFS rule
+      if (url.startsWith('ipfs://')) {
+        return null; // IPFS protocol is handled by backend
+      }
+
       const urlObj = new URL(url);
       
-      // 1. Check for forbidden video domains
+      // 2. Google Drive rule
+      if (urlObj.hostname.includes('drive.google.com')) {
+        return null; // Drive links are parsed by backend
+      }
+
+      // 3. Check for forbidden video domains
       if (this.FORBIDDEN_DOMAINS.some(domain => urlObj.hostname.includes(domain))) {
         return `Direct analysis of ${urlObj.hostname} is not supported. Please provide a direct link to a raw audio file.`;
       }
@@ -100,8 +110,8 @@ export class PlaygroundComponent {
       const ext = urlObj.pathname.split('.').pop()?.toLowerCase();
       if (ext && !this.ALLOWED_EXTS.includes(`.${ext}`) && !url.includes('blob:')) {
         // We allow it as sometimes URLs don't have extensions, but we can warn or prefer direct hits
-        // For now, we block if it's a known non-audio extension like .html or .php
-        const forbiddenExts = ['html', 'php', 'aspx', 'js', 'css'];
+        // For now, we block if it's a strongly typed web extension like .html, .js, .css
+        const forbiddenExts = ['html', 'htm', 'js', 'css'];
         if (forbiddenExts.includes(ext)) {
           return 'The link seems to point to a webpage, not an audio file.';
         }

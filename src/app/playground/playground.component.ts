@@ -199,8 +199,11 @@ export class PlaygroundComponent {
         this.invoiceDetails.set(error.invoice);
         console.log(error.invoice);
       } else {
-        this.errorMessage.set('Analysis failed. Please verify the URL and try again.');
-        console.error(error);
+        // Extract specific message from backend (NestJS standard error format)
+        const err = error as any;
+        const specificError = err?.error?.message || err?.message || 'Analysis failed. Please verify the URL and try again.';
+        this.errorMessage.set(specificError);
+        console.error('Backend analysis error:', error);
       }
     } finally {
       this.isAnalyzing.set(false);

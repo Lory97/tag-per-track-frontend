@@ -98,6 +98,21 @@ export class Web3Service {
     }
   }
 
+  async disconnectWallet() {
+    try {
+      const { disconnect } = await import('@wagmi/core');
+      const connectors = getAccount(wagmiConfig).connector;
+      if (connectors) {
+        await disconnect(wagmiConfig, { connector: connectors });
+      }
+      this.address.set(null);
+      this.chainId.set(null);
+      this.isConnected.set(false);
+    } catch (error) {
+      console.error('Failed to disconnect wallet:', error);
+    }
+  }
+
   async signX402Payment(amountStr: string, destination: string): Promise<X402PaymentPayload> {
     if (!this.isConnected()) {
       await this.connectWallet();

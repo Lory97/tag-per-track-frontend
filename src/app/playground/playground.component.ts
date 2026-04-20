@@ -155,6 +155,10 @@ export class PlaygroundComponent {
     }
   }
 
+  async disconnectWallet() {
+    await this.web3Service.disconnectWallet();
+  }
+
   async runAnalysis(paymentProof?: any) {
     const file = this.selectedFile();
     const url = this.inputUrl();

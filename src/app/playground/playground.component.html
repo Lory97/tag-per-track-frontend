@@ -28,11 +28,12 @@
         </svg>
         Connect Wallet
       </button>
-      <div *ngIf="web3Service.isConnected()"
-        class="bg-dark-gray text-light-gray border border-gray-700 px-5 py-2.5 rounded-lg font-medium flex items-center gap-2">
-        <div class="w-2 rounded-full h-2 bg-green-400 animate-pulse"></div>
-        {{ web3Service.address() | slice:0:6 }}...{{ web3Service.address() | slice:-4 }}
-      </div>
+      <button *ngIf="web3Service.isConnected()" (click)="disconnectWallet()"
+        class="bg-dark-gray text-light-gray border border-gray-700 hover:border-red-400/50 hover:text-red-400 px-5 py-2.5 rounded-lg font-medium flex items-center gap-2 transition-all group cursor-pointer">
+        <div class="w-2 rounded-full h-2 bg-green-400 animate-pulse group-hover:bg-red-400"></div>
+        <span class="group-hover:hidden">{{ web3Service.address() | slice:0:6 }}...{{ web3Service.address() | slice:-4 }}</span>
+        <span class="hidden group-hover:inline">Disconnect</span>
+      </button>
     </div>
   </div>
 

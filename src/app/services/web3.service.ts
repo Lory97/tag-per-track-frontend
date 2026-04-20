@@ -1,8 +1,10 @@
 import { Injectable, signal } from '@angular/core';
-import { createConfig, http, connect, getAccount, injected, signTypedData } from '@wagmi/core';
-import { base, baseSepolia } from '@wagmi/core/chains';
+import { getAccount, signTypedData, watchAccount } from '@wagmi/core';
+import { base, baseSepolia } from '@reown/appkit/networks';
 import { parseUnits, bytesToHex } from 'viem';
 import { Attribution } from 'ox/erc8021';
+import { AppKit, createAppKit } from '@reown/appkit';
+import { WagmiAdapter } from '@reown/appkit-adapter-wagmi';
 
 const BUILDER_CODE = 'bc_3tdradhx';
 
@@ -10,15 +12,23 @@ const DATA_SUFFIX = Attribution.toDataSuffix({
   codes: [BUILDER_CODE],
 });
 
-export const wagmiConfig = createConfig({
-  chains: [base, baseSepolia],
-  connectors: [injected()],
-  transports: {
-    [base.id]: http(),
-    [baseSepolia.id]: http(),
-  },
-  dataSuffix: DATA_SUFFIX,
+export const projectId = 'e1d5c7d330f7223441c9d26cff15524b';
+export const networks = [base, baseSepolia];
+
+export const wagmiAdapter = new WagmiAdapter({
+  projectId,
+  networks,
 });
+
+export const wagmiConfig = wagmiAdapter.wagmiConfig;
+(wagmiConfig as any).dataSuffix = DATA_SUFFIX;
+
+const metadata = {
+  name: 'Tag-per-Track',
+  description: 'Agentic-First Musical Audio Analysis',
+  url: typeof window !== 'undefined' ? window.location.origin : 'https://tag-per-track.cloud', 
+  icons: ['https://tag-per-track.cloud/favicon.png']
+};
 
 export interface X402PaymentPayload {
   signature: string;
@@ -40,6 +50,8 @@ export class Web3Service {
   isConnected = signal<boolean>(false);
   chainId = signal<number | null>(null);
 
+  modal: AppKit;
+
   // Address for USDC on Base
   private usdcAddresses: Record<number, `0x${string}`> = {
     8453: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913', // Base Mainnet USDC
@@ -47,6 +59,24 @@ export class Web3Service {
   };
 
   constructor() {
+    this.modal = createAppKit({
+      adapters: [wagmiAdapter],
+      networks: [base, baseSepolia] as any,
+      metadata,
+      projectId,
+      features: {
+        analytics: true
+      }
+    });
+
+    watchAccount(wagmiConfig, {
+      onChange: (account) => {
+        this.address.set(account.address || null);
+        this.chainId.set(account.chainId || null);
+        this.isConnected.set(account.isConnected);
+      }
+    });
+
     this.checkConnection();
   }
 
@@ -61,13 +91,9 @@ export class Web3Service {
 
   async connectWallet() {
     try {
-      const result = await connect(wagmiConfig, { connector: injected() });
-      this.address.set(result.accounts[0]);
-      this.chainId.set(result.chainId);
-      this.isConnected.set(true);
-      return result;
+      await this.modal.open();
     } catch (error) {
-      console.error('Failed to connect wallet:', error);
+      console.error('Failed to open wallet modal:', error);
       throw error;
     }
   }
@@ -88,7 +114,7 @@ export class Web3Service {
       const amountWei = parseUnits(amountStr, 6).toString();
 
       const nonceBytes = new Uint8Array(32);
-      window.crypto.getRandomValues(nonceBytes);
+      if (typeof window !== 'undefined') window.crypto.getRandomValues(nonceBytes);
       const nonce = bytesToHex(nonceBytes);
 
       const validAfter = "0";
@@ -127,7 +153,7 @@ export class Web3Service {
         domain,
         types,
         primaryType: 'TransferWithAuthorization',
-        message,
+        message: message as any,
       });
 
       return {

@@ -1,5 +1,5 @@
-import { Injectable, signal } from '@angular/core';
-import { getAccount, signTypedData, watchAccount } from '@wagmi/core';
+import { Injectable, signal, NgZone, inject } from '@angular/core';
+import { getAccount, signTypedData, watchAccount, reconnect } from '@wagmi/core';
 import { base, baseSepolia } from '@reown/appkit/networks';
 import { parseUnits, bytesToHex } from 'viem';
 import { Attribution } from 'ox/erc8021';
@@ -46,6 +46,8 @@ export interface X402PaymentPayload {
   providedIn: 'root'
 })
 export class Web3Service {
+  private ngZone = inject(NgZone);
+
   address = signal<string | null>(null);
   isConnected = signal<boolean>(false);
   chainId = signal<number | null>(null);
@@ -69,24 +71,33 @@ export class Web3Service {
       }
     });
 
+    // Watch for wallet state changes — run inside NgZone so Angular detects signal updates
     watchAccount(wagmiConfig, {
       onChange: (account) => {
-        this.address.set(account.address || null);
-        this.chainId.set(account.chainId || null);
-        this.isConnected.set(account.isConnected);
+        this.ngZone.run(() => {
+          this.syncAccount(account);
+        });
       }
     });
 
-    this.checkConnection();
+    // Attempt to reconnect any persisted session from localStorage
+    this.ngZone.runOutsideAngular(() => {
+      reconnect(wagmiConfig).catch(() => {});
+    });
+
+    // Sync initial state + delayed re-check (AppKit reconnects asynchronously)
+    this.syncAccount(getAccount(wagmiConfig));
+    setTimeout(() => {
+      this.ngZone.run(() => {
+        this.syncAccount(getAccount(wagmiConfig));
+      });
+    }, 500);
   }
 
-  checkConnection() {
-    const account = getAccount(wagmiConfig);
-    if (account.isConnected) {
-      this.address.set(account.address || null);
-      this.chainId.set(account.chainId || null);
-      this.isConnected.set(true);
-    }
+  private syncAccount(account: { address?: string; chainId?: number; isConnected: boolean }) {
+    this.address.set(account.address || null);
+    this.chainId.set(account.chainId || null);
+    this.isConnected.set(account.isConnected);
   }
 
   async connectWallet() {

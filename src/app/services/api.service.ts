@@ -35,30 +35,24 @@ export class PaymentRequiredError extends Error {
 export class ApiService {
   private http = inject(HttpClient);
   private apiUrl = 'https://api.tag-per-track.cloud/api/analyze';
-  private lastInvoiceRequirements: any = null;
+  /** The full PaymentRequired v2 response from the 402 */
+  private lastPaymentRequired: any = null;
+  /** The selected PaymentRequirements from accepts[0] */
+  private lastAccepted: any = null;
 
   async analyzeAudio(fileOrUrl: File | string, paymentProof?: any, network: string = 'base'): Promise<AnalysisResponse> {
     let headers = new HttpHeaders();
     if (paymentProof) {
-      // Build x402 v2 paymentPayload per CDP schema:
-      // https://docs.cdp.coinbase.com/api-reference/v2/rest-api/x402-facilitator/verify-a-payment
-      const invoice = this.lastInvoiceRequirements;
+      // Build x402 v2 PaymentPayload per official SDK schema:
+      // https://github.com/coinbase/x402/blob/main/typescript/packages/core/src/types/payments.ts
       const proofPayload = JSON.stringify({
         x402Version: 2,
-        accepted: {
-          scheme: 'exact',
-          network: invoice?.network || network,
-          asset: invoice?.asset || invoice?.currency || '',
-          amount: invoice?.maxAmountRequired || '',
-          payTo: invoice?.payTo || invoice?.destination_address || '',
-          maxTimeoutSeconds: invoice?.maxTimeoutSeconds || 600,
-          extra: invoice?.extra || { name: 'USDC', version: '2' },
-        },
+        accepted: this.lastAccepted,
         payload: {
           signature: paymentProof.signature,
           authorization: paymentProof.authorization,
         },
-        resource: {
+        resource: this.lastPaymentRequired?.resource || {
           url: this.apiUrl,
           description: 'Audio Analysis Micro-payment',
           mimeType: 'application/json',
@@ -100,17 +94,20 @@ export class ApiService {
       };
     } catch (error) {
       if (error instanceof HttpErrorResponse && error.status === 402) {
-        const req = error.error?.paymentRequirements || error.error;
-        // Store the raw requirements for building the v2 payload later
-        this.lastInvoiceRequirements = req;
-        const rawAmount = req.maxAmountRequired || req.amount;
+        // Parse the v2 PaymentRequired response
+        const paymentRequired = error.error?.paymentRequirements || error.error;
+        // Store full response and the first accepted option
+        this.lastPaymentRequired = paymentRequired;
+        this.lastAccepted = paymentRequired.accepts?.[0] || paymentRequired;
+        // Read amount from the accepted option (v2: amount, v1 fallback: maxAmountRequired)
+        const rawAmount = this.lastAccepted.amount || this.lastAccepted.maxAmountRequired;
 
         const invoice: PaymentInvoice = {
           // Format from smallest unit (wei) to decimal (Assuming 6 decimals for USDC)
           amount: rawAmount ? formatUnits(BigInt(rawAmount), 6) : '0',
-          currency: req.asset || req.currency,
-          network: req.network,
-          destination_address: req.payTo || req.destination_address
+          currency: this.lastAccepted.asset || this.lastAccepted.currency,
+          network: this.lastAccepted.network,
+          destination_address: this.lastAccepted.payTo || this.lastAccepted.destination_address,
         };
         throw new PaymentRequiredError(invoice);
       }

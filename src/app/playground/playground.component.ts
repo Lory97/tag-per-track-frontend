@@ -81,7 +81,7 @@ export class PlaygroundComponent {
       this.selectedFile.set(file);
       this.inputUrl.set(null); // Clear URL if a file is selected
       this.fileUrl.set(URL.createObjectURL(file));
-      this.resetState();
+      this.resetResults();
     } else {
       this.errorMessage.set('Please select a valid audio file (mp3, wav, ogg, etc.).');
     }
@@ -126,7 +126,7 @@ export class PlaygroundComponent {
   removeFile() {
     this.selectedFile.set(null);
     this.fileUrl.set(null);
-    this.resetState();
+    this.resetResults();
   }
 
   onUrlInput(event: Event) {
@@ -135,16 +135,25 @@ export class PlaygroundComponent {
       this.inputUrl.set(val);
       this.selectedFile.set(null); // Clear file if a URL is entered
       this.fileUrl.set(null);
-      this.resetState();
+      this.resetResults();
     }
   }
 
-  resetState() {
+  /** Clears results and payment state only (keeps the current file/URL input). */
+  resetResults() {
     this.paymentRequired.set(false);
     this.invoiceDetails.set(null);
     this.metadataResult.set(null);
     this.errorMessage.set(null);
     this.settlementTx.set(null);
+  }
+
+  /** Full reset: clears everything including file/URL inputs. Used by "Analyze another track". */
+  resetState() {
+    this.selectedFile.set(null);
+    this.fileUrl.set(null);
+    this.inputUrl.set(null);
+    this.resetResults();
   }
 
   async connectWallet() {

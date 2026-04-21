@@ -31,7 +31,8 @@
       <button *ngIf="web3Service.isConnected()" (click)="disconnectWallet()"
         class="bg-dark-gray text-light-gray border border-gray-700 hover:border-red-400/50 hover:text-red-400 px-5 py-2.5 rounded-lg font-medium flex items-center gap-2 transition-all group cursor-pointer">
         <div class="w-2 rounded-full h-2 bg-green-400 animate-pulse group-hover:bg-red-400"></div>
-        <span class="group-hover:hidden">{{ web3Service.address() | slice:0:6 }}...{{ web3Service.address() | slice:-4 }}</span>
+        <span class="group-hover:hidden">{{ web3Service.address() | slice:0:6 }}...{{ web3Service.address() | slice:-4
+          }}</span>
         <span class="hidden group-hover:inline">Disconnect</span>
       </button>
     </div>
@@ -193,7 +194,7 @@
           </div>
           <div class="flex justify-between items-center pt-4 border-t border-gray-800">
             <span class="text-gray-500">Network</span>
-            <span class="text-electric-cyan text-xl">{{ invoiceDetails()?.network }}</span>
+            <span class="text-electric-cyan text-xl">{{ invoiceDetails()?.network === 'eip155:8453' ? 'Base' : invoiceDetails()?.network === 'eip155:84532' ? 'Base Sepolia' : invoiceDetails()?.network }}</span>
           </div>
           <div class="flex justify-between items-center pt-4 border-t border-gray-800">
             <span class="text-gray-500">Destination</span>
@@ -236,8 +237,8 @@
             <p class="text-gray-500 text-xs font-mono">{{ settlementTx() | slice:0:32 }}...</p>
           </div>
         </div>
-        <a [href]="'https://sepolia.basescan.org/tx/' + settlementTx()" target="_blank"
-          class="text-xs font-bold text-green-400 hover:underline tracking-widest">VIEW ON BASESCAN (SEPOLIA)</a>
+        <a [href]="'https://basescan.org/tx/' + settlementTx()" target="_blank"
+          class="text-xs font-bold text-green-400 hover:underline tracking-widest">VIEW ON BASESCAN</a>
       </div>
 
       <app-metadata-result [data]="metadataResult()"></app-metadata-result>

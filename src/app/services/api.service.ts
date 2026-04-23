@@ -54,9 +54,10 @@ export class ApiService {
         },
         resource: this.lastPaymentRequired?.resource || {
           url: this.apiUrl,
-          description: 'Audio Analysis Micro-payment',
+          description: 'Tag-per-Track: Agentic-First Musical Audio Analysis API. Extracts BPM, Key, Mood, Genres and Instruments from audio URLs.',
           mimeType: 'application/json',
         },
+        extensions: this.lastPaymentRequired?.extensions,
       });
       headers = headers.set('X-Payment-Proof', proofPayload);
     }

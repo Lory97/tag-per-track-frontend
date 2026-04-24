@@ -10,8 +10,12 @@
         <span class="text-xl font-bold tracking-tight text-white">Tag-per-Track</span>
       </div>
       <nav class="hidden md:flex items-center space-x-8">
-        <a href="https://www.npmjs.com/package/tag-per-track-agentkit" target="_blank"
-          class="text-sm font-medium hover:text-electric-cyan transition-colors">SDK / NPM</a>
+        <a href="#playground"
+          class="text-sm font-medium hover:text-electric-cyan transition-colors">Playground</a>
+        <a href="#agentkit"
+          class="text-sm font-medium hover:text-electric-cyan transition-colors">AgentKit</a>
+        <a href="#mcp"
+          class="text-sm font-medium hover:text-electric-cyan transition-colors">MCP</a>
         <a href="https://api.tag-per-track.cloud/api/docs" target="_blank"
           class="text-sm font-medium hover:text-electric-cyan transition-colors">API Docs</a>
       </nav>
@@ -93,9 +97,20 @@
 
     <!-- Developer Section -->
     <section id="developers" class="py-24 bg-dark-gray/30 border-t border-dark-gray">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-20">
+        <h2 class="text-5xl font-bold text-white mb-4">Integrate Tag-per-Track</h2>
+        <p class="text-light-gray text-lg max-w-2xl mx-auto">
+          Choose the best way to empower your AI agents with advanced music intelligence.
+        </p>
+      </div>
+
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid lg:grid-cols-2 gap-16 items-center">
+        <!-- SDK Section -->
+        <div id="agentkit" class="grid lg:grid-cols-2 gap-16 items-center py-24 border-b border-white/5 scroll-mt-20">
           <div>
+            <div class="flex items-center space-x-2 mb-6">
+              <span class="px-3 py-1 rounded-full bg-electric-cyan/10 text-electric-cyan text-xs font-bold uppercase tracking-widest">For JS Developers</span>
+            </div>
             <h2 class="text-4xl font-bold text-white mb-6">Give your AI Agent ears.</h2>
             <p class="text-lg text-light-gray mb-8 leading-relaxed">
               The <code class="text-electric-cyan">tag-per-track-agentkit</code> SDK integrates natively with LangChain
@@ -118,13 +133,15 @@
             </ul>
           </div>
 
-          <!-- Styled Terminal -->
-          <div class="bg-black rounded-xl overflow-hidden shadow-2xl border border-white/10">
-            <div class="bg-dark-gray px-4 py-2 flex items-center space-x-2 border-b border-white/5">
-              <div class="w-2.5 h-2.5 rounded-full bg-red-500/80"></div>
-              <div class="w-2.5 h-2.5 rounded-full bg-yellow-500/80"></div>
-              <div class="w-2.5 h-2.5 rounded-full bg-green-500/80"></div>
-              <span class="text-[10px] text-light-gray/50 ml-2 font-mono uppercase tracking-widest">terminal</span>
+          <!-- Styled Terminal for SDK -->
+          <div class="bg-black rounded-xl overflow-hidden shadow-2xl border border-white/10 group">
+            <div class="bg-dark-gray px-4 py-2 flex items-center justify-between border-b border-white/5">
+              <div class="flex items-center space-x-2">
+                <div class="w-2.5 h-2.5 rounded-full bg-red-500/80"></div>
+                <div class="w-2.5 h-2.5 rounded-full bg-yellow-500/80"></div>
+                <div class="w-2.5 h-2.5 rounded-full bg-green-500/80"></div>
+                <span class="text-[10px] text-light-gray/50 ml-2 font-mono uppercase tracking-widest">SDK Installation</span>
+              </div>
             </div>
             <div class="p-6 font-mono text-sm leading-relaxed overflow-x-auto">
               <div class="mb-4">
@@ -139,6 +156,58 @@
                   class="text-yellow-400">createTagPerTrackTool</span>(wallet);
               </div>
               <div class="mt-4 opacity-50 text-xs italic"># Payment logic handled internally via Coinbase CDP</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- MCP Section -->
+        <div id="mcp" class="grid lg:grid-cols-2 gap-16 items-center py-24 scroll-mt-20">
+          <div class="order-2 lg:order-1">
+            <!-- Styled Config Block -->
+            <div class="bg-black rounded-xl overflow-hidden shadow-2xl border border-white/10 relative group">
+              <div class="bg-dark-gray px-4 py-2 flex items-center justify-between border-b border-white/5">
+                <div class="flex items-center space-x-2">
+                  <div class="w-2.5 h-2.5 rounded-full bg-red-500/80"></div>
+                  <div class="w-2.5 h-2.5 rounded-full bg-yellow-500/80"></div>
+                  <div class="w-2.5 h-2.5 rounded-full bg-green-500/80"></div>
+                  <span class="text-[10px] text-light-gray/50 ml-2 font-mono uppercase tracking-widest">claude_desktop_config.json</span>
+                </div>
+                <button (click)="copyMcpConfig()" 
+                  class="text-[10px] bg-electric-cyan/10 text-electric-cyan px-2 py-1 rounded hover:bg-electric-cyan/20 transition-colors uppercase tracking-widest font-bold">
+                  {{ copied() ? 'Copied!' : 'Copy Config' }}
+                </button>
+              </div>
+              <div class="p-6 font-mono text-xs sm:text-sm leading-relaxed overflow-x-auto bg-gradient-to-br from-black to-dark-gray/20">
+                <pre class="text-light-gray"><code class="text-white">{{ mcpConfig | json }}</code></pre>
+              </div>
+              <!-- Subtle Glow Effect -->
+              <div class="absolute -inset-1 bg-electric-cyan/5 blur-xl group-hover:bg-electric-cyan/10 transition-all -z-10"></div>
+            </div>
+          </div>
+
+          <div class="order-1 lg:order-2">
+            <div class="flex items-center space-x-2 mb-6">
+              <span class="px-3 py-1 rounded-full bg-electric-cyan/10 text-electric-cyan text-xs font-bold uppercase tracking-widest">For LLM Users</span>
+            </div>
+            <h2 class="text-4xl font-bold text-white mb-6">Autonomous "Pay-to-Listen"</h2>
+            <p class="text-lg text-light-gray mb-8 leading-relaxed">
+              Enable your local LLMs (Claude Desktop, etc.) to analyze music autonomously. The 
+              <span class="text-white font-semibold">Tag-per-Track MCP Server</span> 
+              handles the x402 payment protocol on-chain without user intervention.
+            </p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="p-4 rounded-xl bg-obsidian border border-white/5 hover:border-electric-cyan/30 transition-all">
+                <h3 class="text-electric-cyan font-bold mb-2">analyze_audio</h3>
+                <p class="text-xs text-light-gray/70">Tool to extract BPM, Key, Mood and Genre from any URL.</p>
+              </div>
+              <div class="p-4 rounded-xl bg-obsidian border border-white/5 hover:border-electric-cyan/30 transition-all">
+                <h3 class="text-electric-cyan font-bold mb-2">x402 Built-in</h3>
+                <p class="text-xs text-light-gray/70">Automated EIP-3009 signing for USDC on Base.</p>
+              </div>
+            </div>
+            <div class="mt-8 flex items-center space-x-4 text-xs">
+              <span class="px-2 py-1 rounded bg-dark-gray text-white border border-white/10 uppercase tracking-widest font-bold">MCP V1.0</span>
+              <span class="text-light-gray/50 italic">Now available on NPM</span>
             </div>
           </div>
         </div>

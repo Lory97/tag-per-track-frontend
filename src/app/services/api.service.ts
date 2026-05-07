@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, isDevMode } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { formatUnits } from 'viem';
@@ -34,13 +34,17 @@ export class PaymentRequiredError extends Error {
 })
 export class ApiService {
   private http = inject(HttpClient);
-  private apiUrl = 'https://api.tag-per-track.cloud/api/analyze';
+  private apiUrl = isDevMode() 
+    ? 'http://localhost:3000/api/analyze' 
+    : 'https://api.tag-per-track.cloud/api/analyze';
   /** The full PaymentRequired v2 response from the 402 */
   private lastPaymentRequired: any = null;
   /** The selected PaymentRequirements from accepts[0] */
   private lastAccepted: any = null;
 
-  async analyzeAudio(fileOrUrl: File | string, paymentProof?: any, network: string = 'base'): Promise<AnalysisResponse> {
+  async analyzeAudio(fileOrUrl: File | string, paymentProof?: any, network: string = 'base', extractLyrics: boolean = false): Promise<AnalysisResponse> {
+    const targetUrl = extractLyrics ? `${this.apiUrl}-with-lyrics` : this.apiUrl;
+    
     let headers = new HttpHeaders();
     if (paymentProof) {
       // Build x402 v2 PaymentPayload per official SDK schema:
@@ -53,8 +57,10 @@ export class ApiService {
           authorization: paymentProof.authorization,
         },
         resource: this.lastPaymentRequired?.resource || {
-          url: this.apiUrl,
-          description: 'Tag-per-Track: Agentic-First Musical Audio Analysis API. Extracts BPM, Key, Mood, Genres and Instruments from audio URLs.',
+          url: targetUrl,
+          description: extractLyrics
+            ? 'Tag-per-Track: Agentic-First Musical Audio Analysis API. Extracts BPM, Key, Mood, Genres, Instruments, AND Lyrics from audio URLs.'
+            : 'Tag-per-Track: Agentic-First Musical Audio Analysis API. Extracts BPM, Key, Mood, Genres and Instruments from audio URLs.',
           mimeType: 'application/json',
         },
         extensions: this.lastPaymentRequired?.extensions,
@@ -71,7 +77,7 @@ export class ApiService {
 
     try {
       const response = await firstValueFrom(
-        this.http.post(this.apiUrl, formData, {
+        this.http.post(targetUrl, formData, {
           headers,
           observe: 'response', // Get full response to read headers
         })

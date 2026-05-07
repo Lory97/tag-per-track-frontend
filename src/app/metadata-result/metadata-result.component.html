@@ -12,9 +12,15 @@
       </svg>
       Audio Intelligence
     </h3>
+
+    <!-- Tabs if lyrics are present -->
+    <div *ngIf="lyrics" class="flex bg-obsidian p-1 rounded-lg border border-gray-800">
+      <button (click)="activeTab.set('vibe')" [class.bg-gray-800]="activeTab() === 'vibe'" [class.text-white]="activeTab() === 'vibe'" class="px-4 py-1.5 rounded-md text-sm font-medium text-gray-400 transition-colors">Vibe</button>
+      <button (click)="activeTab.set('lyrics')" [class.bg-gray-800]="activeTab() === 'lyrics'" [class.text-white]="activeTab() === 'lyrics'" class="px-4 py-1.5 rounded-md text-sm font-medium text-gray-400 transition-colors">Lyrics</button>
+    </div>
   </div>
 
-  <div class="p-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+  <div *ngIf="activeTab() === 'vibe'" class="p-8 grid grid-cols-1 md:grid-cols-2 gap-8">
 
     <div class="space-y-8">
 
@@ -81,5 +87,15 @@
 
     </div>
 
+  </div>
+
+  <!-- Tab Content: Lyrics -->
+  <div *ngIf="activeTab() === 'lyrics'" class="p-8 flex flex-col items-center">
+    <div class="w-full max-w-2xl bg-obsidian/60 p-6 rounded-xl border border-gray-700 relative group">
+      <button (click)="copyLyrics()" class="absolute top-4 right-4 bg-gray-800 hover:bg-gray-700 text-gray-300 p-2 rounded-lg opacity-0 group-hover:opacity-100 transition-all border border-gray-600" title="Copy Lyrics">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+      </button>
+      <pre class="whitespace-pre-wrap font-sans text-gray-300 leading-relaxed text-lg">{{ lyrics }}</pre>
+    </div>
   </div>
 </div>

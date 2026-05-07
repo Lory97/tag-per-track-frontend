@@ -24,6 +24,7 @@ export class PlaygroundComponent {
 
   isAnalyzing = signal<boolean>(false);
   loadingStep = signal<string | null>(null); // New signal for UX feedback
+  extractLyrics = signal<boolean>(false); // New flag for lyrics extraction
 
   paymentRequired = signal<boolean>(false);
   invoiceDetails = signal<PaymentInvoice | null>(null);
@@ -197,7 +198,7 @@ export class PlaygroundComponent {
     try {
       const network = this.invoiceDetails()?.network || 'base';
       // Use either the file or the URL string
-      const result = await this.apiService.analyzeAudio(file || url!, paymentProof, network);
+      const result = await this.apiService.analyzeAudio(file || url!, paymentProof, network, this.extractLyrics());
       this.metadataResult.set(result?.data || result);
       this.paymentRequired.set(false);
       this.invoiceDetails.set(null);

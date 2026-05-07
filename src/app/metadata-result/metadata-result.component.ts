@@ -62,4 +62,18 @@ export class MetadataResultComponent {
     const cleaned = lastPart.replace(/_/g, ' ');
     return cleaned.charAt(0).toUpperCase() + cleaned.slice(1);
   }
+
+  activeTab = signal<'vibe' | 'lyrics'>('vibe');
+
+  get lyrics(): string | null {
+    return this.resultData()?.lyrics || null;
+  }
+
+  copyLyrics() {
+    const l = this.lyrics;
+    if (l) {
+      navigator.clipboard.writeText(l);
+      // Optional: you could add a toast or copied state here
+    }
+  }
 }

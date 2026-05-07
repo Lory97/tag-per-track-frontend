@@ -157,8 +157,19 @@
       </div>
 
       <!-- Actions (Visible if a source is picked and NOT analyzing) -->
-      <div class="animate-step mt-10 flex justify-center"
+      <div class="animate-step mt-10 flex flex-col items-center gap-6"
         *ngIf="(selectedFile() || inputUrl()) && !paymentRequired() && !isAnalyzing()">
+        
+        <!-- Lyrics Toggle -->
+        <label class="flex items-center gap-3 cursor-pointer group">
+          <div class="relative flex items-center justify-center">
+            <input type="checkbox" [checked]="extractLyrics()" (change)="extractLyrics.set(!extractLyrics())" class="peer sr-only" />
+            <div class="w-12 h-6 bg-gray-700 rounded-full peer-checked:bg-electric-cyan transition-colors shadow-inner border border-gray-900"></div>
+            <div class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform peer-checked:translate-x-6 shadow"></div>
+          </div>
+          <span class="text-gray-300 font-medium group-hover:text-white transition-colors">Extract Lyrics <span class="text-xs text-gray-500 ml-1">(0.10 USDC)</span></span>
+        </label>
+
         <button (click)="runAnalysis()"
           class="bg-electric-cyan text-obsidian px-10 py-4 rounded-2xl font-bold text-xl transition-all flex items-center gap-3 hover:scale-105 hover:shadow-[0_0_30px_rgba(102,252,241,0.4)] shadow-xl">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"

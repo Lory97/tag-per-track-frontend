@@ -1,5 +1,7 @@
-import { Component, Input, signal } from '@angular/core';
+import { Component, Input, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { I18nService } from '../services/i18n.service';
+import { TranslatePipe } from '../pipes/translate.pipe';
 
 export interface Prediction {
   label: string;
@@ -9,11 +11,13 @@ export interface Prediction {
 @Component({
   selector: 'app-metadata-result',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, TranslatePipe],
   templateUrl: './metadata-result.component.html',
   styleUrl: './metadata-result.component.css'
 })
 export class MetadataResultComponent {
+  i18n = inject(I18nService);
+
   @Input() set data(value: any) {
     if (value) {
       this.resultData.set(value);
@@ -26,11 +30,13 @@ export class MetadataResultComponent {
     return this.resultData()?.bpm || 0;
   }
 
-  // Combine la clé et la gamme (ex: "A" + "minor" = "A minor")
+  // Combine la clé et la gamme (ex: "A" + "minor" = "A mineur" en FR ou "A minor" en EN)
   get key(): string {
     const data = this.resultData();
     if (!data || !data.key) return '--';
-    return `${data.key} ${data.scale || ''}`.trim();
+    const scaleKey = data.scale ? data.scale.toLowerCase() : '';
+    const translatedScale = scaleKey ? (this.i18n.translate(`scales.${scaleKey}`) || data.scale) : '';
+    return `${data.key} ${translatedScale}`.trim();
   }
 
   get genres(): Prediction[] {
@@ -56,7 +62,9 @@ export class MetadataResultComponent {
    * Ex: "electronic---deep_house" devient "Deep house"
    */
   formatLabel(raw: string): string {
-    if (!raw || raw === 'error' || raw === 'unavailable') return 'Unknown';
+    if (!raw || raw === 'error' || raw === 'unavailable') {
+      return this.i18n.translate('result.unknown');
+    }
     const parts = raw.split('---');
     const lastPart = parts[parts.length - 1];
     const cleaned = lastPart.replace(/_/g, ' ');
@@ -73,7 +81,6 @@ export class MetadataResultComponent {
     const l = this.lyrics;
     if (l) {
       navigator.clipboard.writeText(l);
-      // Optional: you could add a toast or copied state here
     }
   }
 }

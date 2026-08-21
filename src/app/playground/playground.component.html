@@ -11,14 +11,14 @@
           <circle cx="6" cy="18" r="3" />
           <circle cx="18" cy="16" r="3" />
         </svg>
-        Tag-per-Track
+        {{ 'playground.title' | translate }}
       </h1>
-      <p class="text-gray-400 mt-1">Agentic-First Musical Audio Analysis</p>
+      <p class="text-gray-400 mt-1">{{ 'playground.subtitle' | translate }}</p>
     </div>
 
     <div>
       <button *ngIf="!web3Service.isConnected()" (click)="connectWallet()"
-        class="bg-electric-cyan/10 hover:bg-electric-cyan/20 text-electric-cyan border border-electric-cyan px-5 py-2.5 rounded-lg font-medium transition-all flex items-center gap-2 shadow-[0_0_15px_rgba(102,252,241,0.2)]">
+        class="bg-electric-cyan/10 hover:bg-electric-cyan/20 text-electric-cyan border border-electric-cyan px-5 py-2.5 rounded-lg font-medium transition-all flex items-center gap-2 shadow-[0_0_15px_rgba(102,252,241,0.2)] cursor-pointer">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
           class="lucide lucide-wallet">
@@ -26,14 +26,14 @@
           <path d="M3 5v14a2 2 0 0 0 2 2h16v-5" />
           <path d="M18 12a2 2 0 0 0 0 4h4v-4Z" />
         </svg>
-        Connect Wallet
+        {{ 'playground.connectWallet' | translate }}
       </button>
       <button *ngIf="web3Service.isConnected()" (click)="disconnectWallet()"
         class="bg-dark-gray text-light-gray border border-gray-700 hover:border-red-400/50 hover:text-red-400 px-5 py-2.5 rounded-lg font-medium flex items-center gap-2 transition-all group cursor-pointer">
         <div class="w-2 rounded-full h-2 bg-green-400 animate-pulse group-hover:bg-red-400"></div>
         <span class="group-hover:hidden">{{ web3Service.address() | slice:0:6 }}...{{ web3Service.address() | slice:-4
           }}</span>
-        <span class="hidden group-hover:inline">Disconnect</span>
+        <span class="hidden group-hover:inline">{{ 'playground.disconnect' | translate }}</span>
       </button>
     </div>
   </div>
@@ -71,10 +71,10 @@
           </svg>
         </div>
         <h3 class="text-xl font-bold text-electric-cyan text-center px-4 break-all">{{ selectedFile()?.name }}</h3>
-        <p class="text-gray-400 mt-2">Ready for neural tagging</p>
+        <p class="text-gray-400 mt-2">{{ 'playground.readyForTagging' | translate }}</p>
         <button (click)="removeFile()"
-          class="mt-6 text-sm text-red-400 hover:text-red-300 border border-red-400/20 hover:border-red-400/40 px-4 py-2 rounded-xl transition-all">
-          Remove track
+          class="mt-6 text-sm text-red-400 hover:text-red-300 border border-red-400/20 hover:border-red-400/40 px-4 py-2 rounded-xl transition-all cursor-pointer">
+          {{ 'playground.removeTrack' | translate }}
         </button>
       </div>
 
@@ -89,12 +89,12 @@
             <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
           </svg>
         </div>
-        <p class="text-gray-400 mb-1">Target URL</p>
+        <p class="text-gray-400 mb-1">{{ 'playground.targetUrl' | translate }}</p>
         <p class="text-lg font-mono text-neural-wave text-center break-all px-4">{{ inputUrl() | slice:0:60 }}{{
           inputUrl() && inputUrl()!.length > 60 ? '...' : '' }}</p>
         <button (click)="inputUrl.set(null)"
-          class="mt-6 text-sm text-red-400 hover:text-red-300 border border-red-400/20 hover:border-red-400/40 px-4 py-2 rounded-xl transition-all">
-          Clear URL
+          class="mt-6 text-sm text-red-400 hover:text-red-300 border border-red-400/20 hover:border-red-400/40 px-4 py-2 rounded-xl transition-all cursor-pointer">
+          {{ 'playground.clearUrl' | translate }}
         </button>
       </div>
 
@@ -113,14 +113,14 @@
             <path d="M12 12v9" />
             <path d="m16 16-4-4-4 4" />
           </svg>
-          <p class="text-2xl font-semibold text-light-gray mb-2">Drop your sound</p>
-          <p class="text-gray-500">or click to browse local files</p>
+          <p class="text-2xl font-semibold text-light-gray mb-2">{{ 'playground.dropTitle' | translate }}</p>
+          <p class="text-gray-500">{{ 'playground.dropSubtitle' | translate }}</p>
         </div>
 
         <!-- Separator -->
         <div class="flex items-center gap-4 text-gray-700">
           <div class="h-px flex-1 bg-gradient-to-r from-transparent to-gray-700"></div>
-          <span class="text-xs font-bold tracking-widest uppercase">OR</span>
+          <span class="text-xs font-bold tracking-widest uppercase">{{ 'playground.or' | translate }}</span>
           <div class="h-px flex-1 bg-gradient-to-l from-transparent to-gray-700"></div>
         </div>
 
@@ -135,7 +135,7 @@
             </svg>
           </div>
           <input type="text" [value]="inputUrl() || ''" (input)="onUrlInput($event)"
-            placeholder="Paste a remote audio URL..."
+            [placeholder]="'playground.urlPlaceholder' | translate"
             class="w-full bg-dark-gray/30 border border-gray-700 focus:border-electric-cyan/50 rounded-2xl py-5 pl-12 pr-6 text-light-gray transition-all outline-none" />
         </div>
       </div>
@@ -149,10 +149,9 @@
         </div>
         <div class="text-center">
           <h3 class="text-2xl font-bold tracking-tight text-light-gray animate-pulse mb-3">
-            {{ loadingStep() || 'Tagging in progress...' }}
+            {{ loadingStep() || ('playground.taggingInProgress' | translate) }}
           </h3>
-          <p class="text-gray-500 max-w-sm mx-auto">Neural processing usually takes ~20 seconds. Extracting BPM, key,
-            and genres.</p>
+          <p class="text-gray-500 max-w-sm mx-auto">{{ 'playground.taggingDescription' | translate }}</p>
         </div>
       </div>
 
@@ -167,11 +166,13 @@
             <div class="w-12 h-6 bg-gray-700 rounded-full peer-checked:bg-electric-cyan transition-colors shadow-inner border border-gray-900"></div>
             <div class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform peer-checked:translate-x-6 shadow"></div>
           </div>
-          <span class="text-gray-300 font-medium group-hover:text-white transition-colors">Extract Lyrics <span class="text-xs text-gray-500 ml-1">(0.10 USDC)</span></span>
+          <span class="text-gray-300 font-medium group-hover:text-white transition-colors">
+            {{ 'playground.extractLyrics' | translate }} <span class="text-xs text-gray-500 ml-1">{{ 'playground.lyricsPrice' | translate }}</span>
+          </span>
         </label>
 
         <button (click)="runAnalysis()"
-          class="bg-electric-cyan text-obsidian px-10 py-4 rounded-2xl font-bold text-xl transition-all flex items-center gap-3 hover:scale-105 hover:shadow-[0_0_30px_rgba(102,252,241,0.4)] shadow-xl">
+          class="bg-electric-cyan text-obsidian px-10 py-4 rounded-2xl font-bold text-xl transition-all flex items-center gap-3 hover:scale-105 hover:shadow-[0_0_30px_rgba(102,252,241,0.4)] shadow-xl cursor-pointer">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
             stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <path
@@ -194,28 +195,28 @@
             </svg>
           </div>
           <div>
-            <h2 class="text-2xl font-bold">Payment Required</h2>
-            <p class="text-gray-400">Micro-payment via Coinbase CDP (USDC)</p>
+            <h2 class="text-2xl font-bold">{{ 'playground.invoice.title' | translate }}</h2>
+            <p class="text-gray-400">{{ 'playground.invoice.subtitle' | translate }}</p>
           </div>
         </div>
         <div class="bg-obsidian/60 rounded-2xl p-6 mb-8 border border-gray-800 space-y-4 font-medium">
           <div class="flex justify-between">
-            <span class="text-gray-500">Amount</span>
+            <span class="text-gray-500">{{ 'playground.invoice.amount' | translate }}</span>
             <span class="text-electric-cyan text-xl">{{ invoiceDetails()?.amount }} USDC</span>
           </div>
           <div class="flex justify-between items-center pt-4 border-t border-gray-800">
-            <span class="text-gray-500">Network</span>
+            <span class="text-gray-500">{{ 'playground.invoice.network' | translate }}</span>
             <span class="text-electric-cyan text-xl">{{ invoiceDetails()?.network === 'eip155:8453' ? 'Base' : invoiceDetails()?.network === 'eip155:84532' ? 'Base Sepolia' : invoiceDetails()?.network }}</span>
           </div>
           <div class="flex justify-between items-center pt-4 border-t border-gray-800">
-            <span class="text-gray-500">Destination</span>
+            <span class="text-gray-500">{{ 'playground.invoice.destination' | translate }}</span>
             <span class="text-xs font-mono text-gray-400 break-all pl-10 text-right">{{
               invoiceDetails()?.destination_address }}</span>
           </div>
         </div>
         <button (click)="payAndAnalyze()"
-          class="w-full bg-teal-glow text-obsidian py-5 rounded-2xl font-bold text-xl hover:scale-[1.02] transition-all shadow-xl">
-          Sign & Settle with x402
+          class="w-full bg-teal-glow text-obsidian py-5 rounded-2xl font-bold text-xl hover:scale-[1.02] transition-all shadow-xl cursor-pointer">
+          {{ 'playground.invoice.signButton' | translate }}
         </button>
       </div>
 
@@ -225,13 +226,13 @@
     <div class="w-full max-w-4xl mx-auto animate-in fade-in slide-in-from-bottom-8 duration-500"
       *ngIf="metadataResult()">
       <button (click)="resetState()"
-        class="mb-8 flex items-center gap-2 text-gray-500 hover:text-electric-cyan transition-colors">
+        class="mb-8 flex items-center gap-2 text-gray-500 hover:text-electric-cyan transition-colors cursor-pointer">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="m12 19-7-7 7-7" />
           <path d="M19 12H5" />
         </svg>
-        Analyze another track
+        {{ 'playground.analyzeAnother' | translate }}
       </button>
 
       <div *ngIf="settlementTx()"
@@ -244,12 +245,12 @@
             </svg>
           </div>
           <div>
-            <p class="text-green-400 font-bold">Payment Validated</p>
+            <p class="text-green-400 font-bold">{{ 'playground.paymentValidated' | translate }}</p>
             <p class="text-gray-500 text-xs font-mono">{{ settlementTx() | slice:0:32 }}...</p>
           </div>
         </div>
         <a [href]="'https://basescan.org/tx/' + settlementTx()" target="_blank"
-          class="text-xs font-bold text-green-400 hover:underline tracking-widest">VIEW ON BASESCAN</a>
+          class="text-xs font-bold text-green-400 hover:underline tracking-widest">{{ 'playground.viewOnBasescan' | translate }}</a>
       </div>
 
       <app-metadata-result [data]="metadataResult()"></app-metadata-result>

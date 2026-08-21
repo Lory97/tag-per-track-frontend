@@ -2,18 +2,21 @@ import { Component, ElementRef, inject, signal, ViewChild, computed } from '@ang
 import { CommonModule } from '@angular/common';
 import { Web3Service } from '../services/web3.service';
 import { ApiService, PaymentInvoice, PaymentRequiredError } from '../services/api.service';
+import { I18nService } from '../services/i18n.service';
+import { TranslatePipe } from '../pipes/translate.pipe';
 import { MetadataResultComponent } from '../metadata-result/metadata-result.component';
 
 @Component({
   selector: 'app-playground',
   standalone: true,
-  imports: [CommonModule, MetadataResultComponent],
+  imports: [CommonModule, MetadataResultComponent, TranslatePipe],
   templateUrl: './playground.component.html',
   styleUrl: './playground.component.css'
 })
 export class PlaygroundComponent {
   web3Service = inject(Web3Service);
   apiService = inject(ApiService);
+  i18n = inject(I18nService);
 
   fileUrl = signal<string | null>(null);
   selectedFile = signal<File | null>(null);
@@ -23,22 +26,26 @@ export class PlaygroundComponent {
   private readonly ALLOWED_EXTS = ['.mp3', '.wav', '.ogg', '.flac', '.m4a', '.aac'];
 
   isAnalyzing = signal<boolean>(false);
-  loadingStep = signal<string | null>(null); // New signal for UX feedback
-  extractLyrics = signal<boolean>(false); // New flag for lyrics extraction
+  loadingStep = signal<string | null>(null);
+  extractLyrics = signal<boolean>(false);
 
   paymentRequired = signal<boolean>(false);
   invoiceDetails = signal<PaymentInvoice | null>(null);
 
-  /** Dynamic button label based on state */
+  /** Dynamic button label based on state and current language */
   buttonLabel = computed(() => {
+    // Read currentLang signal to ensure reactivity on language change
+    this.i18n.currentLang();
+
     if (this.isAnalyzing()) {
-      return this.loadingStep() || 'Working...';
+      return this.loadingStep() || this.i18n.t('playground.btnWorking');
     }
     if (this.paymentRequired()) {
-      return 'Sign & Analyze';
+      return this.i18n.t('playground.btnSignAndAnalyze');
     }
-    return 'Analyze Track';
+    return this.i18n.t('playground.btnAnalyze');
   });
+
   metadataResult = signal<any | null>(null);
   errorMessage = signal<string | null>(null);
 
@@ -84,7 +91,7 @@ export class PlaygroundComponent {
       this.fileUrl.set(URL.createObjectURL(file));
       this.resetResults();
     } else {
-      this.errorMessage.set('Please select a valid audio file (mp3, wav, ogg, etc.).');
+      this.errorMessage.set(this.i18n.t('playground.errors.invalidFile'));
     }
   }
 
@@ -104,23 +111,21 @@ export class PlaygroundComponent {
 
       // 3. Check for forbidden video domains
       if (this.FORBIDDEN_DOMAINS.some(domain => urlObj.hostname.includes(domain))) {
-        return `Direct analysis of ${urlObj.hostname} is not supported. Please provide a direct link to a raw audio file.`;
+        return this.i18n.t('playground.errors.unsupportedDomain', { domain: urlObj.hostname });
       }
 
-      // 2. Extension check (heuristic)
+      // 4. Extension check (heuristic)
       const ext = urlObj.pathname.split('.').pop()?.toLowerCase();
       if (ext && !this.ALLOWED_EXTS.includes(`.${ext}`) && !url.includes('blob:')) {
-        // We allow it as sometimes URLs don't have extensions, but we can warn or prefer direct hits
-        // For now, we block if it's a strongly typed web extension like .html, .js, .css
         const forbiddenExts = ['html', 'htm', 'js', 'css'];
         if (forbiddenExts.includes(ext)) {
-          return 'The link seems to point to a webpage, not an audio file.';
+          return this.i18n.t('playground.errors.webpageNotAudio');
         }
       }
 
       return null;
     } catch (e) {
-      return 'Please enter a valid URL (including http:// or https://).';
+      return this.i18n.t('playground.errors.invalidUrl');
     }
   }
 
@@ -161,7 +166,7 @@ export class PlaygroundComponent {
     try {
       await this.web3Service.connectWallet();
     } catch (e) {
-      this.errorMessage.set('Could not connect wallet.');
+      this.errorMessage.set(this.i18n.t('playground.errors.couldNotConnect'));
     }
   }
 
@@ -174,7 +179,7 @@ export class PlaygroundComponent {
     const url = this.inputUrl();
 
     if (!file && !url) {
-      this.errorMessage.set('Please select a file or enter an audio URL.');
+      this.errorMessage.set(this.i18n.t('playground.errors.selectFileOrUrl'));
       return;
     }
 
@@ -190,9 +195,9 @@ export class PlaygroundComponent {
     this.errorMessage.set(null);
 
     if (paymentProof) {
-      this.loadingStep.set('🧠 Payment verified! Neural listening and analysis in progress...');
+      this.loadingStep.set(this.i18n.t('playground.steps.paymentVerified'));
     } else {
-      this.loadingStep.set('📡 Fetching audio track...');
+      this.loadingStep.set(this.i18n.t('playground.steps.fetching'));
     }
 
     try {
@@ -215,7 +220,7 @@ export class PlaygroundComponent {
       } else {
         // Extract specific message from backend (NestJS standard error format)
         const err = error as any;
-        const specificError = err?.error?.message || err?.message || 'Analysis failed. Please verify the URL and try again.';
+        const specificError = err?.error?.message || err?.message || this.i18n.t('playground.errors.genericAnalysisError');
         this.errorMessage.set(specificError);
         console.error('Backend analysis error:', error);
       }
@@ -228,7 +233,7 @@ export class PlaygroundComponent {
   async payAndAnalyze() {
     if (!this.invoiceDetails()) return;
 
-    this.loadingStep.set('✍️ Awaiting your Web3 signature (Gasless)...');
+    this.loadingStep.set(this.i18n.t('playground.steps.awaitingSignature'));
 
     try {
       const paymentProof = await this.web3Service.signX402Payment(this.invoiceDetails()!.amount, this.invoiceDetails()!.destination_address);
@@ -236,7 +241,7 @@ export class PlaygroundComponent {
       await this.runAnalysis(paymentProof);
     } catch (err) {
       console.error(err);
-      this.errorMessage.set('Payment failed or was cancelled.');
+      this.errorMessage.set(this.i18n.t('playground.errors.paymentFailed'));
       this.isAnalyzing.set(false);
     }
   }

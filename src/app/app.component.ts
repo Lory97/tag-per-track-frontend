@@ -1,15 +1,18 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PlaygroundComponent } from './playground/playground.component';
+import { I18nService } from './services/i18n.service';
+import { TranslatePipe } from './pipes/translate.pipe';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, PlaygroundComponent],
+  imports: [CommonModule, PlaygroundComponent, TranslatePipe],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent {
+  i18n = inject(I18nService);
   title = 'Tag-per-Track Frontend';
   copied = signal(false);
 

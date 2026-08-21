@@ -11,14 +11,36 @@
       </div>
       <nav class="hidden md:flex items-center space-x-8">
         <a href="#playground"
-          class="text-sm font-medium hover:text-electric-cyan transition-colors">Playground</a>
+          class="text-sm font-medium hover:text-electric-cyan transition-colors">{{ 'nav.playground' | translate }}</a>
         <a href="#agentkit"
-          class="text-sm font-medium hover:text-electric-cyan transition-colors">AgentKit</a>
+          class="text-sm font-medium hover:text-electric-cyan transition-colors">{{ 'nav.agentkit' | translate }}</a>
         <a href="#mcp"
-          class="text-sm font-medium hover:text-electric-cyan transition-colors">MCP</a>
+          class="text-sm font-medium hover:text-electric-cyan transition-colors">{{ 'nav.mcp' | translate }}</a>
         <a href="https://api.tag-per-track.cloud/api/docs" target="_blank"
-          class="text-sm font-medium hover:text-electric-cyan transition-colors">API Docs</a>
+          class="text-sm font-medium hover:text-electric-cyan transition-colors">{{ 'nav.apiDocs' | translate }}</a>
       </nav>
+
+      <!-- Language Selector -->
+      <div class="flex items-center bg-dark-gray/60 p-1 rounded-xl border border-gray-800 backdrop-blur-sm">
+        <button (click)="i18n.setLanguage('en')"
+          [class.bg-electric-cyan]="i18n.currentLang() === 'en'"
+          [class.text-obsidian]="i18n.currentLang() === 'en'"
+          [class.font-bold]="i18n.currentLang() === 'en'"
+          [class.text-gray-400]="i18n.currentLang() !== 'en'"
+          class="px-2.5 py-1 rounded-lg text-xs transition-all flex items-center gap-1.5 cursor-pointer">
+          <span>🇬🇧</span>
+          <span>EN</span>
+        </button>
+        <button (click)="i18n.setLanguage('fr')"
+          [class.bg-electric-cyan]="i18n.currentLang() === 'fr'"
+          [class.text-obsidian]="i18n.currentLang() === 'fr'"
+          [class.font-bold]="i18n.currentLang() === 'fr'"
+          [class.text-gray-400]="i18n.currentLang() !== 'fr'"
+          class="px-2.5 py-1 rounded-lg text-xs transition-all flex items-center gap-1.5 cursor-pointer">
+          <span>🇫🇷</span>
+          <span>FR</span>
+        </button>
+      </div>
     </div>
   </header>
 
@@ -29,25 +51,25 @@
         <div class="text-center">
           <span
             class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-dark-gray text-electric-cyan border border-electric-cyan/20 mb-8 animate-pulse">
-            Now live on Base 🔵
+            {{ 'hero.badge' | translate }}
           </span>
           <h1 class="text-5xl sm:text-7xl font-extrabold text-white tracking-tight mb-6">
-            Automated A&R for the <br class="hidden sm:block">
-            <span class="text-transparent bg-clip-text bg-gradient-to-r from-electric-cyan to-teal-glow">new music
-              economy.</span>
+            {{ 'hero.titleLine1' | translate }} <br class="hidden sm:block">
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-electric-cyan to-teal-glow">
+              {{ 'hero.titleHighlight' | translate }}
+            </span>
           </h1>
           <p class="text-xl text-light-gray max-w-2xl mx-auto mb-10 leading-relaxed">
-            Neural networks that listen, analyze, and categorize tracks in 20 seconds.
-            Pay-per-use via the <span class="text-white font-semibold">x402 protocol</span>.
+            {{ 'hero.subtitle' | translate }} <span class="text-white font-semibold">{{ 'hero.subtitleHighlight' | translate }}</span>.
           </p>
           <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
             <a href="#playground"
               class="px-8 py-4 rounded-xl bg-electric-cyan text-obsidian font-bold hover:shadow-[0_0_20px_rgba(102,252,241,0.4)] transition-all transform hover:-translate-y-1">
-              Test the Analyzer
+              {{ 'hero.testButton' | translate }}
             </a>
             <a href="#developers"
               class="px-8 py-4 rounded-xl bg-dark-gray text-white border border-light-gray/20 font-bold hover:bg-dark-gray/80 transition-all">
-              For Developers
+              {{ 'hero.devButton' | translate }}
             </a>
           </div>
         </div>
@@ -61,13 +83,10 @@
     <!-- Story Section -->
     <section class="py-24 bg-dark-gray/30 border-y border-dark-gray">
       <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 class="text-3xl font-bold text-white mb-8 text-center italic">"The A&R process is broken. We fixed it."</h2>
+        <h2 class="text-3xl font-bold text-white mb-8 text-center italic">{{ 'story.quote' | translate }}</h2>
         <div class="bg-obsidian/40 border-l-4 border-electric-cyan p-8 rounded-r-2xl">
           <p class="text-lg leading-relaxed text-light-gray">
-            As an artist, I sent countless demos into the void. As a label co-founder, I realized why: the listening
-            bottleneck.
-            Tag-per-Track isn't just a tool; it's a technical solution to a broken system, built by a musician to
-            unblock the industry.
+            {{ 'story.content' | translate }}
           </p>
         </div>
       </div>
@@ -77,11 +96,10 @@
     <section id="playground" class="py-24">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
-          <h2 class="text-4xl font-bold text-white mb-4">Try it yourself</h2>
+          <h2 class="text-4xl font-bold text-white mb-4">{{ 'playground.sectionTitle' | translate }}</h2>
           <p class="text-light-gray max-w-xl mx-auto">
-            Drop an audio file below. Connect your wallet on <span class="text-white font-semibold">Base</span>
-            to settle the x402 micro-payment (0.05 USDC). Every signature and analysis is executed in
-            real-time on-chain.
+            {{ 'playground.sectionDescription' | translate }} <span class="text-white font-semibold">{{ 'playground.sectionDescriptionHighlight' | translate }}</span>
+            {{ 'playground.sectionDescriptionEnd' | translate }}
           </p>
         </div>
 
@@ -98,9 +116,9 @@
     <!-- Developer Section -->
     <section id="developers" class="py-24 bg-dark-gray/30 border-t border-dark-gray">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-20">
-        <h2 class="text-5xl font-bold text-white mb-4">Integrate Tag-per-Track</h2>
+        <h2 class="text-5xl font-bold text-white mb-4">{{ 'dev.title' | translate }}</h2>
         <p class="text-light-gray text-lg max-w-2xl mx-auto">
-          Choose the best way to empower your AI agents with advanced music intelligence.
+          {{ 'dev.subtitle' | translate }}
         </p>
       </div>
 
@@ -109,26 +127,24 @@
         <div id="agentkit" class="grid lg:grid-cols-2 gap-16 items-center py-24 border-b border-white/5 scroll-mt-20">
           <div>
             <div class="flex items-center space-x-2 mb-6">
-              <span class="px-3 py-1 rounded-full bg-electric-cyan/10 text-electric-cyan text-xs font-bold uppercase tracking-widest">For JS Developers</span>
+              <span class="px-3 py-1 rounded-full bg-electric-cyan/10 text-electric-cyan text-xs font-bold uppercase tracking-widest">{{ 'dev.sdk.badge' | translate }}</span>
             </div>
-            <h2 class="text-4xl font-bold text-white mb-6">Give your AI Agent ears.</h2>
+            <h2 class="text-4xl font-bold text-white mb-6">{{ 'dev.sdk.title' | translate }}</h2>
             <p class="text-lg text-light-gray mb-8 leading-relaxed">
-              The <code class="text-electric-cyan">tag-per-track-agentkit</code> SDK integrates natively with LangChain
-              and handles the x402 payment flow automatically. Enable your agents to evaluate music on-chain with zero
-              friction.
+              {{ 'dev.sdk.description' | translate }}
             </p>
             <ul class="space-y-4">
               <li class="flex items-center space-x-3 text-sm">
                 <span class="w-1.5 h-1.5 rounded-full bg-electric-cyan"></span>
-                <span>Automatic x402 challenge resolution</span>
+                <span>{{ 'dev.sdk.features.0' | translate }}</span>
               </li>
               <li class="flex items-center space-x-3 text-sm">
                 <span class="w-1.5 h-1.5 rounded-full bg-electric-cyan"></span>
-                <span>EIP-712 payment proof generation</span>
+                <span>{{ 'dev.sdk.features.1' | translate }}</span>
               </li>
               <li class="flex items-center space-x-3 text-sm">
                 <span class="w-1.5 h-1.5 rounded-full bg-electric-cyan"></span>
-                <span>Seamless music metadata extraction</span>
+                <span>{{ 'dev.sdk.features.2' | translate }}</span>
               </li>
             </ul>
           </div>
@@ -140,7 +156,7 @@
                 <div class="w-2.5 h-2.5 rounded-full bg-red-500/80"></div>
                 <div class="w-2.5 h-2.5 rounded-full bg-yellow-500/80"></div>
                 <div class="w-2.5 h-2.5 rounded-full bg-green-500/80"></div>
-                <span class="text-[10px] text-light-gray/50 ml-2 font-mono uppercase tracking-widest">SDK Installation</span>
+                <span class="text-[10px] text-light-gray/50 ml-2 font-mono uppercase tracking-widest">{{ 'dev.sdk.terminalTitle' | translate }}</span>
               </div>
             </div>
             <div class="p-6 font-mono text-sm leading-relaxed overflow-x-auto">
@@ -155,7 +171,7 @@
                 <span class="text-purple-400">const</span> tool = <span
                   class="text-yellow-400">createTagPerTrackTool</span>(wallet);
               </div>
-              <div class="mt-4 opacity-50 text-xs italic"># Payment logic handled internally via Coinbase CDP</div>
+              <div class="mt-4 opacity-50 text-xs italic">{{ 'dev.sdk.comment' | translate }}</div>
             </div>
           </div>
         </div>
@@ -173,8 +189,8 @@
                   <span class="text-[10px] text-light-gray/50 ml-2 font-mono uppercase tracking-widest">claude_desktop_config.json</span>
                 </div>
                 <button (click)="copyMcpConfig()" 
-                  class="text-[10px] bg-electric-cyan/10 text-electric-cyan px-2 py-1 rounded hover:bg-electric-cyan/20 transition-colors uppercase tracking-widest font-bold">
-                  {{ copied() ? 'Copied!' : 'Copy Config' }}
+                  class="text-[10px] bg-electric-cyan/10 text-electric-cyan px-2 py-1 rounded hover:bg-electric-cyan/20 transition-colors uppercase tracking-widest font-bold cursor-pointer">
+                  {{ (copied() ? 'dev.mcp.copied' : 'dev.mcp.copyConfig') | translate }}
                 </button>
               </div>
               <div class="p-6 font-mono text-xs sm:text-sm leading-relaxed overflow-x-auto bg-gradient-to-br from-black to-dark-gray/20">
@@ -187,27 +203,25 @@
 
           <div class="order-1 lg:order-2">
             <div class="flex items-center space-x-2 mb-6">
-              <span class="px-3 py-1 rounded-full bg-electric-cyan/10 text-electric-cyan text-xs font-bold uppercase tracking-widest">For LLM Users</span>
+              <span class="px-3 py-1 rounded-full bg-electric-cyan/10 text-electric-cyan text-xs font-bold uppercase tracking-widest">{{ 'dev.mcp.badge' | translate }}</span>
             </div>
-            <h2 class="text-4xl font-bold text-white mb-6">Autonomous "Pay-to-Listen"</h2>
+            <h2 class="text-4xl font-bold text-white mb-6">{{ 'dev.mcp.title' | translate }}</h2>
             <p class="text-lg text-light-gray mb-8 leading-relaxed">
-              Enable your local LLMs (Claude Desktop, etc.) to analyze music autonomously. The 
-              <span class="text-white font-semibold">Tag-per-Track MCP Server</span> 
-              handles the x402 payment protocol on-chain without user intervention.
+              {{ 'dev.mcp.description' | translate }}
             </p>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div class="p-4 rounded-xl bg-obsidian border border-white/5 hover:border-electric-cyan/30 transition-all">
-                <h3 class="text-electric-cyan font-bold mb-2">analyze_audio</h3>
-                <p class="text-xs text-light-gray/70">Tool to extract BPM, Key, Mood and Genre from any URL.</p>
+                <h3 class="text-electric-cyan font-bold mb-2">{{ 'dev.mcp.toolAnalyzeTitle' | translate }}</h3>
+                <p class="text-xs text-light-gray/70">{{ 'dev.mcp.toolAnalyzeDesc' | translate }}</p>
               </div>
               <div class="p-4 rounded-xl bg-obsidian border border-white/5 hover:border-electric-cyan/30 transition-all">
-                <h3 class="text-electric-cyan font-bold mb-2">x402 Built-in</h3>
-                <p class="text-xs text-light-gray/70">Automated EIP-3009 signing for USDC on Base.</p>
+                <h3 class="text-electric-cyan font-bold mb-2">{{ 'dev.mcp.toolX402Title' | translate }}</h3>
+                <p class="text-xs text-light-gray/70">{{ 'dev.mcp.toolX402Desc' | translate }}</p>
               </div>
             </div>
             <div class="mt-8 flex items-center space-x-4 text-xs">
-              <span class="px-2 py-1 rounded bg-dark-gray text-white border border-white/10 uppercase tracking-widest font-bold">MCP V1.0</span>
-              <span class="text-light-gray/50 italic">Now available on NPM</span>
+              <span class="px-2 py-1 rounded bg-dark-gray text-white border border-white/10 uppercase tracking-widest font-bold">{{ 'dev.mcp.badgeVersion' | translate }}</span>
+              <span class="text-light-gray/50 italic">{{ 'dev.mcp.badgeNpm' | translate }}</span>
             </div>
           </div>
         </div>
@@ -217,7 +231,7 @@
 
   <footer class="py-12 border-t border-dark-gray text-center">
     <p class="text-sm font-medium tracking-widest uppercase opacity-40">
-      Built on Base. Built for Music.
+      {{ 'footer.builtOn' | translate }}
     </p>
   </footer>
 </div>

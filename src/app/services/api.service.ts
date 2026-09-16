@@ -10,6 +10,21 @@ export interface PaymentInvoice {
   destination_address: string;
 }
 
+export interface SpotifyArtistMetrics {
+  id: string;
+  followers: number;
+  popularity: number;
+  monthlyListeners?: number;
+  genres: string[];
+  url: string;
+}
+
+export interface ArtistStatsResponse {
+  name: string;
+  spotify: SpotifyArtistMetrics;
+  cached: boolean;
+}
+
 export interface AnalysisResponse {
   success: boolean;
   data: any;
@@ -34,13 +49,23 @@ export class PaymentRequiredError extends Error {
 })
 export class ApiService {
   private http = inject(HttpClient);
-  private apiUrl = isDevMode() 
-    ? 'http://localhost:3000/api/analyze' 
-    : 'https://api.tag-per-track.cloud/api/analyze';
+  private baseUrl = isDevMode()
+    ? 'http://localhost:3000/api'
+    : 'https://api.tag-per-track.cloud/api';
+  private apiUrl = `${this.baseUrl}/analyze`;
   /** The full PaymentRequired v2 response from the 402 */
   private lastPaymentRequired: any = null;
   /** The selected PaymentRequirements from accepts[0] */
   private lastAccepted: any = null;
+
+  async getArtistStats(artistName: string): Promise<ArtistStatsResponse> {
+    const trimmed = artistName.trim();
+    if (!trimmed) {
+      throw new Error('Artist name cannot be empty');
+    }
+    const url = `${this.baseUrl}/artist-stats?name=${encodeURIComponent(trimmed)}`;
+    return firstValueFrom(this.http.get<ArtistStatsResponse>(url));
+  }
 
   async analyzeAudio(fileOrUrl: File | string, paymentProof?: any, network: string = 'base', extractLyrics: boolean = false): Promise<AnalysisResponse> {
     const targetUrl = extractLyrics ? `${this.apiUrl}-with-lyrics` : this.apiUrl;

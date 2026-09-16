@@ -1,39 +1,328 @@
 <div
-  class="bg-dark-gray/80 border border-gray-700/50 shadow-[0_8px_30px_rgba(0,0,0,0.5)] rounded-2xl overflow-hidden backdrop-blur-xl">
+  class="bg-dark-gray/70 border border-gray-700/40 shadow-[0_12px_40px_rgba(0,0,0,0.6)] rounded-3xl overflow-hidden backdrop-blur-xl transition-all">
 
+  <!-- Header with Title & Navigation Tabs -->
   <div
-    class="bg-gradient-to-r from-obsidian to-dark-gray p-6 border-b border-gray-700/50 flex justify-between items-center">
-    <h3 class="text-2xl font-bold text-light-gray flex items-center gap-3">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-        class="lucide lucide-sparkles text-electric-cyan">
-        <path
-          d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
-      </svg>
-      {{ 'result.title' | translate }}
-    </h3>
+    class="bg-gradient-to-r from-obsidian via-dark-gray/80 to-obsidian px-6 py-5 sm:px-8 sm:py-6 border-b border-gray-700/40 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+    <div class="flex items-center gap-3.5">
+      <div class="p-2.5 rounded-2xl bg-electric-cyan/10 border border-electric-cyan/30 text-electric-cyan shadow-[0_0_20px_rgba(102,252,241,0.15)]">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+          class="lucide lucide-sparkles">
+          <path
+            d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
+        </svg>
+      </div>
+      <div>
+        <h3 class="text-xl font-bold text-light-gray flex items-center gap-2">
+          {{ 'result.title' | translate }}
+        </h3>
+        <p class="text-xs text-gray-400 font-mono truncate max-w-xs sm:max-w-md">
+          {{ trackName }}
+        </p>
+      </div>
+    </div>
 
-    <!-- Tabs if lyrics are present -->
-    <div *ngIf="lyrics" class="flex bg-obsidian p-1 rounded-lg border border-gray-800">
-      <button (click)="activeTab.set('vibe')" [class.bg-gray-800]="activeTab() === 'vibe'" [class.text-white]="activeTab() === 'vibe'" class="px-4 py-1.5 rounded-md text-sm font-medium text-gray-400 transition-colors cursor-pointer">{{ 'result.tabVibe' | translate }}</button>
-      <button (click)="activeTab.set('lyrics')" [class.bg-gray-800]="activeTab() === 'lyrics'" [class.text-white]="activeTab() === 'lyrics'" class="px-4 py-1.5 rounded-md text-sm font-medium text-gray-400 transition-colors cursor-pointer">{{ 'result.tabLyrics' | translate }}</button>
+    <!-- Navigation Tabs (Clean single icon) -->
+    <div class="flex items-center bg-obsidian/80 p-1.5 rounded-2xl border border-gray-800 shadow-inner w-full sm:w-auto justify-center">
+      <button (click)="activeTab.set('ar')"
+        [class.bg-electric-cyan]="activeTab() === 'ar'"
+        [class.text-obsidian]="activeTab() === 'ar'"
+        [class.font-bold]="activeTab() === 'ar'"
+        [class.shadow-md]="activeTab() === 'ar'"
+        [class.text-gray-400]="activeTab() !== 'ar'"
+        class="px-4 py-2 rounded-xl text-xs transition-all flex items-center gap-2 cursor-pointer hover:text-white">
+        <span>🎯</span>
+        <span>{{ 'result.tabAr' | translate }}</span>
+      </button>
+      <button (click)="activeTab.set('vibe')"
+        [class.bg-electric-cyan]="activeTab() === 'vibe'"
+        [class.text-obsidian]="activeTab() === 'vibe'"
+        [class.font-bold]="activeTab() === 'vibe'"
+        [class.shadow-md]="activeTab() === 'vibe'"
+        [class.text-gray-400]="activeTab() !== 'vibe'"
+        class="px-4 py-2 rounded-xl text-xs transition-all flex items-center gap-2 cursor-pointer hover:text-white">
+        <span>🌊</span>
+        <span>{{ 'result.tabVibe' | translate }}</span>
+      </button>
+      <button *ngIf="lyrics" (click)="activeTab.set('lyrics')"
+        [class.bg-electric-cyan]="activeTab() === 'lyrics'"
+        [class.text-obsidian]="activeTab() === 'lyrics'"
+        [class.font-bold]="activeTab() === 'lyrics'"
+        [class.shadow-md]="activeTab() === 'lyrics'"
+        [class.text-gray-400]="activeTab() !== 'lyrics'"
+        class="px-4 py-2 rounded-xl text-xs transition-all flex items-center gap-2 cursor-pointer hover:text-white">
+        <span>📝</span>
+        <span>{{ 'result.tabLyrics' | translate }}</span>
+      </button>
     </div>
   </div>
 
-  <div *ngIf="activeTab() === 'vibe'" class="p-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+  <!-- TAB 1: SCORING A&R HYBRIDE -->
+  <div *ngIf="activeTab() === 'ar'" class="p-6 sm:p-10 space-y-8 animate-in fade-in duration-300">
+
+    <!-- Row 1: Score & Traction Split -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
+      
+      <!-- Left: Big Hybrid Score Gauge -->
+      <div class="lg:col-span-1 bg-obsidian/70 border border-gray-800 rounded-3xl p-6 sm:p-8 flex flex-col items-center justify-center text-center relative overflow-hidden shadow-xl">
+        <div class="absolute -top-12 -left-12 w-40 h-40 bg-electric-cyan/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-12 -right-12 w-40 h-40 bg-teal-glow/10 rounded-full blur-3xl pointer-events-none"></div>
+
+        <span class="text-[11px] uppercase tracking-widest font-bold text-gray-400 mb-3">
+          {{ 'result.arScoreTitle' | translate }}
+        </span>
+
+        <!-- Radial Score Gauge -->
+        <div class="relative w-36 h-36 flex items-center justify-center mb-4">
+          <svg class="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="42" stroke="currentColor" stroke-width="8" class="text-gray-800/80" fill="transparent" />
+            <circle cx="50" cy="50" r="42" stroke="url(#scoreGradient)" stroke-width="8"
+              stroke-dasharray="264"
+              [style.strokeDashoffset]="264 - (264 * arEvaluation().hybridScore) / 100"
+              stroke-linecap="round"
+              fill="transparent"
+              class="transition-all duration-1000 ease-out" />
+            <defs>
+              <linearGradient id="scoreGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#45a29e" />
+                <stop offset="100%" stop-color="#66fcf1" />
+              </linearGradient>
+            </defs>
+          </svg>
+          <div class="absolute flex flex-col items-center justify-center">
+            <span class="text-4xl font-black text-white tracking-tight">
+              {{ arEvaluation().hybridScore }}
+            </span>
+            <span class="text-[10px] font-mono text-electric-cyan font-bold tracking-widest uppercase">/ 100</span>
+          </div>
+        </div>
+
+        <!-- Rating Badges -->
+        <div class="flex flex-wrap gap-2 justify-center mt-1">
+          <span class="px-3.5 py-1.5 bg-electric-cyan/15 border border-electric-cyan/40 text-electric-cyan rounded-full text-xs font-bold tracking-wide shadow-sm">
+            {{ ('result.badges.' + arEvaluation().badgeKey) | translate }}
+          </span>
+          <span *ngIf="arEvaluation().isEmergingGem" class="px-3 py-1 bg-purple-500/20 border border-purple-400/50 text-purple-300 rounded-full text-xs font-semibold shadow-sm">
+            💎 Hidden Gem
+          </span>
+        </div>
+
+        <p class="text-xs text-gray-400 mt-3 font-medium">
+          {{ ('result.tiers.' + arEvaluation().tierKey) | translate }}
+        </p>
+      </div>
+
+      <!-- Right: Artist Switcher + Traction Summary + Sub-scores -->
+      <div class="lg:col-span-2 space-y-5 flex flex-col justify-between">
+        
+        <!-- Interactive Artist Switcher (No 24h cache badge, clean & airy) -->
+        <div class="bg-obsidian/50 border border-gray-800 rounded-2xl p-5 shadow-md">
+          <label class="text-xs font-bold uppercase tracking-wider text-gray-300 flex items-center gap-2 mb-3">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              class="text-teal-glow">
+              <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
+            </svg>
+            {{ 'result.searchAnotherArtist' | translate }}
+          </label>
+
+          <div class="flex gap-2.5">
+            <div class="relative flex-1">
+              <input type="text" [value]="artistSearchInput()" (input)="onSearchInputChange($event)"
+                (keyup.enter)="searchArtist()"
+                [placeholder]="'result.searchPlaceholder' | translate"
+                class="w-full bg-dark-gray/50 border border-gray-700/80 focus:border-electric-cyan rounded-xl py-2.5 px-4 text-sm text-white outline-none placeholder:text-gray-500 transition-all font-medium" />
+              <button *ngIf="artistSearchInput()" (click)="artistSearchInput.set('')" class="absolute right-3 top-2.5 text-gray-500 hover:text-white text-xs px-1.5 py-0.5 rounded cursor-pointer">✕</button>
+            </div>
+            <button (click)="searchArtist()" [disabled]="isSearchingArtist()"
+              class="bg-teal-glow/20 hover:bg-teal-glow/30 text-teal-glow border border-teal-glow/40 px-5 py-2.5 rounded-xl font-bold text-xs transition-all flex items-center gap-2 cursor-pointer disabled:opacity-50 shadow-sm">
+              <span *ngIf="isSearchingArtist()" class="w-3.5 h-3.5 border-2 border-teal-glow border-t-transparent rounded-full animate-spin"></span>
+              <span>{{ (isSearchingArtist() ? 'result.searchingArtist' : 'result.searchBtn') | translate }}</span>
+            </button>
+          </div>
+
+          <p *ngIf="artistSearchError()" class="text-xs text-red-400 font-medium mt-2 animate-in fade-in">
+            ⚠️ {{ artistSearchError() }}
+          </p>
+        </div>
+
+        <!-- Spotify Traction Cards (3 Clean Metrics) -->
+        <div *ngIf="artistData()?.spotify" class="bg-obsidian/50 border border-gray-800 rounded-2xl p-5 shadow-md space-y-3.5">
+          <div class="flex items-center justify-between">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-gray-300 flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#1DB954">
+                <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.503 17.308c-.218.358-.68.47-1.038.252-2.846-1.738-6.428-2.131-10.65-1.166-.41.094-.82-.163-.914-.573-.094-.41.163-.82.573-.914 4.622-1.056 8.583-.614 11.777 1.338.358.218.47.68.252 1.063zm1.47-3.267c-.274.444-.856.586-1.3.312-3.257-2.002-8.223-2.583-12.076-1.413-.497.151-1.028-.135-1.179-.632-.151-.497.135-1.028.632-1.179 4.41-1.338 9.89-.7 13.611 1.612.444.274.586.856.312 1.311zm.126-3.41c-3.905-2.319-10.347-2.533-14.072-1.402-.598.181-1.233-.162-1.414-.76-.181-.598.162-1.233.76-1.414 4.283-1.3 11.4-1.05 15.897 1.618.538.32.713 1.018.393 1.556-.32.538-1.018.713-1.556.393z"/>
+              </svg>
+              <span>{{ 'result.streamTraction' | translate }} :</span>
+              <span class="text-white font-bold">{{ artistData()?.name }}</span>
+            </h4>
+            <a *ngIf="artistData()?.spotify?.url" [href]="artistData()?.spotify?.url" target="_blank"
+              class="text-xs font-bold text-green-400 hover:text-green-300 flex items-center gap-1.5 transition-colors cursor-pointer">
+              <span>{{ 'result.viewProfile' | translate }}</span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            </a>
+          </div>
+
+          <div class="grid grid-cols-3 gap-3.5 pt-1">
+            <div class="bg-dark-gray/40 border border-gray-800 p-3.5 rounded-xl">
+              <p class="text-[11px] text-gray-400 font-medium mb-1">{{ 'result.monthlyListeners' | translate }}</p>
+              <p class="text-xl font-bold text-white">{{ formatNumber(artistData()?.spotify?.monthlyListeners) }}</p>
+              <span class="text-[10px] text-gray-500">auditeurs / mois</span>
+            </div>
+
+            <div class="bg-dark-gray/40 border border-gray-800 p-3.5 rounded-xl">
+              <p class="text-[11px] text-gray-400 font-medium mb-1">{{ 'result.followers' | translate }}</p>
+              <p class="text-xl font-bold text-white">{{ formatNumber(artistData()?.spotify?.followers) }}</p>
+              <span class="text-[10px] text-gray-500">abonnés</span>
+            </div>
+
+            <div class="bg-dark-gray/40 border border-gray-800 p-3.5 rounded-xl">
+              <p class="text-[11px] text-gray-400 font-medium mb-1">{{ 'result.popularity' | translate }}</p>
+              <div class="flex items-baseline gap-1">
+                <span class="text-xl font-bold text-electric-cyan">{{ artistData()?.spotify?.popularity }}</span>
+                <span class="text-xs text-gray-500">/ 100</span>
+              </div>
+              <div class="h-1 bg-gray-800 rounded-full mt-2 overflow-hidden">
+                <div class="h-full bg-electric-cyan" [style.width]="(artistData()?.spotify?.popularity || 0) + '%'"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sub-score Gauges (Potentiel Acoustique & Traction Marché) -->
+        <div class="grid grid-cols-2 gap-4">
+          <div class="bg-obsidian/50 border border-gray-800 rounded-xl p-4">
+            <div class="flex justify-between items-center mb-2">
+              <span class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Potentiel Acoustique</span>
+              <span class="text-sm font-bold text-white">{{ arEvaluation().acousticScore }}<span class="text-xs text-gray-500">/100</span></span>
+            </div>
+            <div class="h-2 bg-gray-800 rounded-full overflow-hidden">
+              <div class="h-full bg-gradient-to-r from-teal-glow to-electric-cyan"
+                [style.width]="arEvaluation().acousticScore + '%'"></div>
+            </div>
+            <p class="text-[11px] text-gray-400 mt-2 truncate font-mono">{{ bpm | number:'1.0-0' }} BPM • {{ key }} • {{ genres.length > 0 ? formatLabel(genres[0].label) : 'Style' }}</p>
+          </div>
+
+          <div class="bg-obsidian/50 border border-gray-800 rounded-xl p-4">
+            <div class="flex justify-between items-center mb-2">
+              <span class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Traction Spotify</span>
+              <span class="text-sm font-bold text-white">{{ arEvaluation().tractionScore }}<span class="text-xs text-gray-500">/100</span></span>
+            </div>
+            <div class="h-2 bg-gray-800 rounded-full overflow-hidden">
+              <div class="h-full bg-gradient-to-r from-green-500 to-emerald-400"
+                [style.width]="arEvaluation().tractionScore + '%'"></div>
+            </div>
+            <p class="text-[11px] text-gray-400 mt-2 truncate font-mono">
+              {{ artistData() ? formatNumber(artistData()?.spotify?.monthlyListeners) + ' auditeurs' : 'Recherchez un artiste' }}
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Row 2: Recommandation Stratégique A&R (Spacious & Elegant) -->
+    <div class="bg-gradient-to-br from-obsidian/90 via-dark-gray/40 to-obsidian/90 border-l-4 border-electric-cyan border-y border-r border-gray-800 rounded-2xl p-6 sm:p-7 shadow-xl">
+      <div class="flex items-start gap-4">
+        <div class="p-3 bg-electric-cyan/10 text-electric-cyan rounded-xl shrink-0 mt-0.5">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            class="lucide lucide-target">
+            <circle cx="12" cy="12" r="10" />
+            <circle cx="12" cy="12" r="6" />
+            <circle cx="12" cy="12" r="2" />
+          </svg>
+        </div>
+        <div class="space-y-2 flex-1">
+          <h4 class="text-sm sm:text-base font-bold text-white uppercase tracking-wider flex items-center gap-2">
+            {{ 'result.strategicRecommendation' | translate }}
+          </h4>
+          <p class="text-sm text-gray-300 leading-relaxed font-sans">
+            {{ arEvaluation().recommendation }}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 3: Matrice d'Évaluation A&R Unifiée (Fixed table layout with generous widths) -->
+    <div class="space-y-3.5 pt-2">
+      <div class="flex items-center justify-between">
+        <h4 class="text-xs font-bold uppercase tracking-widest text-gray-400 flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            class="text-teal-glow">
+            <rect width="18" height="18" x="3" y="3" rx="2" />
+            <path d="M3 9h18" />
+            <path d="M3 15h18" />
+            <path d="M9 3v18" />
+            <path d="M15 3v18" />
+          </svg>
+          {{ 'result.arMatrixTitle' | translate }}
+        </h4>
+        <span class="text-[11px] text-gray-500 font-mono hidden sm:inline">Workflow MCP x402 + RapidAPI</span>
+      </div>
+
+      <div class="overflow-x-auto rounded-2xl border border-gray-800 bg-obsidian/60 shadow-xl">
+        <table class="w-full text-left text-xs border-collapse min-w-[760px]">
+          <thead>
+            <tr class="bg-dark-gray/50 border-b border-gray-800 text-gray-400 font-semibold uppercase tracking-wider">
+              <th class="py-4 px-4 min-w-[130px]">{{ 'result.colTrack' | translate }}</th>
+              <th class="py-4 px-4 min-w-[120px]">{{ 'result.colArtist' | translate }}</th>
+              <th class="py-4 px-4 min-w-[120px] whitespace-nowrap">{{ 'result.colBpmKey' | translate }}</th>
+              <th class="py-4 px-4 min-w-[130px]">{{ 'result.colStyle' | translate }}</th>
+              <th class="py-4 px-4 min-w-[130px] whitespace-nowrap">{{ 'result.colTraction' | translate }}</th>
+              <th class="py-4 px-4 min-w-[180px] whitespace-nowrap">{{ 'result.colDecision' | translate }}</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-800/60 font-medium">
+            <tr class="hover:bg-dark-gray/30 transition-colors">
+              <td class="py-4 px-4 text-white font-semibold truncate max-w-[160px]">{{ trackName }}</td>
+              <td class="py-4 px-4 text-electric-cyan font-bold">{{ artistData()?.name || artistSearchInput() || 'Indépendant' }}</td>
+              <td class="py-4 px-4 font-mono text-gray-300 whitespace-nowrap">{{ bpm | number:'1.0-0' }} BPM • {{ key }}</td>
+              <td class="py-4 px-4 text-gray-300">
+                {{ genres.length > 0 ? formatLabel(genres[0].label) : '--' }}
+                <span *ngIf="dominantMood" class="text-[11px] text-gray-500 block">({{ formatLabel(dominantMood.label) }})</span>
+              </td>
+              <td class="py-4 px-4 text-gray-300 whitespace-nowrap">
+                <div *ngIf="artistData()?.spotify; else noTraction">
+                  <span class="text-white font-bold">{{ formatNumber(artistData()?.spotify?.monthlyListeners) }} aud.</span>
+                  <span class="text-[11px] text-gray-400 block font-mono">Pop: {{ artistData()?.spotify?.popularity }}/100</span>
+                </div>
+                <ng-template #noTraction>
+                  <span class="text-gray-500 italic">Non renseignée</span>
+                </ng-template>
+              </td>
+              <td class="py-4 px-4 whitespace-nowrap">
+                <span class="inline-block whitespace-nowrap px-3.5 py-1.5 rounded-xl bg-electric-cyan/15 border border-electric-cyan/40 text-electric-cyan text-xs font-bold tracking-wide shadow-sm">
+                  {{ ('result.badges.' + arEvaluation().badgeKey) | translate }}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- TAB 2: AMBIANCE & STYLE (ACOUSTIC ESSENTIA) -->
+  <div *ngIf="activeTab() === 'vibe'" class="p-6 sm:p-10 grid grid-cols-1 md:grid-cols-2 gap-8 animate-in fade-in duration-300">
 
     <div class="space-y-8">
 
       <div class="grid grid-cols-2 gap-4">
-        <div class="bg-obsidian/60 p-5 rounded-xl border border-gray-700">
-          <p class="text-gray-400 text-sm mb-1 uppercase tracking-wider font-semibold">{{ 'result.tempo' | translate }}</p>
-          <div class="text-4xl font-bold text-white flex flex-col items-baseline gap-2">
+        <div class="bg-obsidian/60 p-5 rounded-2xl border border-gray-800 shadow-lg">
+          <p class="text-gray-400 text-xs mb-1 uppercase tracking-wider font-semibold">{{ 'result.tempo' | translate }}</p>
+          <div class="text-4xl font-black text-white flex flex-col items-baseline gap-2">
             {{ bpm | number:'1.0-1' }}
-            <span class="text-electric-cyan text-sm">bpm</span>
+            <span class="text-electric-cyan text-xs font-mono">bpm</span>
           </div>
         </div>
-        <div class="bg-obsidian/60 p-5 rounded-xl border border-gray-700">
-          <p class="text-gray-400 text-sm mb-1 uppercase tracking-wider font-semibold">{{ 'result.key' | translate }}</p>
+        <div class="bg-obsidian/60 p-5 rounded-2xl border border-gray-800 shadow-lg">
+          <p class="text-gray-400 text-xs mb-1 uppercase tracking-wider font-semibold">{{ 'result.key' | translate }}</p>
           <div class="text-3xl font-bold text-white capitalize">
             {{ key }}
           </div>
@@ -41,12 +330,12 @@
       </div>
 
       <div *ngIf="genres.length > 0">
-        <p class="text-gray-400 text-sm mb-3 uppercase tracking-wider font-semibold">{{ 'result.genres' | translate }}</p>
+        <p class="text-gray-400 text-xs mb-3 uppercase tracking-wider font-semibold">{{ 'result.genres' | translate }}</p>
         <div class="flex flex-wrap gap-2">
           <span *ngFor="let g of genres"
-            class="px-4 py-2 bg-teal-glow/10 border border-teal-glow/30 text-teal-glow rounded-lg font-medium flex items-center gap-2">
+            class="px-4 py-2 bg-teal-glow/10 border border-teal-glow/30 text-teal-glow rounded-xl font-medium flex items-center gap-2 shadow-sm text-sm">
             {{ formatLabel(g.label) }}
-            <span class="text-xs opacity-60">({{ g.confidence | percent:'1.0-0' }})</span>
+            <span class="text-xs opacity-60 font-mono">({{ g.confidence | percent:'1.0-0' }})</span>
           </span>
         </div>
       </div>
@@ -55,15 +344,15 @@
 
     <div class="space-y-8">
 
-      <div *ngIf="dominantMood" class="bg-obsidian/60 p-5 rounded-xl border border-gray-700 relative overflow-hidden">
-        <div class="absolute right-0 top-0 w-32 h-32 bg-electric-cyan/5 rounded-full blur-2xl -mt-10 -mr-10"></div>
-        <p class="text-gray-400 text-sm mb-1 uppercase tracking-wider font-semibold">{{ 'result.dominantMood' | translate }}</p>
+      <div *ngIf="dominantMood" class="bg-obsidian/60 p-5 rounded-2xl border border-gray-800 relative overflow-hidden shadow-lg">
+        <div class="absolute right-0 top-0 w-32 h-32 bg-electric-cyan/5 rounded-full blur-2xl -mt-10 -mr-10 pointer-events-none"></div>
+        <p class="text-gray-400 text-xs mb-1 uppercase tracking-wider font-semibold">{{ 'result.dominantMood' | translate }}</p>
         <div class="text-2xl font-bold text-white capitalize">
           {{ formatLabel(dominantMood.label) }}
         </div>
 
         <div class="mt-4">
-          <div class="flex justify-between text-xs text-gray-500 mb-1">
+          <div class="flex justify-between text-xs text-gray-500 mb-1 font-mono">
             <span>{{ 'result.lowConfidence' | translate }}</span>
             <span>{{ 'result.highConfidence' | translate }}</span>
           </div>
@@ -75,12 +364,12 @@
       </div>
 
       <div *ngIf="instruments.length > 0">
-        <p class="text-gray-400 text-sm mb-3 uppercase tracking-wider font-semibold">{{ 'result.instrumentation' | translate }}</p>
+        <p class="text-gray-400 text-xs mb-3 uppercase tracking-wider font-semibold">{{ 'result.instrumentation' | translate }}</p>
         <div class="flex flex-wrap gap-2">
           <span *ngFor="let inst of instruments"
-            class="px-3 py-1.5 bg-gray-800 border border-gray-600 text-gray-300 rounded-md text-sm">
+            class="px-3.5 py-1.5 bg-gray-800/80 border border-gray-700 text-gray-300 rounded-lg text-sm">
             {{ formatLabel(inst.label) }}
-            <span class="text-xs text-gray-500 ml-1">{{ inst.confidence | percent:'1.0-0' }}</span>
+            <span class="text-xs text-gray-500 ml-1 font-mono">{{ inst.confidence | percent:'1.0-0' }}</span>
           </span>
         </div>
       </div>
@@ -89,13 +378,14 @@
 
   </div>
 
-  <!-- Tab Content: Lyrics -->
-  <div *ngIf="activeTab() === 'lyrics'" class="p-8 flex flex-col items-center">
-    <div class="w-full max-w-2xl bg-obsidian/60 p-6 rounded-xl border border-gray-700 relative group">
-      <button (click)="copyLyrics()" class="absolute top-4 right-4 bg-gray-800 hover:bg-gray-700 text-gray-300 p-2 rounded-lg opacity-0 group-hover:opacity-100 transition-all border border-gray-600 cursor-pointer" [title]="'result.copyLyrics' | translate">
+  <!-- TAB 3: PAROLES (LYRICS) -->
+  <div *ngIf="activeTab() === 'lyrics'" class="p-6 sm:p-10 flex flex-col items-center animate-in fade-in duration-300">
+    <div class="w-full max-w-2xl bg-obsidian/60 p-6 rounded-2xl border border-gray-800 relative group shadow-2xl">
+      <button (click)="copyLyrics()" class="absolute top-4 right-4 bg-gray-800 hover:bg-gray-700 text-gray-300 p-2.5 rounded-xl opacity-0 group-hover:opacity-100 transition-all border border-gray-700 cursor-pointer shadow-lg" [title]="'result.copyLyrics' | translate">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
       </button>
-      <pre class="whitespace-pre-wrap font-sans text-gray-300 leading-relaxed text-lg">{{ lyrics }}</pre>
+      <pre class="whitespace-pre-wrap font-sans text-gray-300 leading-relaxed text-base sm:text-lg">{{ lyrics }}</pre>
     </div>
   </div>
+
 </div>

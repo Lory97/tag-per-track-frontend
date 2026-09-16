@@ -156,9 +156,31 @@
       </div>
 
       <!-- Actions (Visible if a source is picked and NOT analyzing) -->
-      <div class="animate-step mt-10 flex flex-col items-center gap-6"
+      <div class="animate-step mt-8 flex flex-col items-center gap-6 w-full"
         *ngIf="(selectedFile() || inputUrl()) && !paymentRequired() && !isAnalyzing()">
         
+        <!-- Artist Name Input (A&R Hybrid Feature) -->
+        <div class="w-full bg-dark-gray/40 border border-gray-700/60 focus-within:border-electric-cyan/60 rounded-2xl p-4 transition-all flex flex-col gap-2 backdrop-blur-sm">
+          <div class="flex items-center justify-between">
+            <label class="text-xs font-semibold uppercase tracking-wider text-light-gray flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="text-electric-cyan">
+                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+                <circle cx="12" cy="7" r="4" />
+              </svg>
+              {{ 'playground.artistInputLabel' | translate }}
+            </label>
+            <span class="text-[11px] text-gray-400 italic hidden sm:inline">{{ 'playground.artistInputHint' | translate }}</span>
+          </div>
+          <div class="relative flex items-center">
+            <input type="text" [value]="artistName()" (input)="onArtistInput($event)"
+              [placeholder]="'playground.artistInputPlaceholder' | translate"
+              class="w-full bg-obsidian/70 border border-gray-700/70 focus:border-electric-cyan rounded-xl py-3 px-4 text-white text-sm outline-none placeholder:text-gray-500 font-medium transition-all" />
+            <button *ngIf="artistName()" (click)="artistName.set('')" class="absolute right-3 text-gray-400 hover:text-white text-xs px-2 py-1 rounded bg-gray-800/60 cursor-pointer">✕</button>
+          </div>
+        </div>
+
         <!-- Lyrics Toggle -->
         <label class="flex items-center gap-3 cursor-pointer group">
           <div class="relative flex items-center justify-center">
@@ -253,7 +275,11 @@
           class="text-xs font-bold text-green-400 hover:underline tracking-widest">{{ 'playground.viewOnBasescan' | translate }}</a>
       </div>
 
-      <app-metadata-result [data]="metadataResult()"></app-metadata-result>
+      <app-metadata-result
+        [data]="metadataResult()"
+        [artistStats]="artistStats()"
+        [trackName]="trackTitle()"
+        [initialArtistName]="artistName()"></app-metadata-result>
     </div>
 
   </div>

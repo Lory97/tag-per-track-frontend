@@ -9,18 +9,18 @@ export const fr = {
     badge: 'Disponible sur Base 🔵',
     titleLine1: 'L\'A&R automatisé pour la',
     titleHighlight: 'nouvelle économie musicale.',
-    subtitle: 'Des réseaux de neurones qui écoutent, analysent et catégorisent vos morceaux en 20 secondes. Paiement à l\'usage via le',
+    subtitle: 'Des réseaux de neurones qui écoutent, analysent et catégorisent vos morceaux en 20 secondes, couplés au scoring de traction streaming. Paiement à l\'usage via le',
     subtitleHighlight: 'protocole x402',
     testButton: 'Tester l\'Analyseur',
     devButton: 'Pour les Développeurs'
   },
   story: {
     quote: '"Le processus d\'A&R est dépassé. Nous l\'avons repensé."',
-    content: 'En tant qu\'artiste, j\'ai envoyé d\'innombrables maquettes restées sans réponse. En tant que cofondateur de label, j\'en ai compris la cause : le goulot d\'étranglement de l\'écoute. Tag-per-Track n\'est pas qu\'un outil ; c\'est une solution technique conçue par un musicien pour débloquer l\'industrie.'
+    content: 'En tant qu\'artiste, j\'ai envoyé d\'innombrables maquettes restées sans réponse. En tant que cofondateur de label, j\'en ai compris la cause : le goulot d\'étranglement de l\'écoute. Tag-per-Track n\'est pas qu\'un outil ; c\'est une solution technique conçue par un musicien pour débloquer l\'industrie en fusionnant analyse acoustique IA et scoring de traction en temps réel.'
   },
   playground: {
     title: 'Tag-per-Track',
-    subtitle: 'Analyse Audio Musicale Conçue pour les Agents IA',
+    subtitle: 'Analyse Audio Musicale & Scoring A&R Conçus pour les Agents IA',
     sectionTitle: 'Essayez par vous-même',
     sectionDescription: 'Glissez un fichier audio ci-dessous. Connectez votre portefeuille sur',
     sectionDescriptionHighlight: 'Base',
@@ -35,6 +35,9 @@ export const fr = {
     clearUrl: 'Effacer l\'URL',
     readyForTagging: 'Prêt pour le tagging neuronal',
     removeTrack: 'Supprimer le morceau',
+    artistInputLabel: 'Artiste (Scoring A&R Hybride)',
+    artistInputPlaceholder: 'ex: Daft Punk, Kaytranada, The Blaze...',
+    artistInputHint: 'Enrichit l\'analyse acoustique avec la traction Spotify et la recommandation A&R',
     extractLyrics: 'Extraire les Paroles',
     lyricsPrice: '(0.10 USDC)',
     btnAnalyze: 'Analyser le morceau',
@@ -44,7 +47,7 @@ export const fr = {
     paymentValidated: 'Paiement Validé',
     viewOnBasescan: 'VOIR SUR BASESCAN',
     taggingInProgress: 'Tagging en cours...',
-    taggingDescription: 'Le traitement neuronal prend environ 20 secondes. Extraction du BPM, de la clé et des genres.',
+    taggingDescription: 'Le traitement neuronal prend environ 20 secondes. Extraction du BPM, de la clé, des genres et traction artiste.',
     invoice: {
       title: 'Paiement Requis',
       subtitle: 'Micro-paiement via Coinbase CDP (USDC)',
@@ -54,7 +57,7 @@ export const fr = {
       signButton: 'Signer & Régler avec x402'
     },
     steps: {
-      fetching: '📡 Récupération de la piste audio...',
+      fetching: '📡 Récupération de la piste audio & traction...',
       paymentVerified: '🧠 Paiement vérifié ! Écoute neuronale et analyse en cours...',
       awaitingSignature: '✍️ En attente de votre signature Web3 (Sans frais de gaz)...'
     },
@@ -70,7 +73,8 @@ export const fr = {
     }
   },
   result: {
-    title: 'Intelligence Audio',
+    title: 'Intelligence Musicale',
+    tabAr: 'Scoring A&R Hybride',
     tabVibe: 'Ambiance & Style',
     tabLyrics: 'Paroles',
     tempo: 'Tempo (BPM)',
@@ -81,7 +85,43 @@ export const fr = {
     highConfidence: 'Forte Confiance',
     instrumentation: 'Instrumentation',
     copyLyrics: 'Copier les Paroles',
-    unknown: 'Inconnu'
+    unknown: 'Inconnu',
+    arScoreTitle: 'Score A&R Hybride',
+    arScoreSubtitle: 'Synthèse du potentiel acoustique & de la traction streaming Spotify',
+    streamTraction: 'Traction Streaming Spotify',
+    monthlyListeners: 'Auditeurs Mensuels',
+    followers: 'Abonnés',
+    popularity: 'Score de Popularité',
+    spotifyProfile: 'Profil Spotify',
+    viewProfile: 'Voir sur Spotify',
+    sourceCache: 'Cache 24h',
+    sourceLive: 'Direct Spotify',
+    strategicRecommendation: 'Recommandation Stratégique A&R',
+    artistClassification: 'Catégorisation Artiste',
+    searchAnotherArtist: 'Changer ou tester un autre artiste :',
+    searchBtn: 'Rechercher',
+    searchPlaceholder: 'Nom de l\'artiste...',
+    artistNotFound: 'Artiste introuvable sur Spotify',
+    searchingArtist: 'Recherche en cours...',
+    arMatrixTitle: 'Matrice d\'Évaluation A&R Unifiée',
+    colTrack: 'Morceau / Fichier',
+    colArtist: 'Artiste',
+    colBpmKey: 'BPM & Tonalité',
+    colStyle: 'Style & Humeur',
+    colTraction: 'Traction Streaming',
+    colDecision: 'Décision A&R',
+    tiers: {
+      established: 'Artiste Établi / Mainstream',
+      rising: 'Artiste en Forte Croissance',
+      emerging: 'Pépite Émergente (High Potential)',
+      early: 'Développement Précoce (Early Stage)'
+    },
+    badges: {
+      viral: 'Potentiel Viral & Radio Ready',
+      strong: 'Forte Traction Marché',
+      niche: 'Curation Éditoriale & Niche',
+      developing: 'En Développement Initial'
+    }
   },
   dev: {
     title: 'Intégrez Tag-per-Track',
@@ -100,13 +140,15 @@ export const fr = {
     },
     mcp: {
       badge: 'Pour les Utilisateurs de LLM',
-      title: 'Pay-to-Listen Autonome',
-      description: 'Permettez à vos LLMs locaux (Claude Desktop, etc.) d\'analyser la musique en toute autonomie. Le serveur MCP Tag-per-Track gère le protocole de paiement x402 on-chain sans intervention humaine.',
+      title: 'Pay-to-Listen Autonome & A&R Hybride',
+      description: 'Permettez à vos LLMs (Claude Desktop, etc.) d\'analyser la musique et de qualifier la traction des artistes en toute autonomie grâce aux outils MCP Tag-per-Track.',
       toolAnalyzeTitle: 'analyze_audio',
-      toolAnalyzeDesc: 'Outil pour extraire le BPM, la clé, l\'humeur et le genre depuis n\'importe quelle URL.',
+      toolAnalyzeDesc: 'Outil pour extraire BPM, clé, humeur et genres via Essentia (x402).',
+      toolArtistStatsTitle: 'lookup_artist_stats',
+      toolArtistStatsDesc: 'Enrichissement Spotify en direct (auditeurs mensuels, popularité, abonnés) pour scoring A&R.',
       toolX402Title: 'x402 Intégré',
       toolX402Desc: 'Signature EIP-3009 automatisée pour l\'USDC sur Base.',
-      badgeVersion: 'MCP V1.0',
+      badgeVersion: 'MCP V1.1',
       badgeNpm: 'Disponible sur NPM',
       copyConfig: 'Copier la Config',
       copied: 'Copié !'

@@ -1,7 +1,7 @@
 import { Component, ElementRef, inject, signal, ViewChild, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Web3Service } from '../services/web3.service';
-import { ApiService, PaymentInvoice, PaymentRequiredError } from '../services/api.service';
+import { ApiService, PaymentInvoice, PaymentRequiredError, ArtistStatsResponse } from '../services/api.service';
 import { I18nService } from '../services/i18n.service';
 import { TranslatePipe } from '../pipes/translate.pipe';
 import { MetadataResultComponent } from '../metadata-result/metadata-result.component';
@@ -21,6 +21,35 @@ export class PlaygroundComponent {
   fileUrl = signal<string | null>(null);
   selectedFile = signal<File | null>(null);
   inputUrl = signal<string | null>(null);
+  artistName = signal<string>('');
+  artistStats = signal<ArtistStatsResponse | null>(null);
+
+  /** Computed track title for display and matrix */
+  trackTitle = computed(() => {
+    const file = this.selectedFile();
+    if (file) {
+      const nameWithoutExt = file.name.replace(/\.[^/.]+$/, '');
+      if (nameWithoutExt.includes(' - ') || nameWithoutExt.includes(' – ')) {
+        const parts = nameWithoutExt.split(/ - | – /);
+        return parts.slice(1).join(' - ').trim() || nameWithoutExt;
+      }
+      return nameWithoutExt;
+    }
+    const url = this.inputUrl();
+    if (url) {
+      try {
+        const urlObj = new URL(url);
+        const segment = urlObj.pathname.split('/').pop();
+        if (segment) {
+          return decodeURIComponent(segment).replace(/\.[^/.]+$/, '');
+        }
+      } catch {
+        // keep fallback
+      }
+      return url;
+    }
+    return 'Demo Track';
+  });
 
   private readonly FORBIDDEN_DOMAINS = ['youtube.com', 'youtu.be', 'vimeo.com', 'dailymotion.com', 'soundcloud.com'];
   private readonly ALLOWED_EXTS = ['.mp3', '.wav', '.ogg', '.flac', '.m4a', '.aac'];
@@ -89,10 +118,25 @@ export class PlaygroundComponent {
       this.selectedFile.set(file);
       this.inputUrl.set(null); // Clear URL if a file is selected
       this.fileUrl.set(URL.createObjectURL(file));
+
+      // Auto-extract artist name from filename if formatted like "Artist - Title.ext"
+      const nameWithoutExt = file.name.replace(/\.[^/.]+$/, '');
+      if (nameWithoutExt.includes(' - ') || nameWithoutExt.includes(' – ')) {
+        const parts = nameWithoutExt.split(/ - | – /);
+        if (parts.length > 1 && parts[0].trim() && !this.artistName()) {
+          this.artistName.set(parts[0].trim());
+        }
+      }
+
       this.resetResults();
     } else {
       this.errorMessage.set(this.i18n.t('playground.errors.invalidFile'));
     }
+  }
+
+  onArtistInput(event: Event) {
+    const val = (event.target as HTMLInputElement).value;
+    this.artistName.set(val);
   }
 
   private validateUrl(url: string): string | null {
@@ -152,6 +196,7 @@ export class PlaygroundComponent {
     this.metadataResult.set(null);
     this.errorMessage.set(null);
     this.settlementTx.set(null);
+    this.artistStats.set(null);
   }
 
   /** Full reset: clears everything including file/URL inputs. Used by "Analyze another track". */
@@ -159,6 +204,7 @@ export class PlaygroundComponent {
     this.selectedFile.set(null);
     this.fileUrl.set(null);
     this.inputUrl.set(null);
+    this.artistName.set('');
     this.resetResults();
   }
 
@@ -202,8 +248,26 @@ export class PlaygroundComponent {
 
     try {
       const network = this.invoiceDetails()?.network || 'base';
-      // Use either the file or the URL string
-      const result = await this.apiService.analyzeAudio(file || url!, paymentProof, network, this.extractLyrics());
+
+      // If an artist name is provided, query Spotify streaming metrics concurrently
+      const trimmedArtist = this.artistName().trim();
+      const artistPromise = trimmedArtist
+        ? this.apiService.getArtistStats(trimmedArtist).catch((err) => {
+            console.warn('Artist stats fetch skipped or failed gracefully:', err);
+            return null;
+          })
+        : Promise.resolve(null);
+
+      // Execute audio analysis and artist stats lookup in parallel
+      const [result, fetchedArtistStats] = await Promise.all([
+        this.apiService.analyzeAudio(file || url!, paymentProof, network, this.extractLyrics()),
+        artistPromise,
+      ]);
+
+      if (fetchedArtistStats) {
+        this.artistStats.set(fetchedArtistStats);
+      }
+
       this.metadataResult.set(result?.data || result);
       this.paymentRequired.set(false);
       this.invoiceDetails.set(null);

@@ -22,9 +22,12 @@ export class AppComponent {
         "command": "npx",
         "args": [
           "-y",
-          "tag-per-track-mcp",
-          "0xYOUR_PRIVATE_KEY_HERE"
-        ]
+          "tag-per-track-mcp@latest"
+        ],
+        "env": {
+          "PRIVATE_KEY": "0xYOUR_BURNER_WALLET_PRIVATE_KEY_HERE",
+          "MAX_SPENDING_USDC": "0.20"
+        }
       }
     }
   };

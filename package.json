@@ -1,12 +1,18 @@
 {
-  "name": "frontend",
-  "version": "0.0.0",
+  "name": "tag-per-track-frontend",
+  "version": "1.0.0",
+  "description": "Tag-per-Track frontend showcase and playground",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Lory97/tag-per-track-frontend.git"
+  },
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "deploy": "./deploy.sh"
   },
   "private": true,
   "dependencies": {

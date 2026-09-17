@@ -249,7 +249,14 @@ export class PlaygroundComponent {
     try {
       const network = this.invoiceDetails()?.network || 'base';
 
-      // If an artist name is provided, query Spotify streaming metrics concurrently
+      if (!paymentProof) {
+        // Step 1: Pre-payment Discovery Probe
+        // Probe endpoint with lightweight payload to get the x402 invoice instantly without heavy file upload
+        await this.apiService.analyzeAudio(file || url!, undefined, network, this.extractLyrics());
+        return;
+      }
+
+      // Step 2: Payment Verified! Execute neural analysis and Spotify traction stats concurrently
       const trimmedArtist = this.artistName().trim();
       const artistPromise = trimmedArtist
         ? this.apiService.getArtistStats(trimmedArtist).catch((err) => {
@@ -258,7 +265,6 @@ export class PlaygroundComponent {
           })
         : Promise.resolve(null);
 
-      // Execute audio analysis and artist stats lookup in parallel
       const [result, fetchedArtistStats] = await Promise.all([
         this.apiService.analyzeAudio(file || url!, paymentProof, network, this.extractLyrics()),
         artistPromise,
@@ -276,15 +282,22 @@ export class PlaygroundComponent {
       if (result?.settlement?.transaction) {
         this.settlementTx.set(result.settlement.transaction);
       }
-    } catch (error) {
-      if (error instanceof PaymentRequiredError) {
+    } catch (error: any) {
+      if (
+        error instanceof PaymentRequiredError ||
+        error?.name === 'PaymentRequiredError' ||
+        error?.invoice
+      ) {
         this.paymentRequired.set(true);
         this.invoiceDetails.set(error.invoice);
-        console.log(error.invoice);
+        console.log('x402 invoice received:', error.invoice);
       } else {
         // Extract specific message from backend (NestJS standard error format)
         const err = error as any;
-        const specificError = err?.error?.message || err?.message || this.i18n.t('playground.errors.genericAnalysisError');
+        const specificError =
+          err?.error?.message ||
+          err?.message ||
+          this.i18n.t('playground.errors.genericAnalysisError');
         this.errorMessage.set(specificError);
         console.error('Backend analysis error:', error);
       }

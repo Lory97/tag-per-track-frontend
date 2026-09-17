@@ -57,7 +57,7 @@ export const en = {
       signButton: 'Sign & Settle with x402'
     },
     steps: {
-      fetching: '📡 Fetching audio track & artist traction...',
+      fetching: '📡 Initializing x402 payment protocol...',
       paymentVerified: '🧠 Payment verified! Neural listening and analysis in progress...',
       awaitingSignature: '✍️ Awaiting your Web3 signature (Gasless)...'
     },

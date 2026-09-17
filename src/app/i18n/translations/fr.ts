@@ -57,7 +57,7 @@ export const fr = {
       signButton: 'Signer & Régler avec x402'
     },
     steps: {
-      fetching: '📡 Récupération de la piste audio & traction...',
+      fetching: '📡 Initialisation du protocole x402...',
       paymentVerified: '🧠 Paiement vérifié ! Écoute neuronale et analyse en cours...',
       awaitingSignature: '✍️ En attente de votre signature Web3 (Sans frais de gaz)...'
     },

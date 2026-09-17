@@ -1,6 +1,6 @@
 import { Injectable, inject, isDevMode } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, timeout } from 'rxjs';
 import { formatUnits } from 'viem';
 
 export interface PaymentInvoice {
@@ -41,6 +41,7 @@ export class PaymentRequiredError extends Error {
   constructor(public invoice: PaymentInvoice) {
     super('Payment Required');
     this.name = 'PaymentRequiredError';
+    Object.setPrototypeOf(this, PaymentRequiredError.prototype);
   }
 }
 
@@ -64,34 +65,74 @@ export class ApiService {
       throw new Error('Artist name cannot be empty');
     }
     const url = `${this.baseUrl}/artist-stats?name=${encodeURIComponent(trimmed)}`;
-    return firstValueFrom(this.http.get<ArtistStatsResponse>(url));
+    return firstValueFrom(this.http.get<ArtistStatsResponse>(url).pipe(timeout(15000)));
   }
 
-  async analyzeAudio(fileOrUrl: File | string, paymentProof?: any, network: string = 'base', extractLyrics: boolean = false): Promise<AnalysisResponse> {
-    const targetUrl = extractLyrics ? `${this.apiUrl}-with-lyrics` : this.apiUrl;
-    
-    let headers = new HttpHeaders();
-    if (paymentProof) {
-      // Build x402 v2 PaymentPayload per official SDK schema:
-      // https://github.com/coinbase/x402/blob/main/typescript/packages/core/src/types/payments.ts
-      const proofPayload = JSON.stringify({
-        x402Version: 2,
-        accepted: this.lastAccepted,
-        payload: {
-          signature: paymentProof.signature,
-          authorization: paymentProof.authorization,
-        },
-        resource: this.lastPaymentRequired?.resource || {
-          url: targetUrl,
-          description: extractLyrics
-            ? 'Tag-per-Track: Agentic-First Musical Audio Analysis API. Extracts BPM, Key, Mood, Genres, Instruments, AND Lyrics from audio URLs.'
-            : 'Tag-per-Track: Agentic-First Musical Audio Analysis API. Extracts BPM, Key, Mood, Genres and Instruments from audio URLs.',
-          mimeType: 'application/json',
-        },
-        extensions: this.lastPaymentRequired?.extensions,
-      });
-      headers = headers.set('X-Payment-Proof', proofPayload);
+  private handle402Error(error: any): never {
+    if (error instanceof HttpErrorResponse && error.status === 402) {
+      // Parse the v2 PaymentRequired response
+      const paymentRequired = error.error?.paymentRequirements || error.error;
+      this.lastPaymentRequired = paymentRequired;
+      this.lastAccepted = paymentRequired?.accepts?.[0] || paymentRequired;
+      const rawAmount = this.lastAccepted?.amount || this.lastAccepted?.maxAmountRequired;
+
+      const invoice: PaymentInvoice = {
+        amount: rawAmount ? formatUnits(BigInt(rawAmount), 6) : '0',
+        currency: this.lastAccepted?.asset || this.lastAccepted?.currency || 'USDC',
+        network: this.lastAccepted?.network || 'eip155:8453',
+        destination_address:
+          this.lastAccepted?.payTo ||
+          this.lastAccepted?.destination_address ||
+          this.lastAccepted?.recipient ||
+          '',
+      };
+
+      throw new PaymentRequiredError(invoice);
     }
+    throw error;
+  }
+
+  async analyzeAudio(
+    fileOrUrl: File | string,
+    paymentProof?: any,
+    network: string = 'base',
+    extractLyrics: boolean = false
+  ): Promise<AnalysisResponse> {
+    const targetUrl = extractLyrics ? `${this.apiUrl}-with-lyrics` : this.apiUrl;
+
+    // Step 1: Pre-payment Discovery Probe
+    // If no payment proof is provided yet, probe the endpoint with a lightweight body.
+    // Never stream a heavy audio file before payment is confirmed (prevents upload stream stalls & double uploads).
+    if (!paymentProof) {
+      try {
+        await firstValueFrom(
+          this.http.post(targetUrl, {}, { observe: 'response' }).pipe(timeout(10000))
+        );
+      } catch (error) {
+        return this.handle402Error(error);
+      }
+    }
+
+    // Step 2: Paid Execution
+    // Build x402 v2 PaymentPayload per official SDK schema:
+    const proofPayload = JSON.stringify({
+      x402Version: 2,
+      accepted: this.lastAccepted,
+      payload: {
+        signature: paymentProof.signature,
+        authorization: paymentProof.authorization,
+      },
+      resource: this.lastPaymentRequired?.resource || {
+        url: targetUrl,
+        description: extractLyrics
+          ? 'Tag-per-Track: Agentic-First Musical Audio Analysis API. Extracts BPM, Key, Mood, Genres, Instruments, AND Lyrics from audio URLs.'
+          : 'Tag-per-Track: Agentic-First Musical Audio Analysis API. Extracts BPM, Key, Mood, Genres and Instruments from audio URLs.',
+        mimeType: 'application/json',
+      },
+      extensions: this.lastPaymentRequired?.extensions,
+    });
+
+    let headers = new HttpHeaders().set('X-Payment-Proof', proofPayload);
 
     const formData = new FormData();
     if (fileOrUrl instanceof File) {
@@ -102,10 +143,12 @@ export class ApiService {
 
     try {
       const response = await firstValueFrom(
-        this.http.post(targetUrl, formData, {
-          headers,
-          observe: 'response', // Get full response to read headers
-        })
+        this.http
+          .post(targetUrl, formData, {
+            headers,
+            observe: 'response',
+          })
+          .pipe(timeout(120000)) // 2 min max for heavy audio + lyrics processing
       );
 
       // Extract settlement info from X-Payment-Response header
@@ -125,25 +168,7 @@ export class ApiService {
         settlement,
       };
     } catch (error) {
-      if (error instanceof HttpErrorResponse && error.status === 402) {
-        // Parse the v2 PaymentRequired response
-        const paymentRequired = error.error?.paymentRequirements || error.error;
-        // Store full response and the first accepted option
-        this.lastPaymentRequired = paymentRequired;
-        this.lastAccepted = paymentRequired.accepts?.[0] || paymentRequired;
-        // Read amount from the accepted option (v2: amount, v1 fallback: maxAmountRequired)
-        const rawAmount = this.lastAccepted.amount || this.lastAccepted.maxAmountRequired;
-
-        const invoice: PaymentInvoice = {
-          // Format from smallest unit (wei) to decimal (Assuming 6 decimals for USDC)
-          amount: rawAmount ? formatUnits(BigInt(rawAmount), 6) : '0',
-          currency: this.lastAccepted.asset || this.lastAccepted.currency,
-          network: this.lastAccepted.network,
-          destination_address: this.lastAccepted.payTo || this.lastAccepted.destination_address,
-        };
-        throw new PaymentRequiredError(invoice);
-      }
-      throw error;
+      return this.handle402Error(error);
     }
   }
 }

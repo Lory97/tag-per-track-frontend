@@ -150,7 +150,7 @@ export const fr = {
       toolArtistStatsDesc: 'Enrichissement Spotify en direct (auditeurs mensuels, popularité, abonnés) pour scoring A&R.',
       toolX402Title: 'x402 Intégré',
       toolX402Desc: 'Signature EIP-3009 automatisée pour l\'USDC sur Base.',
-      badgeVersion: 'MCP V1.2.4',
+      badgeVersion: 'MCP V1.3.1',
       badgeNpm: 'Disponible sur NPM',
       copyConfig: 'Copier la Config',
       copied: 'Copié !'

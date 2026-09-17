@@ -150,7 +150,7 @@ export const en = {
       toolArtistStatsDesc: 'Live Spotify metrics (monthly listeners, popularity, followers) for A&R qualification.',
       toolX402Title: 'x402 Built-in',
       toolX402Desc: 'Automated EIP-3009 signing for USDC on Base.',
-      badgeVersion: 'MCP V1.2.4',
+      badgeVersion: 'MCP V1.3.1',
       badgeNpm: 'Now available on NPM',
       copyConfig: 'Copy Config',
       copied: 'Copied!'

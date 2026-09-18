@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { PlaygroundComponent } from './playground/playground.component';
 import { I18nService } from './services/i18n.service';
 import { TranslatePipe } from './pipes/translate.pipe';
+import { BrandLogoComponent } from './brand-logo/brand-logo.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, PlaygroundComponent, TranslatePipe],
+  imports: [CommonModule, PlaygroundComponent, TranslatePipe, BrandLogoComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

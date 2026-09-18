@@ -4,25 +4,76 @@
 
 @layer utilities {
   .animate-step {
-    animation: slideIn 0.4s ease-out forwards;
+    animation: slideIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
   
   @keyframes slideIn {
     from {
       opacity: 0;
-      transform: translateY(10px);
+      transform: translateY(8px);
     }
     to {
       opacity: 1;
       transform: translateY(0);
     }
   }
+
+  /* LED Glows */
+  .led-glow-green {
+    box-shadow: 0 0 6px rgba(16, 185, 129, 0.8), 0 0 12px rgba(16, 185, 129, 0.4);
+  }
+
+  .led-glow-amber {
+    box-shadow: 0 0 6px rgba(255, 107, 53, 0.8), 0 0 12px rgba(255, 107, 53, 0.4);
+  }
+
+  .led-glow-red {
+    box-shadow: 0 0 6px rgba(239, 68, 68, 0.8), 0 0 12px rgba(239, 68, 68, 0.4);
+  }
+
+  /* Audio Meter Segment Gradients */
+  .meter-bar-green {
+    background-color: #10B981;
+  }
+
+  .meter-bar-amber {
+    background-color: #F59E0B;
+  }
+
+  .meter-bar-red {
+    background-color: #EF4444;
+  }
 }
 
 html {
   scroll-behavior: smooth;
+  color-scheme: dark;
+  overflow-x: hidden;
+  max-width: 100%;
 }
 
 body {
-  @apply bg-obsidian text-light-gray font-sans antialiased;
+  @apply bg-studio-bg text-studio-text font-sans antialiased selection:bg-amber-studio/30 selection:text-white;
+  overflow-x: hidden;
+  max-width: 100%;
+  width: 100%;
+}
+
+/* Professional DAW Dark Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #121214;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2A2A30;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #FF6B35;
 }

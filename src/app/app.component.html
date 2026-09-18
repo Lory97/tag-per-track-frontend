@@ -1,43 +1,53 @@
-<div class="min-h-screen bg-obsidian text-light-gray selection:bg-electric-cyan/30">
+<div class="min-h-screen bg-studio-bg text-studio-text selection:bg-amber-studio/30">
 
   <!-- Navigation Header -->
-  <header class="fixed top-0 w-full z-50 bg-obsidian/80 backdrop-blur-md border-b border-dark-gray">
+  <header class="fixed top-0 w-full z-50 bg-studio-bg/90 backdrop-blur-md border-b border-studio-border">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-      <div class="flex items-center space-x-2 group cursor-pointer"
+      <div class="flex items-center space-x-3 group cursor-pointer"
         onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
-        <img src="favicon.png" alt="Tag-per-Track Logo"
-          class="w-8 h-8 rounded-lg shadow-[0_0_15px_rgba(102,252,241,0.3)] group-hover:scale-110 transition-transform">
-        <span class="text-xl font-bold tracking-tight text-white">Tag-per-Track</span>
+        <div class="relative flex items-center justify-center">
+          <div class="w-8 h-8 rounded-md bg-studio-surface border border-studio-border group-hover:border-amber-studio transition-colors flex items-center justify-center p-0.5 shadow-sm">
+            <app-brand-logo class="w-full h-full"></app-brand-logo>
+          </div>
+          <span class="absolute -bottom-1 -right-1 w-2 h-2 rounded-full bg-led-green led-glow-green"></span>
+        </div>
+        <div class="flex flex-col">
+          <span class="text-base font-bold tracking-tight text-white leading-none">Tag-per-Track</span>
+          <span class="text-[10px] font-mono tracking-widest uppercase text-studio-muted leading-tight mt-0.5">STUDIO // A&R DESK</span>
+        </div>
       </div>
       <nav class="hidden md:flex items-center space-x-8">
         <a href="#playground"
-          class="text-sm font-medium hover:text-electric-cyan transition-colors">{{ 'nav.playground' | translate }}</a>
+          class="text-xs font-mono uppercase tracking-wider text-studio-text-dim hover:text-amber-studio transition-colors">{{ 'nav.playground' | translate }}</a>
         <a href="#agentkit"
-          class="text-sm font-medium hover:text-electric-cyan transition-colors">{{ 'nav.agentkit' | translate }}</a>
+          class="text-xs font-mono uppercase tracking-wider text-studio-text-dim hover:text-amber-studio transition-colors">{{ 'nav.agentkit' | translate }}</a>
         <a href="#mcp"
-          class="text-sm font-medium hover:text-electric-cyan transition-colors">{{ 'nav.mcp' | translate }}</a>
+          class="text-xs font-mono uppercase tracking-wider text-studio-text-dim hover:text-amber-studio transition-colors">{{ 'nav.mcp' | translate }}</a>
         <a href="https://api.tag-per-track.cloud/api/docs" target="_blank"
-          class="text-sm font-medium hover:text-electric-cyan transition-colors">{{ 'nav.apiDocs' | translate }}</a>
+          class="text-xs font-mono uppercase tracking-wider text-studio-text-dim hover:text-amber-studio transition-colors flex items-center gap-1.5">
+          <span>{{ 'nav.apiDocs' | translate }}</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="opacity-60"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </a>
       </nav>
 
-      <!-- Language Selector -->
-      <div class="flex items-center bg-dark-gray/60 p-1 rounded-xl border border-gray-800 backdrop-blur-sm">
+      <!-- Language Selector (Tactile Hardware Toggle) -->
+      <div class="flex items-center bg-studio-surface p-1 rounded-lg border border-studio-border">
         <button (click)="i18n.setLanguage('en')"
-          [class.bg-electric-cyan]="i18n.currentLang() === 'en'"
-          [class.text-obsidian]="i18n.currentLang() === 'en'"
+          [class.bg-amber-studio]="i18n.currentLang() === 'en'"
+          [class.text-studio-bg]="i18n.currentLang() === 'en'"
           [class.font-bold]="i18n.currentLang() === 'en'"
-          [class.text-gray-400]="i18n.currentLang() !== 'en'"
-          class="px-2.5 py-1 rounded-lg text-xs transition-all flex items-center gap-1.5 cursor-pointer">
-          <span>🇬🇧</span>
+          [class.shadow-sm]="i18n.currentLang() === 'en'"
+          [class.text-studio-muted]="i18n.currentLang() !== 'en'"
+          class="px-2.5 py-1 rounded text-xs font-mono transition-all flex items-center gap-1.5 cursor-pointer hover:text-white">
           <span>EN</span>
         </button>
         <button (click)="i18n.setLanguage('fr')"
-          [class.bg-electric-cyan]="i18n.currentLang() === 'fr'"
-          [class.text-obsidian]="i18n.currentLang() === 'fr'"
+          [class.bg-amber-studio]="i18n.currentLang() === 'fr'"
+          [class.text-studio-bg]="i18n.currentLang() === 'fr'"
           [class.font-bold]="i18n.currentLang() === 'fr'"
-          [class.text-gray-400]="i18n.currentLang() !== 'fr'"
-          class="px-2.5 py-1 rounded-lg text-xs transition-all flex items-center gap-1.5 cursor-pointer">
-          <span>🇫🇷</span>
+          [class.shadow-sm]="i18n.currentLang() === 'fr'"
+          [class.text-studio-muted]="i18n.currentLang() !== 'fr'"
+          class="px-2.5 py-1 rounded text-xs font-mono transition-all flex items-center gap-1.5 cursor-pointer hover:text-white">
           <span>FR</span>
         </button>
       </div>
@@ -50,63 +60,88 @@
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div class="text-center">
           <span
-            class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-dark-gray text-electric-cyan border border-electric-cyan/20 mb-8 animate-pulse">
+            class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-md text-xs font-mono font-medium bg-studio-surface text-amber-studio border border-studio-border mb-8 shadow-sm">
+            <span class="w-1.5 h-1.5 rounded-full bg-amber-studio animate-pulse"></span>
             {{ 'hero.badge' | translate }}
           </span>
-          <h1 class="text-5xl sm:text-7xl font-extrabold text-white tracking-tight mb-6">
+          <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold text-white tracking-tight mb-6">
             {{ 'hero.titleLine1' | translate }} <br class="hidden sm:block">
-            <span class="text-transparent bg-clip-text bg-gradient-to-r from-electric-cyan to-teal-glow">
+            <span class="text-amber-studio">
               {{ 'hero.titleHighlight' | translate }}
             </span>
           </h1>
-          <p class="text-xl text-light-gray max-w-2xl mx-auto mb-10 leading-relaxed">
-            {{ 'hero.subtitle' | translate }} <span class="text-white font-semibold">{{ 'hero.subtitleHighlight' | translate }}</span>.
+          <p class="text-lg sm:text-xl text-studio-text-dim max-w-2xl mx-auto mb-10 leading-relaxed font-sans">
+            {{ 'hero.subtitle' | translate }} <span class="text-white font-semibold underline decoration-amber-studio/50 decoration-2 underline-offset-4">{{ 'hero.subtitleHighlight' | translate }}</span>.
           </p>
           <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
             <a href="#playground"
-              class="px-8 py-4 rounded-xl bg-electric-cyan text-obsidian font-bold hover:shadow-[0_0_20px_rgba(102,252,241,0.4)] transition-all transform hover:-translate-y-1">
-              {{ 'hero.testButton' | translate }}
+              class="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-amber-studio hover:bg-amber-glow text-studio-bg font-bold font-mono text-xs uppercase tracking-wider transition-all shadow-[0_2px_14px_rgba(255,107,53,0.3)] hover:shadow-[0_4px_22px_rgba(255,107,53,0.45)] active:translate-y-px flex items-center justify-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              <span>{{ 'hero.testButton' | translate }}</span>
             </a>
             <a href="#developers"
-              class="px-8 py-4 rounded-xl bg-dark-gray text-white border border-light-gray/20 font-bold hover:bg-dark-gray/80 transition-all">
-              {{ 'hero.devButton' | translate }}
+              class="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-studio-surface hover:bg-studio-raised text-studio-text border border-studio-border hover:border-studio-border-light font-mono text-xs uppercase tracking-wider transition-all shadow-sm active:translate-y-px flex items-center justify-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+              <span>{{ 'hero.devButton' | translate }}</span>
             </a>
           </div>
         </div>
       </div>
-      <!-- Background Glow -->
+      <!-- Subtle Warm Ambient Grid Light -->
       <div
-        class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-electric-cyan/5 blur-[120px] rounded-full -z-10">
+        class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[450px] bg-amber-studio/[0.03] blur-[140px] rounded-full -z-10 pointer-events-none">
       </div>
     </section>
 
-    <!-- Story Section -->
-    <section class="py-24 bg-dark-gray/30 border-y border-dark-gray">
+    <!-- Story Section (Cue Sheet Master Memo) -->
+    <section class="py-20 bg-studio-surface/40 border-y border-studio-border">
       <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 class="text-3xl font-bold text-white mb-8 text-center italic">{{ 'story.quote' | translate }}</h2>
-        <div class="bg-obsidian/40 border-l-4 border-electric-cyan p-8 rounded-r-2xl">
-          <p class="text-lg leading-relaxed text-light-gray">
+        <div class="flex items-center justify-center gap-2 mb-6">
+          <span class="w-1.5 h-1.5 rounded-full bg-amber-studio"></span>
+          <span class="text-xs font-mono tracking-widest uppercase text-studio-muted">MEMO D'INTENTION // STUDIO DISPATCH</span>
+        </div>
+        <h2 class="text-2xl sm:text-3xl font-bold text-white mb-8 text-center italic tracking-tight">{{ 'story.quote' | translate }}</h2>
+        <div class="bg-studio-bg/80 border-l-2 border-amber-studio border-y border-r border-studio-border p-8 rounded-xl shadow-studio-panel">
+          <p class="text-base sm:text-lg leading-relaxed text-studio-text-dim font-sans">
             {{ 'story.content' | translate }}
           </p>
         </div>
       </div>
     </section>
 
-    <!-- Playground Section -->
+    <!-- Playground Section (Mastering Bench Rack) -->
     <section id="playground" class="py-24">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-16">
-          <h2 class="text-4xl font-bold text-white mb-4">{{ 'playground.sectionTitle' | translate }}</h2>
-          <p class="text-light-gray max-w-xl mx-auto">
+        <div class="text-center mb-14">
+          <div class="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-amber-studio mb-3">
+            <span class="w-2 h-0.5 bg-amber-studio"></span>
+            <span>TEST BENCH CONSOLE // X402 ENGINE</span>
+            <span class="w-2 h-0.5 bg-amber-studio"></span>
+          </div>
+          <h2 class="text-3xl sm:text-5xl font-extrabold text-white mb-4 tracking-tight">{{ 'playground.sectionTitle' | translate }}</h2>
+          <p class="text-studio-text-dim text-sm sm:text-base max-w-xl mx-auto">
             {{ 'playground.sectionDescription' | translate }} <span class="text-white font-semibold">{{ 'playground.sectionDescriptionHighlight' | translate }}</span>
             {{ 'playground.sectionDescriptionEnd' | translate }}
           </p>
         </div>
 
-        <!-- Angular Playground Integration -->
+        <!-- Angular Playground Hardware Frame -->
         <div
-          class="max-w-3xl mx-auto p-1 rounded-2xl bg-gradient-to-b from-dark-gray to-obsidian border border-light-gray/10 shadow-2xl">
-          <div class="bg-obsidian rounded-[calc(1rem-1px)] p-6 min-h-[400px]">
+          class="max-w-4xl mx-auto rounded-2xl bg-studio-surface border border-studio-border shadow-studio-panel overflow-hidden w-full min-w-0">
+          <!-- Top Chassis Screw Bar -->
+          <div class="bg-studio-raised px-3 sm:px-4 py-2 border-b border-studio-border flex flex-wrap sm:flex-nowrap items-center justify-between gap-1.5 sm:gap-3 text-[10px] sm:text-[11px] font-mono text-studio-muted min-w-0">
+            <div class="flex items-center gap-2 min-w-0">
+              <span class="w-2 h-2 rounded-full border border-studio-border flex items-center justify-center text-[8px] leading-none text-studio-muted shrink-0">+</span>
+              <span class="uppercase tracking-wider text-studio-text-dim font-semibold truncate">UNIT 01 : ANALOG INGESTION</span>
+            </div>
+            <div class="flex items-center gap-2 sm:gap-3 shrink-0 text-[9px] sm:text-[10px]">
+              <span class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-led-green led-glow-green"></span> 44.1/48kHz</span>
+              <span>BASE EIP-712</span>
+              <span class="w-2 h-2 rounded-full border border-studio-border flex items-center justify-center text-[8px] leading-none text-studio-muted shrink-0">+</span>
+            </div>
+          </div>
+
+          <div class="bg-studio-bg p-3 sm:p-8 min-h-[400px] w-full min-w-0 overflow-hidden">
             <app-playground></app-playground>
           </div>
         </div>
@@ -114,122 +149,138 @@
     </section>
 
     <!-- Developer Section -->
-    <section id="developers" class="py-24 bg-dark-gray/30 border-t border-dark-gray">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-20">
-        <h2 class="text-5xl font-bold text-white mb-4">{{ 'dev.title' | translate }}</h2>
-        <p class="text-light-gray text-lg max-w-2xl mx-auto">
+    <section id="developers" class="py-16 sm:py-24 bg-studio-surface/40 border-t border-studio-border w-full overflow-hidden">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-12 sm:mb-16">
+        <div class="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-amber-studio mb-3">
+          <span class="w-2 h-0.5 bg-amber-studio"></span>
+          <span>PROGRAMMATIC PROTOCOL ACCESS</span>
+          <span class="w-2 h-0.5 bg-amber-studio"></span>
+        </div>
+        <h2 class="text-3xl sm:text-5xl font-extrabold text-white mb-4 tracking-tight">{{ 'dev.title' | translate }}</h2>
+        <p class="text-studio-text-dim text-sm sm:text-lg max-w-2xl mx-auto">
           {{ 'dev.subtitle' | translate }}
         </p>
       </div>
 
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full min-w-0">
         <!-- SDK Section -->
-        <div id="agentkit" class="grid lg:grid-cols-2 gap-16 items-center py-24 border-b border-white/5 scroll-mt-20">
-          <div>
-            <div class="flex items-center space-x-2 mb-6">
-              <span class="px-3 py-1 rounded-full bg-electric-cyan/10 text-electric-cyan text-xs font-bold uppercase tracking-widest">{{ 'dev.sdk.badge' | translate }}</span>
+        <div id="agentkit" class="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center py-12 lg:py-16 border-b border-studio-border scroll-mt-20 w-full min-w-0">
+          <div class="min-w-0 w-full">
+            <div class="flex items-center space-x-2 mb-4">
+              <span class="px-2.5 py-1 rounded bg-amber-dim text-amber-studio border border-amber-studio/30 text-xs font-mono font-bold uppercase tracking-wider">{{ 'dev.sdk.badge' | translate }}</span>
             </div>
-            <h2 class="text-4xl font-bold text-white mb-6">{{ 'dev.sdk.title' | translate }}</h2>
-            <p class="text-lg text-light-gray mb-8 leading-relaxed">
+            <h2 class="text-2xl sm:text-4xl font-extrabold text-white mb-4 sm:mb-5 tracking-tight">{{ 'dev.sdk.title' | translate }}</h2>
+            <p class="text-sm sm:text-base text-studio-text-dim mb-6 sm:mb-8 leading-relaxed font-sans">
               {{ 'dev.sdk.description' | translate }}
             </p>
-            <ul class="space-y-4">
-              <li class="flex items-center space-x-3 text-sm">
-                <span class="w-1.5 h-1.5 rounded-full bg-electric-cyan"></span>
+            <ul class="space-y-3 font-mono text-xs sm:text-sm text-studio-text-dim">
+              <li class="flex items-center space-x-3">
+                <span class="w-1.5 h-1.5 rounded-full bg-amber-studio shrink-0"></span>
                 <span>{{ 'dev.sdk.features.0' | translate }}</span>
               </li>
-              <li class="flex items-center space-x-3 text-sm">
-                <span class="w-1.5 h-1.5 rounded-full bg-electric-cyan"></span>
+              <li class="flex items-center space-x-3">
+                <span class="w-1.5 h-1.5 rounded-full bg-amber-studio shrink-0"></span>
                 <span>{{ 'dev.sdk.features.1' | translate }}</span>
               </li>
-              <li class="flex items-center space-x-3 text-sm">
-                <span class="w-1.5 h-1.5 rounded-full bg-electric-cyan"></span>
+              <li class="flex items-center space-x-3">
+                <span class="w-1.5 h-1.5 rounded-full bg-amber-studio shrink-0"></span>
                 <span>{{ 'dev.sdk.features.2' | translate }}</span>
               </li>
             </ul>
           </div>
 
-          <!-- Styled Terminal for SDK -->
-          <div class="bg-black rounded-xl overflow-hidden shadow-2xl border border-white/10 group">
-            <div class="bg-dark-gray px-4 py-2 flex items-center justify-between border-b border-white/5">
-              <div class="flex items-center space-x-2">
-                <div class="w-2.5 h-2.5 rounded-full bg-red-500/80"></div>
-                <div class="w-2.5 h-2.5 rounded-full bg-yellow-500/80"></div>
-                <div class="w-2.5 h-2.5 rounded-full bg-green-500/80"></div>
-                <span class="text-[10px] text-light-gray/50 ml-2 font-mono uppercase tracking-widest">{{ 'dev.sdk.terminalTitle' | translate }}</span>
+          <!-- Styled Hardware Terminal for SDK -->
+          <div class="min-w-0 w-full overflow-hidden bg-studio-bg rounded-xl shadow-studio-panel border border-studio-border">
+            <div class="bg-studio-surface px-3.5 sm:px-4 py-2.5 flex items-center justify-between border-b border-studio-border gap-2 min-w-0">
+              <div class="flex items-center space-x-2 min-w-0">
+                <div class="w-2.5 h-2.5 rounded-full bg-studio-border shrink-0"></div>
+                <div class="w-2.5 h-2.5 rounded-full bg-studio-border shrink-0"></div>
+                <div class="w-2.5 h-2.5 rounded-full bg-amber-studio/70 shrink-0"></div>
+                <span class="text-[10px] sm:text-[11px] text-studio-text-dim ml-1 sm:ml-2 font-mono uppercase tracking-wider truncate">{{ 'dev.sdk.terminalTitle' | translate }}</span>
               </div>
+              <span class="text-[9px] sm:text-[10px] font-mono text-studio-muted shrink-0">NPM // ESM</span>
             </div>
-            <div class="p-6 font-mono text-sm leading-relaxed overflow-x-auto">
-              <div class="mb-4">
-                <span class="text-teal-glow">$</span> <span class="text-white">npm install tag-per-track-agentkit</span>
+            <div class="p-4 sm:p-6 font-mono text-xs sm:text-sm leading-relaxed overflow-x-auto bg-studio-bg w-full">
+              <div class="mb-4 whitespace-nowrap">
+                <span class="text-amber-studio">$</span> <span class="text-white">npm install tag-per-track-agentkit</span>
               </div>
-              <div>
-                <span class="text-purple-400">import</span> {{ '{' }} createTagPerTrackTool {{ '}' }} <span
-                  class="text-purple-400">from</span> <span class="text-electric-cyan">"tag-per-track-agentkit"</span>;
+              <div class="whitespace-nowrap">
+                <span class="text-amber-glow">import</span> {{ '{' }} createTagPerTrackTool {{ '}' }} <span
+                  class="text-amber-glow">from</span> <span class="text-studio-gold">"tag-per-track-agentkit"</span>;
               </div>
-              <div class="mt-2 text-light-gray/70">
-                <span class="text-purple-400">const</span> tool = <span
-                  class="text-yellow-400">createTagPerTrackTool</span>(wallet);
+              <div class="mt-2 text-studio-text-dim whitespace-nowrap">
+                <span class="text-amber-glow">const</span> tool = <span
+                  class="text-white font-semibold">createTagPerTrackTool</span>(wallet);
               </div>
-              <div class="mt-4 opacity-50 text-xs italic">{{ 'dev.sdk.comment' | translate }}</div>
+              <div class="mt-4 text-studio-muted text-xs italic">{{ 'dev.sdk.comment' | translate }}</div>
             </div>
           </div>
         </div>
 
         <!-- MCP Section -->
-        <div id="mcp" class="grid lg:grid-cols-2 gap-16 items-center py-24 scroll-mt-20">
-          <div class="order-2 lg:order-1">
+        <div id="mcp" class="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center py-12 lg:py-16 scroll-mt-20 w-full min-w-0">
+          <div class="order-2 lg:order-1 min-w-0 w-full overflow-hidden">
             <!-- Styled Config Block -->
-            <div class="bg-black rounded-xl overflow-hidden shadow-2xl border border-white/10 relative group">
-              <div class="bg-dark-gray px-4 py-2 flex items-center justify-between border-b border-white/5">
-                <div class="flex items-center space-x-2">
-                  <div class="w-2.5 h-2.5 rounded-full bg-red-500/80"></div>
-                  <div class="w-2.5 h-2.5 rounded-full bg-yellow-500/80"></div>
-                  <div class="w-2.5 h-2.5 rounded-full bg-green-500/80"></div>
-                  <span class="text-[10px] text-light-gray/50 ml-2 font-mono uppercase tracking-widest">claude_desktop_config.json</span>
+            <div class="bg-studio-bg rounded-xl shadow-studio-panel border border-studio-border relative min-w-0 w-full overflow-hidden">
+              <div class="bg-studio-surface px-3.5 sm:px-4 py-2.5 flex items-center justify-between border-b border-studio-border gap-2 min-w-0">
+                <div class="flex items-center space-x-2 min-w-0">
+                  <div class="w-2.5 h-2.5 rounded-full bg-studio-border shrink-0"></div>
+                  <div class="w-2.5 h-2.5 rounded-full bg-studio-border shrink-0"></div>
+                  <div class="w-2.5 h-2.5 rounded-full bg-amber-studio/70 shrink-0"></div>
+                  <span class="text-[10px] sm:text-[11px] text-studio-text-dim ml-1 sm:ml-2 font-mono uppercase tracking-wider truncate">claude_desktop_config.json</span>
                 </div>
                 <button (click)="copyMcpConfig()" 
-                  class="text-[10px] bg-electric-cyan/10 text-electric-cyan px-2 py-1 rounded hover:bg-electric-cyan/20 transition-colors uppercase tracking-widest font-bold cursor-pointer">
+                  class="text-[10px] font-mono uppercase tracking-wider font-bold bg-amber-dim text-amber-studio border border-amber-studio/30 px-2 sm:px-2.5 py-1 rounded hover:bg-amber-studio hover:text-studio-bg transition-colors cursor-pointer shrink-0">
                   {{ (copied() ? 'dev.mcp.copied' : 'dev.mcp.copyConfig') | translate }}
                 </button>
               </div>
-              <div class="p-6 font-mono text-xs sm:text-sm leading-relaxed overflow-x-auto bg-gradient-to-br from-black to-dark-gray/20">
-                <pre class="text-light-gray"><code class="text-white">{{ mcpConfig | json }}</code></pre>
+              <div class="p-4 sm:p-6 font-mono text-xs sm:text-sm leading-relaxed overflow-x-auto bg-studio-bg w-full">
+                <pre class="text-studio-text overflow-x-auto"><code class="text-studio-text">{{ mcpConfig | json }}</code></pre>
               </div>
-              <!-- Subtle Glow Effect -->
-              <div class="absolute -inset-1 bg-electric-cyan/5 blur-xl group-hover:bg-electric-cyan/10 transition-all -z-10"></div>
             </div>
           </div>
 
-          <div class="order-1 lg:order-2">
-            <div class="flex items-center space-x-2 mb-6">
-              <span class="px-3 py-1 rounded-full bg-electric-cyan/10 text-electric-cyan text-xs font-bold uppercase tracking-widest">{{ 'dev.mcp.badge' | translate }}</span>
+          <div class="order-1 lg:order-2 min-w-0 w-full">
+            <div class="flex items-center space-x-2 mb-4">
+              <span class="px-2.5 py-1 rounded bg-amber-dim text-amber-studio border border-amber-studio/30 text-xs font-mono font-bold uppercase tracking-wider">{{ 'dev.mcp.badge' | translate }}</span>
             </div>
-            <h2 class="text-4xl font-bold text-white mb-6">{{ 'dev.mcp.title' | translate }}</h2>
-            <p class="text-lg text-light-gray mb-8 leading-relaxed">
+            <h2 class="text-2xl sm:text-4xl font-extrabold text-white mb-4 sm:mb-5 tracking-tight">{{ 'dev.mcp.title' | translate }}</h2>
+            <p class="text-sm sm:text-base text-studio-text-dim mb-6 sm:mb-8 leading-relaxed font-sans">
               {{ 'dev.mcp.description' | translate }}
             </p>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div class="p-4 rounded-xl bg-obsidian border border-white/5 hover:border-electric-cyan/30 transition-all">
-                <h3 class="text-electric-cyan font-bold mb-2 font-mono text-sm truncate pr-2">{{ 'dev.mcp.toolAnalyzeTitle' | translate }}</h3>
-                <p class="text-xs text-light-gray/70 leading-relaxed">{{ 'dev.mcp.toolAnalyzeDesc' | translate }}</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-3.5 w-full min-w-0">
+              <div class="p-3.5 sm:p-4 rounded-xl bg-studio-surface border border-studio-border hover:border-amber-studio/50 transition-all shadow-sm min-w-0">
+                <h3 class="text-amber-studio font-bold mb-1 font-mono text-xs sm:text-sm truncate flex items-center gap-1.5">
+                  <span class="w-1.5 h-1.5 rounded-full bg-amber-studio shrink-0"></span>
+                  <span class="truncate">{{ 'dev.mcp.toolAnalyzeTitle' | translate }}</span>
+                </h3>
+                <p class="text-xs text-studio-text-dim leading-relaxed">{{ 'dev.mcp.toolAnalyzeDesc' | translate }}</p>
               </div>
-              <div class="p-4 rounded-xl bg-obsidian border border-white/5 hover:border-electric-cyan/30 transition-all">
-                <h3 class="text-electric-cyan font-bold mb-2 font-mono text-sm truncate pr-2">{{ 'dev.mcp.toolBatchTitle' | translate }}</h3>
-                <p class="text-xs text-light-gray/70 leading-relaxed">{{ 'dev.mcp.toolBatchDesc' | translate }}</p>
+              <div class="p-3.5 sm:p-4 rounded-xl bg-studio-surface border border-studio-border hover:border-amber-studio/50 transition-all shadow-sm min-w-0">
+                <h3 class="text-amber-studio font-bold mb-1 font-mono text-xs sm:text-sm truncate flex items-center gap-1.5">
+                  <span class="w-1.5 h-1.5 rounded-full bg-amber-studio shrink-0"></span>
+                  <span class="truncate">{{ 'dev.mcp.toolBatchTitle' | translate }}</span>
+                </h3>
+                <p class="text-xs text-studio-text-dim leading-relaxed">{{ 'dev.mcp.toolBatchDesc' | translate }}</p>
               </div>
-              <div class="p-4 rounded-xl bg-obsidian border border-white/5 hover:border-electric-cyan/30 transition-all">
-                <h3 class="text-electric-cyan font-bold mb-2 font-mono text-sm truncate pr-2">{{ 'dev.mcp.toolArtistStatsTitle' | translate }}</h3>
-                <p class="text-xs text-light-gray/70 leading-relaxed">{{ 'dev.mcp.toolArtistStatsDesc' | translate }}</p>
+              <div class="p-3.5 sm:p-4 rounded-xl bg-studio-surface border border-studio-border hover:border-amber-studio/50 transition-all shadow-sm min-w-0">
+                <h3 class="text-amber-studio font-bold mb-1 font-mono text-xs sm:text-sm truncate flex items-center gap-1.5">
+                  <span class="w-1.5 h-1.5 rounded-full bg-amber-studio shrink-0"></span>
+                  <span class="truncate">{{ 'dev.mcp.toolArtistStatsTitle' | translate }}</span>
+                </h3>
+                <p class="text-xs text-studio-text-dim leading-relaxed">{{ 'dev.mcp.toolArtistStatsDesc' | translate }}</p>
               </div>
-              <div class="p-4 rounded-xl bg-obsidian border border-white/5 hover:border-electric-cyan/30 transition-all">
-                <h3 class="text-electric-cyan font-bold mb-2 font-mono text-sm truncate pr-2">{{ 'dev.mcp.toolX402Title' | translate }}</h3>
-                <p class="text-xs text-light-gray/70 leading-relaxed">{{ 'dev.mcp.toolX402Desc' | translate }}</p>
+              <div class="p-3.5 sm:p-4 rounded-xl bg-studio-surface border border-studio-border hover:border-amber-studio/50 transition-all shadow-sm min-w-0">
+                <h3 class="text-amber-studio font-bold mb-1 font-mono text-xs sm:text-sm truncate flex items-center gap-1.5">
+                  <span class="w-1.5 h-1.5 rounded-full bg-amber-studio shrink-0"></span>
+                  <span class="truncate">{{ 'dev.mcp.toolX402Title' | translate }}</span>
+                </h3>
+                <p class="text-xs text-studio-text-dim leading-relaxed">{{ 'dev.mcp.toolX402Desc' | translate }}</p>
               </div>
             </div>
-            <div class="mt-8 flex items-center space-x-4 text-xs">
-              <span class="px-2 py-1 rounded bg-dark-gray text-white border border-white/10 uppercase tracking-widest font-bold">{{ 'dev.mcp.badgeVersion' | translate }}</span>
-              <span class="text-light-gray/50 italic">{{ 'dev.mcp.badgeNpm' | translate }}</span>
+            <div class="mt-6 flex items-center space-x-3 text-xs font-mono">
+              <span class="px-2 py-0.5 rounded bg-studio-surface text-white border border-studio-border uppercase tracking-widest font-semibold">{{ 'dev.mcp.badgeVersion' | translate }}</span>
+              <span class="text-studio-muted italic">{{ 'dev.mcp.badgeNpm' | translate }}</span>
             </div>
           </div>
         </div>
@@ -237,8 +288,8 @@
     </section>
   </main>
 
-  <footer class="py-12 border-t border-dark-gray text-center">
-    <p class="text-sm font-medium tracking-widest uppercase opacity-40">
+  <footer class="py-12 border-t border-studio-border text-center bg-studio-bg">
+    <p class="text-xs font-mono font-medium tracking-widest uppercase text-studio-muted">
       {{ 'footer.builtOn' | translate }}
     </p>
   </footer>

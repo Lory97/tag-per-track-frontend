@@ -1,280 +1,424 @@
-<div class="min-h-screen bg-obsidian text-light-gray flex flex-col px-6">
+<div class="bg-transparent text-studio-text flex flex-col w-full min-w-0">
 
-  <!-- Header & Wallet Connection (Fixed at top) -->
-  <div class="w-full max-w-4xl mx-auto flex justify-between items-center py-10 shrink-0">
+  <!-- Header & Wallet Connection (Rack Panel Bar) -->
+  <div class="w-full flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-6 sm:pb-8 mb-6 border-b border-studio-border">
     <div>
-      <h1 class="text-3xl font-bold text-electric-cyan flex items-center gap-3">
-        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
-          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-          class="lucide lucide-music text-neural-wave animate-pulse">
-          <path d="M9 18V5l12-2v13" />
-          <circle cx="6" cy="18" r="3" />
-          <circle cx="18" cy="16" r="3" />
+      <div class="flex items-center gap-2 mb-1">
+        <span class="w-2 h-2 rounded-full bg-amber-studio led-glow-amber"></span>
+        <span class="text-[10px] font-mono uppercase tracking-widest text-amber-studio font-bold">CHANNEL 01 // AUDIO INGESTION</span>
+      </div>
+      <h2 class="text-xl sm:text-3xl font-extrabold text-white tracking-tight flex items-center gap-2.5 sm:gap-3">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"
+          class="text-amber-studio shrink-0 sm:w-[26px] sm:h-[26px]">
+          <path d="M3 18v-6a9 9 0 0 1 18 0v6"/>
+          <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/>
         </svg>
-        {{ 'playground.title' | translate }}
-      </h1>
-      <p class="text-gray-400 mt-1">{{ 'playground.subtitle' | translate }}</p>
+        <span>{{ 'playground.title' | translate }}</span>
+      </h2>
+      <p class="text-xs font-mono text-studio-text-dim mt-1">{{ 'playground.subtitle' | translate }}</p>
     </div>
 
-    <div>
+    <!-- Hardware Wallet Connect Module -->
+    <div class="w-full sm:w-auto shrink-0 flex justify-start sm:justify-end">
       <button *ngIf="!web3Service.isConnected()" (click)="connectWallet()"
-        class="bg-electric-cyan/10 hover:bg-electric-cyan/20 text-electric-cyan border border-electric-cyan px-5 py-2.5 rounded-lg font-medium transition-all flex items-center gap-2 shadow-[0_0_15px_rgba(102,252,241,0.2)] cursor-pointer">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-          class="lucide lucide-wallet">
+        class="w-full sm:w-auto justify-center bg-studio-surface hover:bg-studio-raised text-amber-studio border border-studio-border hover:border-amber-studio/60 px-4 py-2.5 rounded-lg font-mono text-xs font-bold transition-all flex items-center gap-2 shadow-sm cursor-pointer active:translate-y-px">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M21 12V7H5a2 2 0 0 1 0-4h14v4" />
           <path d="M3 5v14a2 2 0 0 0 2 2h16v-5" />
           <path d="M18 12a2 2 0 0 0 0 4h4v-4Z" />
         </svg>
-        {{ 'playground.connectWallet' | translate }}
+        <span>{{ 'playground.connectWallet' | translate }}</span>
       </button>
       <button *ngIf="web3Service.isConnected()" (click)="disconnectWallet()"
-        class="bg-dark-gray text-light-gray border border-gray-700 hover:border-red-400/50 hover:text-red-400 px-5 py-2.5 rounded-lg font-medium flex items-center gap-2 transition-all group cursor-pointer">
-        <div class="w-2 rounded-full h-2 bg-green-400 animate-pulse group-hover:bg-red-400"></div>
-        <span class="group-hover:hidden">{{ web3Service.address() | slice:0:6 }}...{{ web3Service.address() | slice:-4
-          }}</span>
-        <span class="hidden group-hover:inline">{{ 'playground.disconnect' | translate }}</span>
+        class="w-full sm:w-auto justify-center bg-studio-surface text-studio-text border border-studio-border hover:border-red-500/50 hover:text-red-400 px-4 py-2 rounded-lg font-mono text-xs font-medium flex items-center gap-2.5 transition-all group cursor-pointer active:translate-y-px">
+        <div class="w-2 h-2 rounded-full bg-led-green led-glow-green group-hover:bg-red-500"></div>
+        <span class="group-hover:hidden tracking-wider">{{ web3Service.address() | slice:0:6 }}...{{ web3Service.address() | slice:-4 }}</span>
+        <span class="hidden group-hover:inline uppercase tracking-wider text-red-400 font-bold">{{ 'playground.disconnect' | translate }}</span>
       </button>
     </div>
   </div>
 
-  <!-- Main Content Area (Centering Container) -->
-  <div class="flex-1 flex flex-col justify-center items-center pb-20 overflow-y-auto">
+  <!-- Main Content Area -->
+  <div class="flex-1 flex flex-col justify-center items-center w-full min-w-0">
 
-    <!-- Error Message -->
+    <!-- Error Message Display -->
     <div *ngIf="errorMessage()"
-      class="w-full max-w-2xl bg-red-900/20 border border-red-500/50 text-red-200 px-6 py-4 rounded-xl mb-8 flex items-center gap-3 animate-in fade-in duration-300">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+      class="w-full bg-red-950/30 border border-red-500/40 text-red-200 px-4 sm:px-5 py-3.5 rounded-xl mb-6 flex items-center gap-3 animate-in fade-in duration-200 font-mono text-xs shadow-studio-inset">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-        class="lucide lucide-alert-circle text-red-400">
+        class="text-red-400 shrink-0">
         <circle cx="12" cy="12" r="10" />
         <line x1="12" x2="12" y1="8" y2="12" />
         <line x1="12" x2="12.01" y1="16" y2="16" />
       </svg>
-      {{ errorMessage() }}
+      <span class="flex-1">{{ errorMessage() }}</span>
+      <button (click)="errorMessage.set(null)" class="text-red-400 hover:text-white cursor-pointer text-xs">✕</button>
     </div>
 
-    <!-- Interface Playground (Centered) -->
-    <div class="w-full max-w-2xl mx-auto" *ngIf="!metadataResult()">
+    <!-- Interface Playground (Test Bench & Cue Sheet) -->
+    <div class="w-full min-w-0" *ngIf="!metadataResult()">
 
-      <!-- Input Mode: File Selected -->
+      <!-- Input Mode: File Selected (Tape Box / Cue Card) -->
       <div *ngIf="selectedFile() && !isAnalyzing()"
-        class="animate-step bg-dark-gray/30 border border-gray-800 rounded-3xl p-10 flex flex-col items-center justify-center shadow-2xl">
-        <div class="bg-electric-cyan/20 p-5 rounded-full mb-5">
-          <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-            class="text-electric-cyan">
-            <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
-            <polyline points="14 2 14 8 20 8" />
-            <path d="M8 13h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2H8Z" />
-            <path d="M12 15v2" />
-          </svg>
+        class="animate-step bg-studio-surface border border-studio-border rounded-xl p-4 sm:p-8 flex flex-col items-center justify-center shadow-studio-panel relative w-full min-w-0 overflow-hidden">
+        <div class="w-full flex items-center justify-between pb-3 sm:pb-4 mb-4 border-b border-studio-border text-[10px] sm:text-[11px] font-mono text-studio-muted">
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-amber-studio led-glow-amber"></span>
+            <span class="text-white font-bold tracking-widest uppercase truncate">TAPE DECK // LOADED</span>
+          </div>
+          <span class="text-amber-studio tracking-wider shrink-0">READY</span>
         </div>
-        <h3 class="text-xl font-bold text-electric-cyan text-center px-4 break-all">{{ selectedFile()?.name }}</h3>
-        <p class="text-gray-400 mt-2">{{ 'playground.readyForTagging' | translate }}</p>
+
+        <!-- Audio Tape Reel Visualizer (Responsive) -->
+        <div class="my-3 flex items-center justify-center gap-2 sm:gap-6 w-full max-w-full overflow-hidden">
+          <div class="w-10 h-10 sm:w-16 sm:h-16 rounded-full border-2 border-studio-border bg-studio-bg flex items-center justify-center relative shadow-studio-inset shrink-0">
+            <div class="w-4 h-4 sm:w-6 sm:h-6 rounded-full border border-amber-studio/50 bg-studio-surface flex items-center justify-center">
+              <div class="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-amber-studio"></div>
+            </div>
+            <!-- Spindle teeth -->
+            <div class="absolute w-0.5 sm:w-1 h-2 sm:h-3 bg-studio-border top-0.5 sm:top-1"></div>
+            <div class="absolute w-0.5 sm:w-1 h-2 sm:h-3 bg-studio-border bottom-0.5 sm:bottom-1"></div>
+            <div class="absolute h-0.5 sm:h-1 w-2 sm:w-3 bg-studio-border left-0.5 sm:left-1"></div>
+            <div class="absolute h-0.5 sm:h-1 w-2 sm:w-3 bg-studio-border right-0.5 sm:right-1"></div>
+          </div>
+
+          <!-- Stylized Audio Waveform Graphic -->
+          <svg class="h-8 sm:h-12 w-28 sm:w-48 text-amber-studio opacity-80 shrink min-w-0" viewBox="0 0 200 40" fill="none">
+            <line x1="10" y1="20" x2="10" y2="28" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <line x1="20" y1="20" x2="20" y2="34" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <line x1="30" y1="20" x2="30" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <line x1="40" y1="20" x2="40" y2="36" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <line x1="50" y1="20" x2="50" y2="8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <line x1="60" y1="20" x2="60" y2="38" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <line x1="70" y1="20" x2="70" y2="14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <line x1="80" y1="20" x2="80" y2="32" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <line x1="90" y1="20" x2="90" y2="6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <line x1="100" y1="20" x2="100" y2="39" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <line x1="110" y1="20" x2="110" y2="16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <line x1="120" y1="20" x2="120" y2="35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <line x1="130" y1="20" x2="130" y2="10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <line x1="140" y1="20" x2="140" y2="30" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <line x1="150" y1="20" x2="150" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <line x1="160" y1="20" x2="160" y2="36" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <line x1="170" y1="20" x2="170" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <line x1="180" y1="20" x2="180" y2="28" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <line x1="190" y1="20" x2="190" y2="22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+
+          <div class="w-10 h-10 sm:w-16 sm:h-16 rounded-full border-2 border-studio-border bg-studio-bg flex items-center justify-center relative shadow-studio-inset shrink-0">
+            <div class="w-4 h-4 sm:w-6 sm:h-6 rounded-full border border-amber-studio/50 bg-studio-surface flex items-center justify-center">
+              <div class="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-amber-studio"></div>
+            </div>
+            <!-- Spindle teeth -->
+            <div class="absolute w-0.5 sm:w-1 h-2 sm:h-3 bg-studio-border top-0.5 sm:top-1"></div>
+            <div class="absolute w-0.5 sm:w-1 h-2 sm:h-3 bg-studio-border bottom-0.5 sm:bottom-1"></div>
+            <div class="absolute h-0.5 sm:h-1 w-2 sm:w-3 bg-studio-border left-0.5 sm:left-1"></div>
+            <div class="absolute h-0.5 sm:h-1 w-2 sm:w-3 bg-studio-border right-0.5 sm:right-1"></div>
+          </div>
+        </div>
+
+        <h3 class="text-sm sm:text-lg font-bold text-white font-mono text-center px-2 sm:px-4 break-all mt-2">{{ selectedFile()?.name }}</h3>
+        <p class="text-xs font-mono text-studio-text-dim mt-1">{{ 'playground.readyForTagging' | translate }}</p>
+        
         <button (click)="removeFile()"
-          class="mt-6 text-sm text-red-400 hover:text-red-300 border border-red-400/20 hover:border-red-400/40 px-4 py-2 rounded-xl transition-all cursor-pointer">
-          {{ 'playground.removeTrack' | translate }}
+          class="mt-4 sm:mt-5 text-xs font-mono uppercase tracking-wider text-red-400 hover:text-red-300 border border-red-500/20 hover:border-red-500/40 bg-studio-bg px-3.5 py-1.5 rounded-lg transition-all cursor-pointer flex items-center gap-1.5">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+          <span>{{ 'playground.removeTrack' | translate }}</span>
         </button>
       </div>
 
-      <!-- Input Mode: URL Provided -->
+      <!-- Input Mode: URL Provided (Aux Patch Bay) -->
       <div *ngIf="inputUrl() && !selectedFile() && !isAnalyzing()"
-        class="animate-step bg-dark-gray/30 border border-gray-800 rounded-3xl p-10 flex flex-col items-center justify-center shadow-2xl">
-        <div class="bg-neural-wave/20 p-5 rounded-full mb-5">
-          <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-            class="text-neural-wave">
-            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
-            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
-          </svg>
+        class="animate-step bg-studio-surface border border-studio-border rounded-xl p-4 sm:p-8 flex flex-col items-center justify-center shadow-studio-panel w-full min-w-0 overflow-hidden">
+        <div class="w-full flex items-center justify-between pb-3 mb-4 border-b border-studio-border text-[10px] sm:text-[11px] font-mono text-studio-muted">
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-amber-studio led-glow-amber"></span>
+            <span class="text-white font-bold tracking-widest uppercase truncate">AUX LINE IN // REMOTE STREAM</span>
+          </div>
+          <span class="text-amber-studio tracking-wider shrink-0">READY</span>
         </div>
-        <p class="text-gray-400 mb-1">{{ 'playground.targetUrl' | translate }}</p>
-        <p class="text-lg font-mono text-neural-wave text-center break-all px-4">{{ inputUrl() | slice:0:60 }}{{
-          inputUrl() && inputUrl()!.length > 60 ? '...' : '' }}</p>
+        <p class="text-xs font-mono uppercase tracking-wider text-studio-text-dim mb-1">{{ 'playground.targetUrl' | translate }}</p>
+        <p class="text-xs sm:text-sm font-mono text-amber-studio text-center break-all px-3 sm:px-4 bg-studio-bg py-2 rounded-lg border border-studio-border max-w-full">{{ inputUrl() }}</p>
         <button (click)="inputUrl.set(null)"
-          class="mt-6 text-sm text-red-400 hover:text-red-300 border border-red-400/20 hover:border-red-400/40 px-4 py-2 rounded-xl transition-all cursor-pointer">
+          class="mt-4 sm:mt-5 text-xs font-mono uppercase tracking-wider text-red-400 hover:text-red-300 border border-red-500/20 hover:border-red-500/40 bg-studio-bg px-3.5 py-1.5 rounded-lg transition-all cursor-pointer">
           {{ 'playground.clearUrl' | translate }}
         </button>
       </div>
 
-      <!-- Empty State (Drop Zone + URL Field) -->
-      <div *ngIf="!selectedFile() && !inputUrl() && !isAnalyzing()" class="animate-step w-full space-y-8">
-        <!-- Zone Drop -->
+      <!-- Empty State (Studio Test Bench Cue Sheet: Drop Zone + Aux URL Input) -->
+      <div *ngIf="!selectedFile() && !inputUrl() && !isAnalyzing()" class="animate-step w-full space-y-5 sm:space-y-6 min-w-0">
+        
+        <!-- Audio Ingestion Drop Zone (Stylized Audio Deck / Waveform Metaphor) -->
         <div (click)="fileInput.click()" (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)"
           (drop)="onDrop($event)"
-          class="border-2 border-dashed border-gray-700 hover:border-electric-cyan/50 rounded-3xl p-16 flex flex-col items-center justify-center bg-dark-gray/20 cursor-pointer group transition-all"
-          [class.border-electric-cyan]="isDragging()" [class.bg-electric-cyan]="isDragging()">
+          class="border-2 border-dashed border-studio-border hover:border-amber-studio/70 rounded-xl p-5 sm:p-12 flex flex-col items-center justify-center bg-studio-surface/50 hover:bg-studio-surface/80 cursor-pointer group transition-all relative overflow-hidden w-full min-w-0"
+          [class.border-amber-studio]="isDragging()" [class.bg-amber-dim]="isDragging()">
+          
           <input type="file" #fileInput class="hidden" accept="audio/*" (change)="onFileSelected($event)" />
-          <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
-            class="text-gray-500 mb-6 group-hover:text-electric-cyan transition-colors">
-            <path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242" />
-            <path d="M12 12v9" />
-            <path d="m16 16-4-4-4 4" />
-          </svg>
-          <p class="text-2xl font-semibold text-light-gray mb-2">{{ 'playground.dropTitle' | translate }}</p>
-          <p class="text-gray-500">{{ 'playground.dropSubtitle' | translate }}</p>
+          
+          <!-- Top Cue Sheet Status Tag -->
+          <div class="absolute top-2.5 left-3 sm:top-3 sm:left-4 flex items-center gap-1.5 text-[9px] sm:text-[10px] font-mono text-studio-muted">
+            <span class="w-1.5 h-1.5 rounded-full bg-studio-border group-hover:bg-amber-studio transition-colors"></span>
+            <span class="uppercase tracking-widest">INGESTION DECK // CH-01</span>
+          </div>
+          <div class="absolute top-2.5 right-3 sm:top-3 sm:right-4 text-[9px] sm:text-[10px] font-mono text-studio-muted">
+            <span>[AIFF / WAV / FLAC / MP3]</span>
+          </div>
+
+          <!-- Stylized Audio Waveform & Mastering Head Visualizer (No generic cloud) -->
+          <div class="mb-4 sm:mb-5 mt-5 sm:mt-2 flex flex-col items-center">
+            <div class="relative w-36 sm:w-40 h-14 sm:h-16 flex items-center justify-center">
+              <!-- Background Amplitude Scale Lines -->
+              <div class="absolute inset-0 flex flex-col justify-between opacity-20 pointer-events-none">
+                <div class="border-b border-dashed border-studio-text-dim w-full"></div>
+                <div class="border-b border-studio-text-dim w-full"></div>
+                <div class="border-b border-dashed border-studio-text-dim w-full"></div>
+              </div>
+              <!-- dB Markings -->
+              <div class="absolute right-0 text-[8px] font-mono text-studio-muted flex flex-col justify-between h-full py-0.5 pointer-events-none">
+                <span>+3dB</span>
+                <span>0dB</span>
+                <span>-12dB</span>
+              </div>
+              <!-- Waveform Bars -->
+              <div class="flex items-center gap-0.5 sm:gap-1 h-10 sm:h-12">
+                <span class="w-1 bg-studio-border group-hover:bg-amber-studio h-3 rounded-full transition-all group-hover:h-5"></span>
+                <span class="w-1 bg-studio-border group-hover:bg-amber-studio h-5 rounded-full transition-all group-hover:h-8"></span>
+                <span class="w-1 bg-studio-border group-hover:bg-amber-studio h-8 rounded-full transition-all group-hover:h-12"></span>
+                <span class="w-1 bg-studio-border group-hover:bg-amber-studio h-4 rounded-full transition-all group-hover:h-6"></span>
+                <span class="w-1 bg-studio-border group-hover:bg-amber-studio h-10 rounded-full transition-all group-hover:h-12"></span>
+                <span class="w-1 bg-studio-border group-hover:bg-amber-studio h-6 rounded-full transition-all group-hover:h-10"></span>
+                <span class="w-1 bg-studio-border group-hover:bg-amber-studio h-12 rounded-full transition-all group-hover:h-12"></span>
+                <span class="w-1 bg-studio-border group-hover:bg-amber-studio h-7 rounded-full transition-all group-hover:h-9"></span>
+                <span class="w-1 bg-studio-border group-hover:bg-amber-studio h-11 rounded-full transition-all group-hover:h-12"></span>
+                <span class="w-1 bg-studio-border group-hover:bg-amber-studio h-5 rounded-full transition-all group-hover:h-7"></span>
+                <span class="w-1 bg-studio-border group-hover:bg-amber-studio h-9 rounded-full transition-all group-hover:h-11"></span>
+                <span class="w-1 bg-studio-border group-hover:bg-amber-studio h-4 rounded-full transition-all group-hover:h-6"></span>
+                <span class="w-1 bg-studio-border group-hover:bg-amber-studio h-2 rounded-full transition-all group-hover:h-4"></span>
+              </div>
+            </div>
+          </div>
+
+          <p class="text-base sm:text-xl font-bold text-white mb-1 tracking-tight group-hover:text-amber-studio transition-colors text-center">
+            {{ 'playground.dropTitle' | translate }}
+          </p>
+          <p class="text-[11px] sm:text-xs font-mono text-studio-text-dim text-center">
+            {{ 'playground.dropSubtitle' | translate }}
+          </p>
         </div>
 
-        <!-- Separator -->
-        <div class="flex items-center gap-4 text-gray-700">
-          <div class="h-px flex-1 bg-gradient-to-r from-transparent to-gray-700"></div>
-          <span class="text-xs font-bold tracking-widest uppercase">{{ 'playground.or' | translate }}</span>
-          <div class="h-px flex-1 bg-gradient-to-l from-transparent to-gray-700"></div>
+        <!-- Console Separator -->
+        <div class="flex items-center gap-4 text-studio-border">
+          <div class="h-px flex-1 bg-studio-border"></div>
+          <span class="text-[10px] font-mono font-bold tracking-widest uppercase text-studio-muted">{{ 'playground.or' | translate }}</span>
+          <div class="h-px flex-1 bg-studio-border"></div>
         </div>
 
-        <!-- URL Input -->
+        <!-- AUX URL Input (Patch Bay Interface) -->
         <div class="relative group">
-          <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-              class="text-gray-500 group-focus-within:text-electric-cyan">
+          <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-studio-muted group-focus-within:text-amber-studio">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
               <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
             </svg>
           </div>
           <input type="text" [value]="inputUrl() || ''" (input)="onUrlInput($event)"
             [placeholder]="'playground.urlPlaceholder' | translate"
-            class="w-full bg-dark-gray/30 border border-gray-700 focus:border-electric-cyan/50 rounded-2xl py-5 pl-12 pr-6 text-light-gray transition-all outline-none" />
+            class="w-full bg-studio-surface border border-studio-border focus:border-amber-studio rounded-xl py-3 pl-10 pr-4 text-xs sm:text-sm font-mono text-studio-text transition-all outline-none placeholder:text-studio-muted" />
         </div>
       </div>
 
-      <!-- Analysis Loading State -->
+      <!-- Analysis Progress State (Analog Level Meter / Peak Indicator) -->
       <div *ngIf="isAnalyzing()"
-        class="animate-step bg-dark-gray/20 border border-gray-800 rounded-3xl p-12 flex flex-col items-center justify-center space-y-8 backdrop-blur-xl">
-        <div class="relative w-20 h-20">
-          <div class="absolute inset-0 rounded-full border-4 border-gray-800"></div>
-          <div class="absolute inset-0 rounded-full border-4 border-t-electric-cyan animate-spin"></div>
+        class="animate-step bg-studio-surface border border-studio-border rounded-xl p-8 sm:p-12 flex flex-col items-center justify-center space-y-6 shadow-studio-panel">
+        
+        <!-- Multi-band Analog VU Bargraph Display -->
+        <div class="w-full max-w-xs space-y-2 py-2">
+          <div class="flex justify-between text-[10px] font-mono text-studio-muted">
+            <span>-24dB</span>
+            <span>-12dB</span>
+            <span>-6dB</span>
+            <span>0dB</span>
+            <span class="text-led-red font-bold">+3dB</span>
+          </div>
+
+          <!-- Channel L Meter -->
+          <div class="flex items-center gap-2">
+            <span class="text-[10px] font-mono text-studio-muted w-3">L</span>
+            <div class="flex-1 grid grid-cols-12 gap-1 p-1 bg-studio-bg rounded border border-studio-border">
+              <span class="h-2 rounded-xs bg-led-green led-glow-green animate-pulse"></span>
+              <span class="h-2 rounded-xs bg-led-green led-glow-green animate-pulse"></span>
+              <span class="h-2 rounded-xs bg-led-green led-glow-green animate-pulse"></span>
+              <span class="h-2 rounded-xs bg-led-green led-glow-green animate-pulse"></span>
+              <span class="h-2 rounded-xs bg-led-green led-glow-green animate-pulse"></span>
+              <span class="h-2 rounded-xs bg-led-green led-glow-green animate-pulse"></span>
+              <span class="h-2 rounded-xs bg-led-amber led-glow-amber animate-pulse"></span>
+              <span class="h-2 rounded-xs bg-led-amber led-glow-amber animate-pulse"></span>
+              <span class="h-2 rounded-xs bg-led-amber led-glow-amber animate-pulse"></span>
+              <span class="h-2 rounded-xs bg-studio-border animate-pulse"></span>
+              <span class="h-2 rounded-xs bg-studio-border"></span>
+              <span class="h-2 rounded-xs bg-studio-border"></span>
+            </div>
+          </div>
+
+          <!-- Channel R Meter -->
+          <div class="flex items-center gap-2">
+            <span class="text-[10px] font-mono text-studio-muted w-3">R</span>
+            <div class="flex-1 grid grid-cols-12 gap-1 p-1 bg-studio-bg rounded border border-studio-border">
+              <span class="h-2 rounded-xs bg-led-green led-glow-green animate-pulse"></span>
+              <span class="h-2 rounded-xs bg-led-green led-glow-green animate-pulse"></span>
+              <span class="h-2 rounded-xs bg-led-green led-glow-green animate-pulse"></span>
+              <span class="h-2 rounded-xs bg-led-green led-glow-green animate-pulse"></span>
+              <span class="h-2 rounded-xs bg-led-green led-glow-green animate-pulse"></span>
+              <span class="h-2 rounded-xs bg-led-green led-glow-green animate-pulse"></span>
+              <span class="h-2 rounded-xs bg-led-green led-glow-green animate-pulse"></span>
+              <span class="h-2 rounded-xs bg-led-amber led-glow-amber animate-pulse"></span>
+              <span class="h-2 rounded-xs bg-led-amber led-glow-amber animate-pulse"></span>
+              <span class="h-2 rounded-xs bg-led-amber led-glow-amber animate-pulse"></span>
+              <span class="h-2 rounded-xs bg-studio-border"></span>
+              <span class="h-2 rounded-xs bg-studio-border"></span>
+            </div>
+          </div>
         </div>
+
         <div class="text-center">
-          <h3 class="text-2xl font-bold tracking-tight text-light-gray animate-pulse mb-3">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded bg-amber-dim text-amber-studio border border-amber-studio/30 text-xs font-mono font-bold mb-3">
+            <span class="w-1.5 h-1.5 rounded-full bg-amber-studio animate-ping"></span>
+            <span>NEURAL AUDIO ENGINE ACTIVE</span>
+          </div>
+          <h3 class="text-lg sm:text-xl font-bold font-mono text-white tracking-wide mb-2">
             {{ loadingStep() || ('playground.taggingInProgress' | translate) }}
           </h3>
-          <p class="text-gray-500 max-w-sm mx-auto">{{ 'playground.taggingDescription' | translate }}</p>
+          <p class="text-xs font-mono text-studio-text-dim max-w-sm mx-auto">{{ 'playground.taggingDescription' | translate }}</p>
         </div>
       </div>
 
-      <!-- Actions (Visible if a source is picked and NOT analyzing) -->
-      <div class="animate-step mt-8 flex flex-col items-center gap-6 w-full"
+      <!-- Action Panel (Visible if a track/URL is loaded and not analyzing) -->
+      <div class="animate-step mt-6 flex flex-col items-center gap-5 w-full"
         *ngIf="(selectedFile() || inputUrl()) && !paymentRequired() && !isAnalyzing()">
         
-        <!-- Artist Name Input (A&R Hybrid Feature) -->
-        <div class="w-full bg-dark-gray/40 border border-gray-700/60 focus-within:border-electric-cyan/60 rounded-2xl p-4 transition-all flex flex-col gap-2 backdrop-blur-sm">
+        <!-- Artist Metadata Slot (A&R Hybrid Feature) -->
+        <div class="w-full bg-studio-surface border border-studio-border focus-within:border-amber-studio rounded-xl p-4 transition-all flex flex-col gap-2 shadow-sm">
           <div class="flex items-center justify-between">
-            <label class="text-xs font-semibold uppercase tracking-wider text-light-gray flex items-center gap-2">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+            <label class="text-[11px] font-mono font-bold uppercase tracking-wider text-studio-text flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                class="text-electric-cyan">
+                class="text-amber-studio">
                 <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
                 <circle cx="12" cy="7" r="4" />
               </svg>
-              {{ 'playground.artistInputLabel' | translate }}
+              <span>{{ 'playground.artistInputLabel' | translate }}</span>
             </label>
-            <span class="text-[11px] text-gray-400 italic hidden sm:inline">{{ 'playground.artistInputHint' | translate }}</span>
+            <span class="text-[10px] font-mono text-studio-muted hidden sm:inline">{{ 'playground.artistInputHint' | translate }}</span>
           </div>
           <div class="relative flex items-center">
             <input type="text" [value]="artistName()" (input)="onArtistInput($event)"
               [placeholder]="'playground.artistInputPlaceholder' | translate"
-              class="w-full bg-obsidian/70 border border-gray-700/70 focus:border-electric-cyan rounded-xl py-3 px-4 text-white text-sm outline-none placeholder:text-gray-500 font-medium transition-all" />
-            <button *ngIf="artistName()" (click)="artistName.set('')" class="absolute right-3 text-gray-400 hover:text-white text-xs px-2 py-1 rounded bg-gray-800/60 cursor-pointer">✕</button>
+              class="w-full bg-studio-bg border border-studio-border focus:border-amber-studio rounded-lg py-2.5 px-3.5 text-white text-xs sm:text-sm font-mono outline-none placeholder:text-studio-muted transition-all" />
+            <button *ngIf="artistName()" (click)="artistName.set('')" class="absolute right-2.5 text-studio-muted hover:text-white text-xs px-1.5 py-0.5 rounded bg-studio-raised cursor-pointer">✕</button>
           </div>
         </div>
 
-        <!-- Lyrics Toggle -->
-        <label class="flex items-center gap-3 cursor-pointer group">
+        <!-- Lyrics Switcher (Tactile Hardware Rocker) -->
+        <label class="flex items-center gap-3 cursor-pointer group select-none py-1">
           <div class="relative flex items-center justify-center">
             <input type="checkbox" [checked]="extractLyrics()" (change)="extractLyrics.set(!extractLyrics())" class="peer sr-only" />
-            <div class="w-12 h-6 bg-gray-700 rounded-full peer-checked:bg-electric-cyan transition-colors shadow-inner border border-gray-900"></div>
-            <div class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform peer-checked:translate-x-6 shadow"></div>
+            <div class="w-10 h-5 bg-studio-raised rounded-full peer-checked:bg-amber-studio transition-colors border border-studio-border"></div>
+            <div class="absolute left-0.5 top-0.5 w-4 h-4 bg-white rounded-full transition-transform peer-checked:translate-x-5 shadow"></div>
           </div>
-          <span class="text-gray-300 font-medium group-hover:text-white transition-colors">
-            {{ 'playground.extractLyrics' | translate }} <span class="text-xs text-gray-500 ml-1">{{ 'playground.lyricsPrice' | translate }}</span>
+          <span class="text-xs font-mono uppercase tracking-wider text-studio-text group-hover:text-white transition-colors">
+            {{ 'playground.extractLyrics' | translate }} <span class="text-amber-studio font-bold ml-1">{{ 'playground.lyricsPrice' | translate }}</span>
           </span>
         </label>
 
+        <!-- Primary Action Trigger Button (Studio Master Engage) -->
         <button (click)="runAnalysis()"
-          class="bg-electric-cyan text-obsidian px-10 py-4 rounded-2xl font-bold text-xl transition-all flex items-center gap-3 hover:scale-105 hover:shadow-[0_0_30px_rgba(102,252,241,0.4)] shadow-xl cursor-pointer">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+          class="w-full py-4 rounded-xl bg-amber-studio hover:bg-amber-glow text-studio-bg font-bold font-mono text-sm sm:text-base uppercase tracking-wider transition-all flex items-center justify-center gap-3 shadow-[0_2px_14px_rgba(255,107,53,0.35)] hover:shadow-[0_4px_22px_rgba(255,107,53,0.5)] active:translate-y-px cursor-pointer">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
             stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <path
-              d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z" />
+            <polygon points="5 3 19 12 5 21 5 3"/>
           </svg>
-          {{ buttonLabel() }}
+          <span>{{ buttonLabel() }}</span>
         </button>
       </div>
 
-      <!-- 402 Block -->
-      <div class="animate-step mt-10 bg-dark-gray/80 border border-teal-glow/30 rounded-3xl p-8"
+      <!-- 402 Cryptographic Invoice Voucher Block -->
+      <div class="animate-step mt-8 bg-studio-surface border border-studio-border rounded-xl p-6 sm:p-8 shadow-studio-panel"
         *ngIf="paymentRequired() && invoiceDetails() && !isAnalyzing()">
-        <div class="flex items-center gap-4 mb-6">
-          <div class="bg-teal-glow/20 p-4 rounded-2xl">
-            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-              class="text-teal-glow">
+        <div class="flex items-center gap-3.5 mb-5 pb-4 border-b border-studio-border">
+          <div class="p-2.5 rounded-lg bg-amber-dim border border-amber-studio/30 text-amber-studio">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
               <path d="M7 11V7a5 5 0 0 1 10 0v4" />
             </svg>
           </div>
           <div>
-            <h2 class="text-2xl font-bold">{{ 'playground.invoice.title' | translate }}</h2>
-            <p class="text-gray-400">{{ 'playground.invoice.subtitle' | translate }}</p>
+            <h3 class="text-base sm:text-lg font-bold text-white font-mono uppercase tracking-wide">{{ 'playground.invoice.title' | translate }}</h3>
+            <p class="text-xs font-mono text-studio-text-dim">{{ 'playground.invoice.subtitle' | translate }}</p>
           </div>
         </div>
-        <div class="bg-obsidian/60 rounded-2xl p-6 mb-8 border border-gray-800 space-y-4 font-medium">
-          <div class="flex justify-between">
-            <span class="text-gray-500">{{ 'playground.invoice.amount' | translate }}</span>
-            <span class="text-electric-cyan text-xl">{{ invoiceDetails()?.amount }} USDC</span>
+
+        <div class="bg-studio-bg rounded-lg p-4 mb-6 border border-studio-border space-y-3 font-mono text-xs">
+          <div class="flex justify-between items-center">
+            <span class="text-studio-muted uppercase tracking-wider">{{ 'playground.invoice.amount' | translate }}</span>
+            <span class="text-amber-studio text-base font-bold">{{ invoiceDetails()?.amount }} USDC</span>
           </div>
-          <div class="flex justify-between items-center pt-4 border-t border-gray-800">
-            <span class="text-gray-500">{{ 'playground.invoice.network' | translate }}</span>
-            <span class="text-electric-cyan text-xl">{{ invoiceDetails()?.network === 'eip155:8453' ? 'Base' : invoiceDetails()?.network === 'eip155:84532' ? 'Base Sepolia' : invoiceDetails()?.network }}</span>
+          <div class="flex justify-between items-center pt-2.5 border-t border-studio-border">
+            <span class="text-studio-muted uppercase tracking-wider">{{ 'playground.invoice.network' | translate }}</span>
+            <span class="text-white font-semibold">{{ invoiceDetails()?.network === 'eip155:8453' ? 'Base Mainnet' : invoiceDetails()?.network === 'eip155:84532' ? 'Base Sepolia' : invoiceDetails()?.network }}</span>
           </div>
-          <div class="flex justify-between items-center pt-4 border-t border-gray-800">
-            <span class="text-gray-500">{{ 'playground.invoice.destination' | translate }}</span>
-            <span class="text-xs font-mono text-gray-400 break-all pl-10 text-right">{{
-              invoiceDetails()?.destination_address }}</span>
+          <div class="flex justify-between items-center pt-2.5 border-t border-studio-border">
+            <span class="text-studio-muted uppercase tracking-wider">{{ 'playground.invoice.destination' | translate }}</span>
+            <span class="text-[10px] text-studio-text-dim break-all pl-6 text-right">{{ invoiceDetails()?.destination_address }}</span>
           </div>
         </div>
+
         <button (click)="payAndAnalyze()"
-          class="w-full bg-teal-glow text-obsidian py-5 rounded-2xl font-bold text-xl hover:scale-[1.02] transition-all shadow-xl cursor-pointer">
+          class="w-full bg-amber-studio hover:bg-amber-glow text-studio-bg py-3.5 rounded-xl font-mono text-xs sm:text-sm font-bold uppercase tracking-wider hover:shadow-[0_4px_18px_rgba(255,107,53,0.4)] transition-all cursor-pointer active:translate-y-px">
           {{ 'playground.invoice.signButton' | translate }}
         </button>
       </div>
 
     </div>
 
-    <!-- Results Display -->
-    <div class="w-full max-w-4xl mx-auto animate-in fade-in slide-in-from-bottom-8 duration-500"
-      *ngIf="metadataResult()">
-      <button (click)="resetState()"
-        class="mb-8 flex items-center gap-2 text-gray-500 hover:text-electric-cyan transition-colors cursor-pointer">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="m12 19-7-7 7-7" />
-          <path d="M19 12H5" />
-        </svg>
-        {{ 'playground.analyzeAnother' | translate }}
-      </button>
+    <!-- Results Display (Inspector Cue Sheet) -->
+    <div class="w-full animate-in fade-in duration-300" *ngIf="metadataResult()">
+      <div class="flex items-center justify-between mb-6">
+        <button (click)="resetState()"
+          class="flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-studio-text-dim hover:text-amber-studio transition-colors cursor-pointer">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m12 19-7-7 7-7" />
+            <path d="M19 12H5" />
+          </svg>
+          <span>{{ 'playground.analyzeAnother' | translate }}</span>
+        </button>
 
+        <span class="text-[10px] font-mono text-studio-muted uppercase tracking-widest">RESULT LOG // ID #{{ trackTitle() | slice:0:12 }}</span>
+      </div>
+
+      <!-- On-Chain Settlement Verification Banner -->
       <div *ngIf="settlementTx()"
-        class="mb-10 bg-green-500/10 border border-green-500/30 rounded-2xl p-6 flex justify-between items-center">
-        <div class="flex items-center gap-4">
-          <div class="bg-green-500/20 p-3 rounded-full">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2.5" class="text-green-500">
-              <path d="M20 6 9 17l-5-5" />
-            </svg>
-          </div>
+        class="mb-6 bg-studio-surface border border-led-green/30 rounded-xl p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+        <div class="flex items-center gap-3">
+          <div class="w-2.5 h-2.5 rounded-full bg-led-green led-glow-green shrink-0"></div>
           <div>
-            <p class="text-green-400 font-bold">{{ 'playground.paymentValidated' | translate }}</p>
-            <p class="text-gray-500 text-xs font-mono">{{ settlementTx() | slice:0:32 }}...</p>
+            <p class="text-led-green font-mono text-xs font-bold">{{ 'playground.paymentValidated' | translate }}</p>
+            <p class="text-studio-muted text-[10px] font-mono">{{ settlementTx() | slice:0:32 }}...</p>
           </div>
         </div>
         <a [href]="'https://basescan.org/tx/' + settlementTx()" target="_blank"
-          class="text-xs font-bold text-green-400 hover:underline tracking-widest">{{ 'playground.viewOnBasescan' | translate }}</a>
+          class="text-[10px] font-mono font-bold text-led-green hover:underline tracking-widest flex items-center gap-1">
+          <span>{{ 'playground.viewOnBasescan' | translate }}</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </a>
       </div>
 
+      <!-- Result Component Ingestion -->
       <app-metadata-result
         [data]="metadataResult()"
         [artistStats]="artistStats()"

@@ -7,21 +7,22 @@ export const fr = {
   },
   hero: {
     badge: 'Disponible sur Base 🔵',
-    titleLine1: 'L\'A&R automatisé pour la',
-    titleHighlight: 'nouvelle économie musicale.',
-    subtitle: 'Des réseaux de neurones qui écoutent, analysent et catégorisent vos morceaux en 20 secondes, couplés au scoring de traction streaming. Paiement à l\'usage via le',
+    titleLine1: 'Intelligence Musicale Autonome &',
+    titleHighlight: 'Qualification A&R Automatisée',
+    subtitle: 'Logiciel de tri de maquettes, filtrage automatisé des démos et analyse acoustique neuronale couplée à la traction streaming Spotify en temps réel. Paiement à l\'usage via le',
     subtitleHighlight: 'protocole x402',
     testButton: 'Tester l\'Analyseur',
     devButton: 'Pour les Développeurs'
   },
   story: {
+    heading: 'Tri Automatisé de Maquettes & Scoring A&R pour Labels',
     quote: '"Le processus d\'A&R est dépassé. Nous l\'avons repensé."',
     content: 'En tant qu\'artiste, j\'ai envoyé d\'innombrables maquettes restées sans réponse. En tant que cofondateur de label, j\'en ai compris la cause : le goulot d\'étranglement de l\'écoute. Tag-per-Track n\'est pas qu\'un outil ; c\'est une solution technique conçue par un musicien pour débloquer l\'industrie en fusionnant analyse acoustique IA et scoring de traction en temps réel.'
   },
   playground: {
     title: 'Tag-per-Track',
     subtitle: 'Analyse Audio Musicale & Scoring A&R Conçus pour les Agents IA',
-    sectionTitle: 'Essayez par vous-même',
+    sectionTitle: 'Extraction Acoustique & Traction Streaming en Temps Réel',
     sectionDescription: 'Glissez un fichier audio ci-dessous. Connectez votre portefeuille sur',
     sectionDescriptionHighlight: 'Base',
     sectionDescriptionEnd: 'pour régler le micro-paiement x402 (0.05 USDC). Chaque signature et analyse est exécutée en temps réel on-chain.',
@@ -124,8 +125,8 @@ export const fr = {
     }
   },
   dev: {
-    title: 'Intégrez Tag-per-Track',
-    subtitle: 'Choisissez la meilleure façon d\'équiper vos agents IA d\'une intelligence musicale de pointe.',
+    title: 'Infrastructure Agentique & Outils Musicaux Développeur',
+    subtitle: 'Équipez vos agents IA et workflows de label d\'une intelligence acoustique de pointe et de micro-paiements on-chain.',
     sdk: {
       badge: 'Pour les Développeurs JS',
       title: 'Donnez des oreilles à votre Agent IA.',
@@ -139,9 +140,9 @@ export const fr = {
       comment: '# Logique de paiement gérée en interne via Coinbase CDP'
     },
     mcp: {
-      badge: 'Pour les Utilisateurs de LLM',
-      title: 'Pay-to-Listen Autonome & A&R Hybride',
-      description: 'Permettez à vos LLMs (Claude Desktop, etc.) d\'analyser la musique et de qualifier la traction des artistes en toute autonomie grâce aux outils MCP Tag-per-Track.',
+      badge: 'Pour les Utilisateurs de LLM & Claude / Cursor',
+      title: 'Équipez vos Agents IA de l\'Ouïe via le Model Context Protocol (MCP)',
+      description: 'Permettez à vos LLMs (Claude Desktop, Cursor, etc.) d\'analyser la musique, filtrer les démos et qualifier la traction des artistes en toute autonomie grâce aux outils MCP Tag-per-Track.',
       toolAnalyzeTitle: 'analyze_audio',
       toolAnalyzeDesc: 'Outil pour extraire BPM, clé, humeur et genres via Essentia (x402).',
       toolBatchTitle: 'analyze_audio_batch',

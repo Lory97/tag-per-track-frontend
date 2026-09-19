@@ -1,0 +1,6 @@
+# robots.txt for Tag-per-Track (https://tag-per-track.cloud)
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://tag-per-track.cloud/sitemap.xml

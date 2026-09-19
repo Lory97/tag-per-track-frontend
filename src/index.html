@@ -2,20 +2,133 @@
 <html lang="en">
 
 <head>
-  <meta charset="utf-8" name="base:app_id" content="69d90a6691a4079139dd546a">
-  <title>Tag-per-Track | AI Audio Analysis</title>
+  <meta charset="utf-8">
+  <meta name="base:app_id" content="69d90a6691a4079139dd546a">
+  <title>Tag-per-Track | Autonomous A&amp;R Engine &amp; Audio MCP Server</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <!-- Primary SEO Meta Tags -->
+  <meta name="description" content="Autonomous music intelligence for record labels &amp; AI agents. Instant acoustic metadata analysis, Spotify traction scoring and automated demo qualification via MCP &amp; API.">
+  <meta name="keywords" content="A&amp;R demo intake software, automated demo submission filter, logiciel tri de maquettes label, music demo screening tool, MCP music analysis server, Model Context Protocol audio tool, AI agent music tagging, Claude Desktop audio tool, x402 micropayments, Base audio intelligence">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <meta name="theme-color" content="#121214">
+
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://tag-per-track.cloud">
+
+  <!-- Open Graph / Facebook / LinkedIn / Slack -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Tag-per-Track">
+  <meta property="og:title" content="Tag-per-Track | Autonomous A&amp;R Engine &amp; Audio MCP Server">
+  <meta property="og:description" content="Autonomous music intelligence for record labels &amp; AI agents. Instant acoustic metadata analysis, Spotify traction scoring and automated demo qualification via MCP &amp; API.">
+  <meta property="og:url" content="https://tag-per-track.cloud">
+  <meta property="og:image" content="https://tag-per-track.cloud/og-image.png">
+  <meta property="og:image:width" content="1376">
+  <meta property="og:image:height" content="768">
+  <meta property="og:image:alt" content="Tag-per-Track Studio Console - Autonomous A&amp;R Engine &amp; Audio MCP Server">
+
+  <!-- Twitter Cards -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Tag-per-Track | Autonomous A&amp;R Engine &amp; Audio MCP Server">
+  <meta name="twitter:description" content="Autonomous music intelligence for record labels &amp; AI agents. Instant acoustic metadata analysis, Spotify traction scoring and automated demo qualification via MCP &amp; API.">
+  <meta name="twitter:image" content="https://tag-per-track.cloud/og-image.png">
+  <meta name="twitter:image:alt" content="Tag-per-Track Studio Console - Autonomous A&amp;R Engine &amp; Audio MCP Server">
+
+  <!-- Favicon & Icons -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
   <link rel="shortcut icon" href="favicon.ico">
+
+  <!-- Web Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap" rel="stylesheet">
+
+  <!-- Schema.org JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Tag-per-Track",
+    "url": "https://tag-per-track.cloud",
+    "applicationCategory": ["MultimediaApplication", "DeveloperApplication"],
+    "operatingSystem": "Web, Node.js, Claude Desktop, Cursor",
+    "description": "Analyse acoustique instantanée, notation de traction streaming et serveur MCP pour l'écoute musicale autonome par des agents IA.",
+    "featureList": [
+      "Acoustic Feature Extraction",
+      "Artist Streaming Traction",
+      "Model Context Protocol Server",
+      "x402 Micropayments"
+    ],
+    "offers": {
+      "@type": "Offer",
+      "price": "0.05",
+      "priceCurrency": "USD",
+      "description": "Pay-per-analysis via x402 USDC micropayments on Base"
+    },
+    "softwareRequirements": "Modern Web Browser, Node.js, Claude Desktop, Cursor",
+    "creator": {
+      "@type": "Organization",
+      "name": "Tag-per-Track",
+      "url": "https://tag-per-track.cloud"
+    }
+  }
+  </script>
 </head>
 
 <body>
-  <app-root></app-root>
+  <app-root>
+    <!-- Crawlable Pre-rendered Content for Search Engines & Social Scrapers (Hydrated/replaced by Angular on client load) -->
+    <div style="background-color:#121214;color:#E0E0E0;font-family:system-ui,-apple-system,sans-serif;padding:2rem;max-width:1200px;margin:0 auto;line-height:1.6;">
+      <header style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #28282D;padding-bottom:1rem;margin-bottom:2rem;">
+        <div style="font-weight:bold;font-size:1.25rem;color:#FFFFFF;letter-spacing:-0.02em;">Tag-per-Track <span style="font-size:0.75rem;color:#FF6B35;text-transform:uppercase;margin-left:0.5rem;font-family:monospace;">STUDIO // A&amp;R DESK</span></div>
+        <nav style="display:flex;gap:1.5rem;font-size:0.875rem;font-family:monospace;">
+          <a href="#playground" style="color:#A0A0A5;text-decoration:none;">Playground</a>
+          <a href="#mcp" style="color:#A0A0A5;text-decoration:none;">MCP Server</a>
+          <a href="#agentkit" style="color:#A0A0A5;text-decoration:none;">AgentKit</a>
+          <a href="https://api.tag-per-track.cloud/api/docs" style="color:#FF6B35;text-decoration:none;">API Docs</a>
+        </nav>
+      </header>
+      <main>
+        <section style="text-align:center;padding:3rem 1rem;">
+          <div style="display:inline-block;padding:0.25rem 0.75rem;background:#1C1C20;color:#FF6B35;border:1px solid #28282D;border-radius:6px;font-size:0.75rem;font-family:monospace;margin-bottom:1.5rem;">● NOW LIVE ON BASE — EIP-712 / X402</div>
+          <h1 style="font-size:2.75rem;font-weight:800;color:#FFFFFF;line-height:1.15;margin-bottom:1rem;letter-spacing:-0.03em;">Autonomous Music Intelligence &amp; <span style="color:#FF6B35;">Automated A&amp;R Demo Qualification</span></h1>
+          <p style="font-size:1.15rem;color:#A0A0A5;max-width:760px;margin:0 auto 2rem;">Autonomous music intelligence for record labels &amp; AI agents. Instant acoustic metadata analysis (BPM, key, mood, genre, lyrics transcription) fused with real-time Spotify streaming traction and automated demo intake software. Pay-per-track via x402 micropayments on Base.</p>
+          <div>
+            <a href="#playground" style="background:#FF6B35;color:#121214;padding:0.85rem 1.75rem;border-radius:10px;font-weight:bold;font-family:monospace;text-decoration:none;font-size:0.875rem;margin-right:1rem;display:inline-block;">Test the Analyzer</a>
+            <a href="#mcp" style="background:#1C1C20;color:#FFFFFF;border:1px solid #28282D;padding:0.85rem 1.75rem;border-radius:10px;font-family:monospace;text-decoration:none;font-size:0.875rem;display:inline-block;">MCP Server Docs</a>
+          </div>
+        </section>
+        <section style="border-top:1px solid #28282D;border-bottom:1px solid #28282D;padding:2.5rem 1rem;background:#18181C;margin:2rem 0;border-radius:12px;">
+          <h2 style="font-size:1.75rem;font-weight:700;color:#FFFFFF;text-align:center;margin-bottom:1rem;">Automated Demo Intake &amp; A&amp;R Scoring for Record Labels</h2>
+          <p style="color:#A0A0A5;max-width:800px;margin:0 auto;text-align:center;font-size:1rem;">The A&amp;R process is broken by the listening bottleneck. Tag-per-Track provides an automated demo submission filter and music demo screening tool for labels and curators, evaluating audio files through Essentia neural networks and verifying market viability against Spotify streaming traction.</p>
+        </section>
+        <section id="playground" style="padding:2.5rem 1rem;">
+          <h2 style="font-size:1.75rem;font-weight:700;color:#FFFFFF;margin-bottom:1rem;">Acoustic Signal Extraction meets Real-time Streaming Traction</h2>
+          <p style="color:#A0A0A5;margin-bottom:1.5rem;">Drop audio files or provide remote URLs for immediate musical analysis: Tempo (BPM), musical key, genre probabilities, dominant moods, instrumentation tags, and optional vocal lyrics transcription, enriched with live Spotify metrics (monthly listeners, followers, popularity score).</p>
+        </section>
+        <section id="mcp" style="border-top:1px solid #28282D;padding:2.5rem 1rem;">
+          <h2 style="font-size:1.75rem;font-weight:700;color:#FFFFFF;margin-bottom:1rem;">Equip your AI Agents with Hearing via Model Context Protocol (MCP)</h2>
+          <p style="color:#A0A0A5;margin-bottom:1.5rem;">Connect Claude Desktop, Cursor, or autonomous LLM agents to real-world audio comprehension using the <code>tag-per-track-mcp</code> server with built-in x402 gasless payment facilitation.</p>
+          <ul style="color:#A0A0A5;font-family:monospace;font-size:0.875rem;line-height:2;">
+            <li><strong>analyze_audio:</strong> Extract BPM, Key, Mood, and Genre via Essentia neural nets (0.05 USDC).</li>
+            <li><strong>analyze_audio_batch:</strong> High-throughput batch audio analysis for label demo submission folders.</li>
+            <li><strong>lookup_artist_stats:</strong> Live Spotify traction &amp; streaming popularity data.</li>
+            <li><strong>x402 protocol:</strong> Zero-auth, pay-per-track autonomous settlement on Base.</li>
+          </ul>
+        </section>
+      </main>
+      <footer style="border-top:1px solid #28282D;margin-top:3rem;padding-top:1.5rem;text-align:center;font-size:0.75rem;color:#707075;font-family:monospace;">
+        Built on Base. Built for Music. &copy; 2026 Tag-per-Track.
+      </footer>
+    </div>
+  </app-root>
+  <noscript>
+    <div style="background:#1C1C20;color:#FFFFFF;padding:1.5rem;text-align:center;border-bottom:2px solid #FF6B35;font-family:sans-serif;">
+      <p>Tag-per-Track requires JavaScript for real-time Web3 wallet signing and interactive audio visualization. View the <a href="https://api.tag-per-track.cloud/api/docs" style="color:#FF6B35;">API Documentation</a> or use our <a href="https://www.npmjs.com/package/tag-per-track-mcp" style="color:#FF6B35;">MCP Server on NPM</a>.</p>
+    </div>
+  </noscript>
 </body>
 
 </html>

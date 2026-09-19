@@ -7,21 +7,22 @@ export const en = {
   },
   hero: {
     badge: 'Now live on Base 🔵',
-    titleLine1: 'Automated A&R for the',
-    titleHighlight: 'new music economy.',
-    subtitle: 'Neural networks that listen, analyze, and categorize tracks in 20 seconds, combined with live streaming traction scoring. Pay-per-use via the',
+    titleLine1: 'Autonomous Music Intelligence &',
+    titleHighlight: 'Automated A&R Qualification',
+    subtitle: 'A&R demo intake software, automated demo submission filtering, and instant acoustic metadata analysis fused with real-time Spotify streaming traction. Pay-per-use via the',
     subtitleHighlight: 'x402 protocol',
     testButton: 'Test the Analyzer',
     devButton: 'For Developers'
   },
   story: {
+    heading: 'Automated Demo Intake & A&R Scoring for Record Labels',
     quote: '"The A&R process is broken. We fixed it."',
     content: 'As an artist, I sent countless demos into the void. As a label co-founder, I realized why: the listening bottleneck. Tag-per-Track isn\'t just a tool; it\'s a technical solution to a broken system, built by a musician to unblock the industry by fusing AI acoustic intelligence with real-time streaming traction.'
   },
   playground: {
     title: 'Tag-per-Track',
     subtitle: 'Agentic-First Musical Audio Analysis & A&R Scoring',
-    sectionTitle: 'Try it yourself',
+    sectionTitle: 'Acoustic Signal Extraction meets Real-time Streaming Traction',
     sectionDescription: 'Drop an audio file below. Connect your wallet on',
     sectionDescriptionHighlight: 'Base',
     sectionDescriptionEnd: 'to settle the x402 micro-payment (0.05 USDC). Every signature and analysis is executed in real-time on-chain.',
@@ -124,8 +125,8 @@ export const en = {
     }
   },
   dev: {
-    title: 'Integrate Tag-per-Track',
-    subtitle: 'Choose the best way to empower your AI agents with advanced music intelligence.',
+    title: 'Autonomous Agentic Infrastructure & Music Tools',
+    subtitle: 'Equip your AI agents and label workflows with advanced acoustic intelligence and on-chain payments.',
     sdk: {
       badge: 'For JS Developers',
       title: 'Give your AI Agent ears.',
@@ -139,9 +140,9 @@ export const en = {
       comment: '# Payment logic handled internally via Coinbase CDP'
     },
     mcp: {
-      badge: 'For LLM Users',
-      title: 'Autonomous Pay-to-Listen & Hybrid A&R',
-      description: 'Enable your local LLMs (Claude Desktop, etc.) to analyze music and qualify artist traction autonomously using Tag-per-Track MCP tools.',
+      badge: 'For LLM Users & Cursor / Claude',
+      title: 'Equip your AI Agents with Hearing via Model Context Protocol (MCP)',
+      description: 'Enable your local LLMs (Claude Desktop, Cursor, etc.) to analyze audio, screen music demos, and qualify artist traction autonomously using Tag-per-Track MCP tools.',
       toolAnalyzeTitle: 'analyze_audio',
       toolAnalyzeDesc: 'Tool to extract BPM, Key, Mood and Genre from audio via Essentia (x402).',
       toolBatchTitle: 'analyze_audio_batch',

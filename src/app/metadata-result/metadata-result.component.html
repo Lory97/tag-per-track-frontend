@@ -7,7 +7,8 @@
     <div class="flex items-center gap-3 min-w-0">
       <div class="p-2 rounded-lg bg-amber-dim border border-amber-studio/30 text-amber-studio shrink-0">
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
-          stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"
+          aria-hidden="true" role="img" aria-label="Audio inspection icon">
           <circle cx="12" cy="12" r="10" />
           <polygon points="10 8 16 12 10 16 10 8" />
         </svg>
@@ -76,7 +77,7 @@
 
         <!-- Radial Analog VU Meter Gauge -->
         <div class="relative w-36 h-36 flex items-center justify-center my-2">
-          <svg class="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+          <svg class="w-full h-full transform -rotate-90" viewBox="0 0 100 100" role="img" aria-label="Analog radial VU meter dial">
             <!-- Background Track -->
             <circle cx="50" cy="50" r="42" stroke="currentColor" stroke-width="6" class="text-studio-border" fill="transparent" />
             <!-- Segment Ticks -->
@@ -125,6 +126,7 @@
           <label class="text-[11px] font-mono font-bold uppercase tracking-wider text-studio-text flex items-center gap-2 mb-2.5">
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              aria-hidden="true" role="img" aria-label="Search artist icon"
               class="text-amber-studio">
               <circle cx="11" cy="11" r="8" />
               <line x1="21" y1="21" x2="16.65" y2="16.65" />
@@ -156,7 +158,7 @@
         <div *ngIf="artistData()?.spotify" class="bg-studio-bg border border-studio-border rounded-xl p-4 shadow-sm space-y-3 min-w-0">
           <div class="flex flex-wrap items-center justify-between gap-2 border-b border-studio-border pb-2.5">
             <h4 class="text-[11px] font-mono font-bold uppercase tracking-wider text-studio-text flex items-center gap-2 truncate">
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="#1DB954" class="shrink-0">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="#1DB954" role="img" aria-label="Spotify streaming logo" class="shrink-0">
                 <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.503 17.308c-.218.358-.68.47-1.038.252-2.846-1.738-6.428-2.131-10.65-1.166-.41.094-.82-.163-.914-.573-.094-.41.163-.82.573-.914 4.622-1.056 8.583-.614 11.777 1.338.358.218.47.68.252 1.063zm1.47-3.267c-.274.444-.856.586-1.3.312-3.257-2.002-8.223-2.583-12.076-1.413-.497.151-1.028-.135-1.179-.632-.151-.497.135-1.028.632-1.179 4.41-1.338 9.89-.7 13.611 1.612.444.274.586.856.312 1.311zm.126-3.41c-3.905-2.319-10.347-2.533-14.072-1.402-.598.181-1.233-.162-1.414-.76-.181-.598.162-1.233.76-1.414 4.283-1.3 11.4-1.05 15.897 1.618.538.32.713 1.018.393 1.556-.32.538-1.018.713-1.556.393z"/>
               </svg>
               <span class="shrink-0">{{ 'result.streamTraction' | translate }} :</span>
@@ -165,7 +167,7 @@
             <a *ngIf="artistData()?.spotify?.url" [href]="artistData()?.spotify?.url" target="_blank"
               class="text-[10px] font-mono font-bold text-green-400 hover:text-green-300 flex items-center gap-1.5 transition-colors cursor-pointer uppercase tracking-wider shrink-0">
               <span>{{ 'result.viewProfile' | translate }}</span>
-              <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true" role="img" aria-label="Spotify profile link icon"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
             </a>
           </div>
 
@@ -237,7 +239,8 @@
       <div class="flex items-start gap-3.5">
         <div class="p-2 rounded-lg bg-amber-dim text-amber-studio shrink-0 mt-0.5 border border-amber-studio/30">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"
+            aria-hidden="true" role="img" aria-label="Strategic recommendation icon">
             <circle cx="12" cy="12" r="10" />
             <circle cx="12" cy="12" r="6" />
             <circle cx="12" cy="12" r="2" />
@@ -388,7 +391,7 @@
   <div *ngIf="activeTab() === 'lyrics'" class="p-4 sm:p-8 flex flex-col items-center animate-in fade-in duration-200 min-w-0">
     <div class="w-full max-w-2xl bg-studio-bg p-4 sm:p-6 rounded-xl border border-studio-border relative group shadow-studio-inset min-w-0 overflow-hidden">
       <button (click)="copyLyrics()" class="absolute top-4 right-4 bg-studio-surface hover:bg-studio-raised text-amber-studio p-2 rounded-lg opacity-0 group-hover:opacity-100 transition-all border border-studio-border cursor-pointer shadow-sm flex items-center gap-1 text-xs font-mono" [title]="'result.copyLyrics' | translate">
-        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" role="img" aria-label="Copy lyrics icon"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
         <span>{{ 'result.copyLyrics' | translate }}</span>
       </button>
       <pre class="whitespace-pre-wrap break-words font-mono text-studio-text leading-relaxed text-xs sm:text-sm">{{ lyrics }}</pre>

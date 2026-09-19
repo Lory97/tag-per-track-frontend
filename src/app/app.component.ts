@@ -1,5 +1,6 @@
-import { Component, signal, inject } from '@angular/core';
+import { Component, signal, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Title, Meta } from '@angular/platform-browser';
 import { PlaygroundComponent } from './playground/playground.component';
 import { I18nService } from './services/i18n.service';
 import { TranslatePipe } from './pipes/translate.pipe';
@@ -12,10 +13,30 @@ import { BrandLogoComponent } from './brand-logo/brand-logo.component';
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   i18n = inject(I18nService);
-  title = 'Tag-per-Track Frontend';
+  private titleService = inject(Title);
+  private metaService = inject(Meta);
+
+  title = 'Tag-per-Track | Autonomous A&R Engine & Audio MCP Server';
   copied = signal(false);
+
+  ngOnInit() {
+    this.titleService.setTitle('Tag-per-Track | Autonomous A&R Engine & Audio MCP Server');
+    this.metaService.updateTag({
+      name: 'description',
+      content: 'Autonomous music intelligence for record labels & AI agents. Instant acoustic metadata analysis, Spotify traction scoring and automated demo qualification via MCP & API.'
+    });
+    this.metaService.updateTag({ property: 'og:title', content: 'Tag-per-Track | Autonomous A&R Engine & Audio MCP Server' });
+    this.metaService.updateTag({ property: 'og:description', content: 'Autonomous music intelligence for record labels & AI agents. Instant acoustic metadata analysis, Spotify traction scoring and automated demo qualification via MCP & API.' });
+    this.metaService.updateTag({ property: 'og:image', content: 'https://tag-per-track.cloud/og-image.png' });
+    this.metaService.updateTag({ property: 'og:url', content: 'https://tag-per-track.cloud' });
+    this.metaService.updateTag({ property: 'og:type', content: 'website' });
+    this.metaService.updateTag({ name: 'twitter:card', content: 'summary_large_image' });
+    this.metaService.updateTag({ name: 'twitter:title', content: 'Tag-per-Track | Autonomous A&R Engine & Audio MCP Server' });
+    this.metaService.updateTag({ name: 'twitter:description', content: 'Autonomous music intelligence for record labels & AI agents. Instant acoustic metadata analysis, Spotify traction scoring and automated demo qualification via MCP & API.' });
+    this.metaService.updateTag({ name: 'twitter:image', content: 'https://tag-per-track.cloud/og-image.png' });
+  }
 
   mcpConfig = {
     "mcpServers": {

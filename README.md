@@ -78,15 +78,39 @@ The API endpoint and network parameters are configured in `src/environments/`:
 
 ---
 
-## 🚀 VPS Deployment
+## 🚀 Deployment
 
-To build and deploy the production bundle to your VPS:
+1. **Build the production bundle**:
+   ```bash
+   npm run build
+   ```
+   The compiled static files will be generated in `dist/frontend/browser/`.
 
-```bash
-./deploy.sh
-# or
-npm run deploy
-```
+2. **Serve with any static web server** (Nginx, Caddy, Cloudflare Pages, Vercel, Netlify, etc.):
+   Because this is a Single Page Application (SPA), ensure your server routes all client-side navigation requests to `index.html`.
+
+   <details>
+   <summary>Example Nginx Configuration</summary>
+
+   ```nginx
+   server {
+       listen 80;
+       server_name example.com;
+       root /var/www/tag-per-track;
+       index index.html;
+
+       location / {
+           try_files $uri $uri/ /index.html;
+       }
+
+       # Cache static assets
+       location ~* \.(?:css|js|woff2?|svg|png|jpg|jpeg|gif|ico)$ {
+           expires 1y;
+           add_header Cache-Control "public, immutable";
+       }
+   }
+   ```
+   </details>
 
 ---
 
